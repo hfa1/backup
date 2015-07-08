@@ -1,0 +1,5 @@
+|These record types are updated in some unusual way and thus are not counted in the Daily Report
+.    if (DB$ = 'COSMOS'   and REC# = 40) next journal | INVOICE
+.    if (DB$ = 'PULSE'    and REC# = 45) next journal | NOTES
+|For Partlist, only the Tracking record type is counted towards the Daily Report, Memos and Changes are not
+.    if (DB$ = 'PARTLIST' and REC# <> 1) next journal | TRACKING

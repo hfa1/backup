@@ -1,0 +1,168 @@
+| File name: 08Counts.pql
+| Path:      <GDATA1>DCC\BackUps\
+| Creator:   David Merle
+| Created:   01/01/2008
+| Retired:
+| Called by: Backup Routine
+| Calls:
+| Reason:    Make Daily Report
+| Output:    DCC\Logs\
+| Attributes:
+| Modified:
+|
+remark 'Start: Backup Routine -> Counts.pql'
+program crwarn
+. integer * 1 NO YES DB# ERRORS# START# CONN# MONTHS#
+. string * 32 DB$ MONTHS$ IRB$ INST$ LINK$
+. string * 100 TOTCASE$ TOTRECS$ DELREC$ NEWREC$ CHANGE$ UPDREC$ SCHEMA$ MASTER$ INACTIVE$ USERLIST$ 
+. string * 200 IN$ LINE$ VER$ PROJECT$ CLONE$ EXPORT$
+. integer * 4 STAT# CASES# RECS# CXCASES# CXRECS# 
+. string  * 200 NRECS$
+. set NO DB# ERRORS# STAT# START# (0) YES (1)
+. CLONE$ = '<GDATA5>Clone\'
+write 'CHECKING COUNTS ' CLONE$
+|
+. open (REPORT) write append lrecl = 100
+.  write (REPORT) '<tr>'
+.  write (REPORT) '    <td colspan="2" class="greenleft">08 Counts</td>'
+.  write (REPORT) '    <td colspan="2" class="whitecenter">' [timec(now(0),'hh:mm:ss')] '</td>'
+.  write (REPORT) '</tr>'
+. close (REPORT)
+|
+. execute subprocedure MAKEHEADER
+. include file DBSLIST
+. for DB# = 1,DB#C
+.  write'1. Connecting ' DB$N(DB#) DB#
+.  ifthen (STA$(DB#) = 'Live' or STA$(DB#) = 'Not active')
+.   pql connect database DB$N(DB#)
+                prefix   CLONE$
+                iostat   STAT#
+.   ifthen (STAT# < 0)
+.    open (REPORT) write append lrecl = 250
+.     write (REPORT) '<tr>'
+.     write (REPORT) '  <td class="orangecenter" colspan=10>' DB$N(DB#) 'did not connect, iostat: '  STAT# ' </td>'
+.     write (REPORT) '</tr>'
+.    close (REPORT)
+.   else
+.    execute dbms 'call DCCPROCF.BACKUPS.CXCOUNTS (' + STA$(DB#) + ')' 
+|Please note that if you export/delete/import a database, you can no longer read the journal
+c.    execute subprocedure EXPORT
+c On import SPOTRIAS recompiles DVPainter screens which deletes all attributes
+execute dbms "include file '\\Dccmaincsfs\data4\DCC\SRM\SetGlobals.pql'"
+c.    execute subprocedure VERIFY
+.    pql disconnect database DB$N(DB#)
+.   endif
+.  endif
+. end for
+. execute subprocedure MAKEHEADER
+. execute subprocedure MAKESWIM
+|
+. subprocedure MAKESWIM
+.  open (REPORT) write append lrecl = 250
+.   write (REPORT) '<tr>'
+.   write (REPORT) '     <td colspan="2" class="orangecenter">SWIM Project</td>'
+.   write (REPORT) '     <td class="orangecenter">IRB Expires</td>'
+.   write (REPORT) '</tr>'
+.   IN$ = '<GDATA1>DCC\Documents\IRB\Current IRB Information.txt'
+.   open (IN$) dsnvar=IN$ read lrecl=200
+.    loop
+.     read (IN$,end=DONE0) LINE$ (A200)
+.     DB$ = trim(sbst(LINE$,1,10))
+.     MONTHS$ = trim(sbst(LINE$,22,7))
+.     INST$ = trim(sbst(LINE$,54,10))
+.     ifthen (trim(sbst(LINE$,34,4)) = 'SWIM')
+.      write (REPORT) '<tr>'
+.      ifthen (INST$ = 'Covered')
+.       LINK$ = trim(sbst(LINE$,11,11))
+.      elseif (INST$ = 'NA')
+.       LINK$ = 'TEST'
+.       MONTHS$ = 'NA'
+.      else
+.       LINK$ = DB$
+.      endif
+.      write (REPORT) ['<td colspan="2" class="db">' + DB$ + '</td>']
+.      ifthen (trim(sbst(LINE$,29,3)) = 'Yes')
+.       write (REPORT) ['<td class="whitecenter"><a href="file://///<DATASERVER>/Data1/DCC/Documents/IRB/IRB Current/' + LINK$ + '.pdf">' + MONTHS$ + '&#x2713;</a></td>']
+.      else
+.       write (REPORT) ['<td class="whitecenter"><a href="file://///<DATASERVER>/Data1/DCC/Documents/IRB/IRB Current/' + LINK$ + '.pdf">' + MONTHS$ + '</a></td>']
+.      endif
+.      write (REPORT) '</tr>'
+.     endif
+.    end loop
+.    DONE0:
+.   close (IN$)
+.   write (REPORT) '<tr>'
+.   write (REPORT) '     <td colspan="2" class="orangecenter">SWIM Project</td>'
+.   write (REPORT) '     <td class="orangecenter">IRB Expires</td>'
+.   write (REPORT) '</tr>'
+.  close (REPORT)
+. end subprocedure MAKESWIM
+|
+. subprocedure MAKEHEADER
+.  open (REPORT) write append lrecl = 250
+.   write (REPORT) '<tr>'
+.   write (REPORT) '     <td colspan="2" class="orangecenter">Database Name</td>'
+.   write (REPORT) '     <td class="orangecenter">Cases</td>'
+.   write (REPORT) '     <td class="orangecenter">Recs</td>'
+.   write (REPORT) '     <td class="orangecenter">Deleted Recs</td>'
+.   write (REPORT) '     <td class="orangecenter">New Recs</td>'
+.   write (REPORT) '     <td class="orangecenter"><a href="file://///Dccmaincsfs/Data1/DCC/BackupRoutine/Programs/JournalExceptions.txt" class="external">Recs Change</a></td>'
+.   write (REPORT) '     <td class="orangecenter">Updated Recs</td>'
+.   write (REPORT) '     <td class="orangecenter"><a href="file://///Dccmaincsfs/Data1/DCC/Change Control/Change Control Log.csv" class="external">Schema Mods</a></td>'
+.   write (REPORT) '     <td class="orangecenter">Master</td>'
+.   write (REPORT) '     <td class="orangecenter">IRB Expires</td>'
+.   write (REPORT) '     <td class="orangecenter">Months Inactive</td>'
+.   write (REPORT) '     <td class="orangeleft"><a href="file://///Dccmaincsfs/Data1/DCC/BackupRoutine/Lists/Contacts.htm" class="external">Users</a></td>'
+.   write (REPORT) '</tr>'
+.  close (REPORT)
+. end subprocedure MAKEHEADER
+|
+. subprocedure VERIFY
+.  VER$ = '<GDATA1>DCC\BackupRoutine\Output\Verify\' + DB$N(DB#) + '.log'
+.  execute dbms "SET OUTPUT '" + VER$ + "'"
+.  execute dbms 'VERIFY'
+.  execute dbms "SET OUTPUT '<GDATA1>DCC\BackupRoutine\Batch\Output\3_Backup.txt' append"
+.  open (VER$) read dsnvar=VER$ lrecl=200
+.  open (REPORT) write append lrecl=200
+.   loop
+.    read (VER$,end=DONE) LINE$ (A200)
+.    ifthen (sbst(LINE$,1,16) = 'Cases on databas')
+.     CXCASES# = numbr(sbst(LINE$,40,len(LINE$)))
+.    elseif (sbst(LINE$,1,16) = 'Data records on ')
+.     CXRECS# = numbr(sbst(LINE$,40,len(LINE$)))
+.    elseif (upper(sbst(LINE$,1,16)) = 'WARNING MESSAGES' or 'CORRECTABLE ERRO' or 'NON-CORRECTABLE ')
+.     ERRORS# = ERRORS# + numbr(trimlr(sbst(LINE$,38,4)))
+.    endif
+.   end loop
+.   DONE:
+.   ifthen (ERRORS# > 0)
+.    write (REPORT) ['<tr><td bgcolor="#FFFFFF" colspan="8" align="center"><font color="#FF0000">** ' + pad(DB$N(DB#),' ',9,9) + 'did not verify</font></td></tr>']
+.   elseif (CASES# <> CXCASES# or RECS# <> CXRECS#)
+.    write (REPORT) ['<tr><td bgcolor="#FFFFFF" colspan="8" align="center"><font color="#FF0000">!! ' + pad(DB$N(DB#),' ',9,9) + 'lost cases or records on reload</font></td></tr>']
+.   elseif (CONN# = NO)
+.    write (REPORT) ['<tr><td bgcolor="#FFFFFF" colspan="8" align="center"><font color="#FF0000">!! ' + pad(DB$N(DB#),' ',9,9) + 'A database does not exist or became disconnected</font></td></tr>']
+.   endif
+.  close (VER$)
+.  close (REPORT)
+. end subprocedure VERIFY
+|
+. subprocedure EXPORT
+.  CASES# = system(24)
+.  RECS# = system(25)
+.  CONN# = system(39)
+.  EXPORT$ = CLONE$ + DB$N(DB#) + '.exp'
+.  execute dbms 'EXPORT FILENAME = "' + EXPORT$ + '"'
+.  execute dbms 'PURGE SIR FILE'
+.  execute dbms 'ATTRIBUTE PREFIX FILENAME = "' + CLONE$ + '"'
+.  execute dbms 'INCLUDE FILE "' + EXPORT$ + '"'
+.  ifthen (exists(meminfo('SYSTEM.ALLCALL',1)) = YES)
+.   execute dbms 'call SYSTEM.ALLCALL'
+.  endif
+.  ifthen ((CASES# - system(24) <> 0) or (RECS# - system(25) <> 0) or (CONN# - system(39) <> 0) or (trim(dbname(0)) <> DB$N(DB#)))
+c write 'We got us a real problem! ' [CASES# - system(24)][RECS# - system(25)] 'Ordinal #1 ' CONN# 'Ordinal #2 ' [system(39)] 'Size '[system(40)] [trim(dbname(0))] [DB$N(DB#)]
+.    write (REPORT) ['<tr><td bgcolor="#FFFFFF" colspan="8" align="center"><font color="#FF0000">!! ' + pad(DB$N(DB#),' ',9,9) + 'did not export successfully!!</font></td></tr>']
+.  endif
+. end subprocedure EXPORT
+|
+end program
+remark 'Finished: Backup Routine -> Counts.pql'

@@ -1,0 +1,15 @@
+program
+|WINDOWS Server 2003->. EXEC$ = 'cmd /c c:\Tools\PSSERVICE \\' + IP$ + ' -u Administrator -p sonya67 STOP "SirMaster' + ID$ + '"'
+|WINDOWS Server 2008
+. string * 200 EXEC$ MST$
+. MST$ = '<1>'
+. IP$ = sbst(MST$,1,14)
+. ID$ = sbst(MST$,16,4)
+. EXEC$ = 'cmd /c c:\Windows\System32\SC \\' + IP$ + ' STOP "SirMaster' + ID$ + '"'
+. write 'STOPPING MASTER ' ID$
+. pql escape EXEC$
+. wait 100
+. EXEC$ = 'cmd /c c:\Windows\System32\SC \\' + IP$ + ' START "SirMaster' + ID$ + '"'
+. pql escape EXEC$
+. write 'STARTING MASTER ' ID$
+end program

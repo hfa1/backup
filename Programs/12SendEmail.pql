@@ -1,0 +1,55 @@
+| File Name: 12SendEmail.pql
+| Creator:   David Merle
+| Created:   01/01/2008
+| Retired:
+| Called by: Backup Routine
+| Calls:       
+| Reason:    Emails reports to various people   
+| Output:    Email reports  
+| Attributes:
+| Modified
+|
+remark 'Start: Backup Routine -> SendEmail.pql'
+
+include file '\\Dccmaincsfs\data4\DCC\SRM\SetGlobals.pql'
+program
+. string * 500 EMAIL$
+. string * 100 DREPORT CLIST ELIST SERVER$
+. string * 1000 EXEC$
+. SERVER$ = '\\' + sglobal('APPLSERVER') + '\SIRXS'
+. CLIST = '<GDATA1>DCC\BackupRoutine\Lists\Contacts.htm'
+. ELIST = '<GDATA1>DCC\BackupRoutine\Lists\Email.txt'
+. EMAIL$ = 'milagros.ventura@nyspi.columbia.edu,david.merle@nyspi.columbia.edu,'
+          + 'ming.feng@nyspi.columbia.edu,lori.hoepner@nyspi.columbia.edu,andrews@nyspi.columbia.edu,'
+          + 'ths2105@columbia.edu,tcs2113@columbia.edu,gn2003@columbia.edu,'
+          + 'ja2026@columbia.edu,psc59@columbia.edu,williams@nyspi.columbia.edu'
+. open (REPORT) write append lrecl=200
+.  write (REPORT) '<tr>'
+.  write (REPORT) '    <td colspan="2" class="greenleft">12 Send Email</td>'
+.  write (REPORT) '    <td colspan="2" class="whitecenter">' [timec(now(0),'hh:mm:ss')] '</td>'
+.  write (REPORT) '</tr>'
+.  write (REPORT) '<tr>'
+.  write (REPORT) '    <td colspan="2" class="greenleft">13 Finished</td>'
+.  write (REPORT) '    <td colspan="2" class="whitecenter">' [timec(now(0),'hh:mm:ss')] '</td>'
+.  write (REPORT) '    <td></td>'
+.  write (REPORT) '    <td colspan="2" class="greybutton"><a href="file://///Dccmaincsfs/Data1/DCC/BackupRoutine/Batch/Output/3_BACKUP.txt" class="button">Backup Log</a></td>'
+.  write (REPORT) '    <td></td>'
+.  write (REPORT) '</tr>'
+.  write (REPORT) '<tr>'
+.  write (REPORT) '    <td class="invisible">Finished</td>'
+.  write (REPORT) '</tr>'
+.  write (REPORT) '</table>'
+.  write (REPORT) '<p>'
+.  write (REPORT) '    <a href="http://validator.w3.org/check?uri=referer"><img'
+.  write (REPORT) '        src="http://www.w3.org/Icons/valid-html401"'
+.  write (REPORT) '        alt="Valid HTML 4.01 Transitional" height="31" width="88"></a>'
+.  write (REPORT) '</p>'
+.  write (REPORT) '</body>'
+.  write (REPORT) '</html>'
+. close (REPORT)
+. DREPORT = dsn('REPORT')
+. EXEC$  = SERVER$ + '\Email\blat "' + DREPORT + '" -to ' + EMAIL$ + ' -subject "Daily Report" -attacht "' + CLIST + ',' + ELIST + '"'
+. pql escape EXEC$
+end program
+
+remark 'Finished: Backup Routine -> SendEmail.pql'

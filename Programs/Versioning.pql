@@ -1,0 +1,45 @@
+program
+. window clear
+. integer * 2 FILE# FILES# FOLD# FOLDS# LS#
+. string * 100 PATH$ FOLD$ FILE$
+. string * 300 IN$ LINE$
+. string * 300 array FILE1@ FILE2@ (10000)
+c. PATH$ = '\\Dccmaincsfs\Data5\2013\'
+c. FOLDS# = filecnt(PATH$ + '*.*')
+c. for FOLD# = 1,FOLDS#
+c.  FOLD$ = filen(PATH$ + '*.*',FOLD#)
+c.  FILES# = filecnt(PATH$ + FOLD$ + '\*.pql')
+c.  for FILE# = 1,FILES#
+c.   FILE$ = filen(PATH$ + FOLD$ + '\*.pql',FILE#)
+c.   ifthen (FILE$ = '08Counts.pql')
+c.    IN$ = PATH$ + FOLD$ + '\' + FILE$
+IN$ = '\\Dccmaincsfs\data5\2013\2013_01_01_SIRXS\08Counts.pql'
+.    open (IN$) dsnvar=IN$ read lrecl=300
+.     set LS# (0)
+.     loop
+.      read (IN$,end=DONE1) LINE$ (A300)
+.      LS# = LS# + 1
+.      FILE1@(LS#) = LINE$
+.     end loop
+.     DONE1:
+.    close (IN$)
+IN$ = '\\Dccmaincsfs\data5\2013\2013_05_31_SIRXS\08Counts.pql'
+.    open (IN$) dsnvar=IN$ read lrecl=300
+.     set LS# (0)
+.     loop
+.      read (IN$,end=DONE2) LINE$ (A300)
+.      LS# = LS# + 1
+.      FILE2@(LS#) = LINE$
+.     end loop
+.     DONE2:
+.    close (IN$)
+.    for L# = 1,LS#
+.     ifthen (FILE1@(L#) <> FILE2@(L#))
+.      write 'File 1:' L# FILE1@(L#) 
+.      write 'File 2:' L# FILE2@(L#)
+.     endif
+.    end for
+c.   endif
+c.  end for
+c. end for
+end program

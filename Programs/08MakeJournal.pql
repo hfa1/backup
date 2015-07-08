@@ -1,0 +1,60 @@
+| File name: 08MakeJournal.pql
+| Path:      <GDATA1>DCC\BackUps\
+| Creator:   David Merle
+| Created:   01/01/2008
+| Retired:
+| Called by: Backup Routine
+| Calls:
+| Reason:    Make Daily Report
+| Output:    DCC\Logs\
+| Attributes:
+| Modified:
+remark 'Start: Backup Routine -> MakeJournal.pql'
+program crwarn
+. integer * 1 NO YES OK# DB# FILE# FILES#
+. string * 32 MASTER$ DBMASTER$ DB$ IP$ CONNECT$ PATTERN$
+. string * 200 IN$ LINE$
+. string * 32 TODAY$ 
+. TODAY$ = datec(today(0),'MM/DD/YYYY')
+. integer * 2  STAT  
+. string  * 100 NRECS$ MOD$ FILE$ FOLDER$ PREFIX$
+. PREFIX$ = '\\Dccmaincsfs\Data5\Clone\'
+. FOLDER$ = '<GDATA1>DCC\BackupRoutine\Journals\Modified\'
+. set NO DB# STAT OK# (0) YES (1)
+. PATTERN$ = '@' + datec(today(0),'MM DD YYYY') + '@'
+. FILES# = filecnt(FOLDER$ + '*.txt')
+. for FILE# = 1,FILES#
+.  FILE$ = filen(FOLDER$ + '*.txt',FILE#)
+.  ifthen (pattern(FILE$,PATTERN$) = YES)
+.   STAT = YES
+.  else
+.   OK# = delfile(FOLDER$ + FILE$)
+.  endif
+. end for
+. MOD$ = FOLDER$ + 'Modified ' + datec(today(0),'MM DD YYYY') + '.txt'
+. ifthen (STAT = NO)
+.  open (MOD$) dsnvar=MOD$ write lrecl=200
+.  close (MOD$)
+. endif
+. include file DBSLIST
+. for DB# = 1,DB#C
+.  ifthen (STA$(DB#) = 'Live' and DB$N(DB#) <> 'DCC')
+.   open (MOD$) dsnvar=MOD$ read lrecl=200
+.    loop
+.     read (MOD$,end=DONE) DB$
+.     if (DB$N(DB#) = DB$) next for
+.    end loop
+.    DONE:
+.   close (MOD$)
+.   pql connect database DB$N(DB#)
+                prefix   PREFIX$
+                iostat   STAT
+.    open (MOD$) dsnvar=MOD$ write append lrecl=200
+.     write (MOD$) DB$N(DB#)
+.    close (MOD$)
+.    execute dbms "call DCCPROCF.BACKUPS.CXJOURNALS"
+.   pql disconnect database DB$N(DB#)
+.  endif
+. end for
+end program
+remark 'Start: Finished Routine -> MakeJournal.pql'

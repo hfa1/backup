@@ -1,0 +1,51 @@
+| File name: 07CheckDBs.pql
+| Path:      <GDATA1>DCC\BackUps\
+| Creator:   David Merle
+| Created:   01/01/2008
+| Retired:
+| Reason:    Checks each database for blank records
+| Modified:  7/13/2012 GN.
+|
+remark 'Start: Backup Routine -> CheckDBs.pql'
+
+program crwarn
+. integer * 1 YES NO DB# OK#
+. integer * 2 FILES# FILE# STAT#
+. string * 200 FILE$
+|INIT
+. set NO DB# STAT# (0) YES (1)
+cif eq 1,2
+. open (REPORT) write append lrecl = 100
+.   write (REPORT) '<tr>'
+.   write (REPORT) '    <td colspan="2" class="greenleft">07 Check DBs</td>'
+.   write (REPORT) '    <td colspan="2" class="whitecenter">' [timec(now(0),'hh:mm:ss')] '</td>'
+.   write (REPORT) '</tr>'
+. close (REPORT)
+cif end
+. FILES# = filecnt('<GDATA1>DCC\BackupRoutine\Output\Verify\*.log')
+. for FILE# = 1,FILES#
+.  FILE$ = filen('<GDATA1>DCC\BackupRoutine\Output\Verify\*.log',1)
+.  OK# = delfile('<GDATA1>DCC\BackupRoutine\Output\Verify\' + FILE$)
+. end for
+. include file DBSLIST
+. for DB# = 1,DB#C
+.  if (STA$(DB#) <> 'Live') next for
+.  pql connect database DB$N(DB#)
+               prefix   '\\Dccmaincsfs\Data5\Clone\'
+               iostat   STAT#
+.  ifthen (STAT# < 0)
+.   write '09CheckDBs cannot connect to ' DB$N(DB#)
+.  else
+.   execute dbms 'call DCCPROCF.SYSTEM.ALLRECS'
+c.   execute dbms 'call DCCPROCF.BACKUPS.CXSCHEMAS' 
+c.   execute dbms 'call DCCPROCF.BACKUPS.CXRANGES'  
+c.   execute dbms 'call DCCPROCF.BACKUPS.CXMEMBERS' 
+c.   execute dbms 'call DCCPROCF.BACKUPS.CXBLANKS'  
+c.   execute dbms 'call DCCPROCF.BACKUPS.CXDATES'   
+.   execute dbms 'call DCCPROCF.BACKUPS.CXVERIFY'  
+c.   execute dbms 'call DCCPROCF.BACKUPS.CXEXPORT'  
+.  endif
+.  pql disconnect database DB$N(DB#)
+. end for
+end program
+remark 'Finished: Backup Routine -> CheckDBs.pql'

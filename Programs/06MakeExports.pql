@@ -1,0 +1,38 @@
+program
+. window clear
+. integer * 1 NO YES
+. integer * 2 FOLD#
+. integer * 4 STAT#
+. string * 32 DAY$ DATE$
+. string * 200 DIR1$ DIR2$ DIR3$ NEW$ LINE$ EXFOLD
+. date DATE_ ('MM/DD/YYYY')
+. string * 32 TODAY$ YEAR$ BUYEAR
+. TODAY$ = datec(today(0),'MM/DD/YYYY')
+. YEAR$ = sbst(TODAY$,7,4)
+. BUYEAR = '<GDATA5>' + YEAR$ + '\'
+. EXFOLD = BUYEAR + datec(today(0),'YYYY_MM_DD\Exports\')
+. set NO (0) YES (1)
+. ifthen (fileis(EXFOLD) = NO)
+.  t = makedir(EXFOLD)
+. endif
+. include file DBSLIST
+. for DB# = 1,DB#C
+.  if (STA$(DB#) <> 'Live') next for
+.  pql connect database DB$N(DB#)
+               prefix   DIR$(DB#)
+               iostat   STAT#
+.  ifthen (STAT# < 0)
+.   write '06MakeExports cannot connect to ' DB$N(DB#)
+.  else
+.   LINE# = 0
+.   BUFF$ = 'EXPORT'
+.   delete buffer BUFF$
+.   create buffer BUFF$
+.   LINE# = LINE# + 1
+.   LINE$ = 'EXPORT FILENAME  = "' + EXFOLD + DB$N(DB#) + '.exp" NOMAXKEY'
+.   insert line into buffer BUFF$ numbered LINE# from LINE$
+.   execute dbms ['INCLUDE BUFFER ' + BUFF$]
+.   pql disconnect database DB$N(DB#)
+.  endif
+. end for
+end program 

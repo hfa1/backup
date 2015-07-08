@@ -1,0 +1,54 @@
+| File name: 09MakeAudit.pql
+| Path:      <GDATA1>DCC\BackUps\
+| Creator:   David Merle
+| Created:   01/01/2008
+| Retired:
+| Called by: Backup Routine
+| Calls:
+| Reason:    Make Daily Report
+| Output:    DCC\Logs\
+| Attributes:
+| Modified:
+remark 'Start: Backup Routine -> MakeAudit.pql'
+program crwarn
+. integer * 1 NO YES OK# DB#
+. string * 32 MASTER$ DBMASTER$ DB$ IP$ CONNECT$
+. string * 200 IN$ LINE$ KEYS$
+. date TODAY_ FILE_ ('MM-DD-YYYY')
+. TODAY_ = today(0)
+. integer * 2  AUDIT#  
+. string  * 100 NRECS$ MOD$ FILE$ FOLDER$ PREFIX$
+. PREFIX$ = '\\Dccmaincsfs\Data5\Clone\'
+. set NO DB# (0) YES (1)
+. include file DBSLIST
+. for DB# = 1,DB#C
+.  set AUDIT# OK# (0) FILE$ FILE_ (missing)
+.  ifthen (STA$(DB#) = 'Live' and DB$N(DB#) <> 'DCC')
+.   FOLDER$ = '<GDATA1>DCC\BackupRoutine\Audit\' + DB$N(DB#) + '\'
+.   ifthen (fileis(FOLDER$) = NO) 
+.    OK# = makedir(FOLDER$)
+.   endif
+.   FILE$ = filen(FOLDER$ + '*.txt',1)
+.   FILE_ = cdate(sbst(FILE$,1,2) + sbst(FILE$,4,2) + sbst(FILE$,7,4),'MMDDYYYY')
+.   ifthen (exists(FILE_) = NO or FILE_ < TODAY_)
+.    OK# = delfile(FOLDER$ + FILE$)
+.    FILE$ = FOLDER$ + TODAY_ + '.txt'
+.    open (FILE$) dsnvar=FILE$ write lrecl=200
+.    close (FILE$)
+.    AUDIT# = YES
+.   else
+.    AUDIT# = NO
+.   endif
+.   ifthen (AUDIT# = YES)
+.    MOD$ = FOLDER$ + datec(TODAY_,'MM-DD-YYYY') + '.txt'
+.    open (MOD$) dsnvar=MOD$ write lrecl=200
+.    close (MOD$)
+.    pql connect database DB$N(DB#)
+                  prefix  PREFIX$
+.     execute dbms "call DCCPROCF.BACKUPS.MXAUDIT"
+.    pql disconnect database DB$N(DB#)
+.   endif
+.  endif
+. end for
+end program
+remark 'Finished: Backup Routine -> MakeAudit.pql'

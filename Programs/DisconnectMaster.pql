@@ -1,0 +1,51 @@
+| File name: DisconnectMaster.pql
+| Path:      <GDCC>
+| Creator:   Tom Shriver
+| Created:   08/07/2006
+| Retired:
+| Called by: <GDCC>01RunBackup.pql
+| Calls:
+| Reason:    Check number of Master users and Set a Global so that other routines will skip single user things
+| Output:    LOG
+| Attributes:
+| Modified:
+|
+SET MASTER <1>
+|
+COPY DIFFERENCE FILE
+|
+program
+. integer * 1 YES NO
+. set NO (0) YES (1)
+. integer *  4 MSTUSER USERCNT
+. string  * 20 MYIPADD | IP Address of Process that is going to stop Master
+. string * 200 MST$
+. CURRCLI = dsn('CLIENT')
+. DCCDBA  = system(45) | Current user DB rights
+. NMSTUSE = system(68) | Number of master clients
+. NMSTDB  = system(69) | Number of Master attached dbs
+. write ['   Logging out Master <1> at ' + timec(now(0),  'hh:mm:ss')]
+. ifthen(NMSTDB gt 0)
+.  for DB# = 1, NMSTDB
+.   write 'Database: ' [getmdbn(DB#)]  ' is connected to Master' //
+.  end for
+. endif
+. while (NMSTUSE > 0)   | Suggestion from Tony R (Always 1 user - Us)
+.  for MSTUSER = 1, NMSTUSE    | Suggestion from Tony R. User numbers correspond until deleted
+.   write ['Disconnecting client ' + CURRCLI + ' ' + pad(dbname(0),' ',9,9) + ' ' + getenv('username')]
+.   MSTUSEID = getmclid(MSTUSER)
+.   MSTUSEIP = getmcadd(MSTUSEID)
+.   ifnot (exists(MSTUSEIP)) next for
+.   ifthen(pattern(MSTUSEIP,'@' + CURRCLI + '@'))           | skip if we are the current process
+.    NMSTUSE = NMSTUSE - 1
+.    next while
+.   endif
+.   t = delmclid(MSTUSEID,'')
+.   NMSTUSE = system(68) | Latest number of master clients
+.   next while
+.  end for
+. end while
+end program
+
+clear master
+

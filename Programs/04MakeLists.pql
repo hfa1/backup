@@ -1,0 +1,36 @@
+| File name: 04MakeLists.pql
+| Path:      <GDATA1>\DCC\Programs\
+| Creator:   David Merle
+| Created:   01/01/2008
+| Retired:
+| Called by: Backup Routine
+| Calls:
+| Reason:    Creates lists used by the nightly backup procedure.
+| Output:    <GDATA1>\DCC\Lists\
+| Attributes:
+| Modified:
+|
+
+remark 'Start: Backup Routine -> MakeLists.pql'
+program
+. open (REPORT) write append lrecl = 100
+.  write (REPORT) '<tr>'
+.  write (REPORT) '    <td colspan="2" class="greenleft">04 Make Lists</td>'
+.  write (REPORT) '    <td colspan="2" class="whitecenter">' [timec(now(0),'hh:mm:ss')] '</td>'
+.  write (REPORT) '</tr>'
+. close (REPORT)
+. pql connect database 'DCC'
+      prefix '<GDATA1>DCC\Database\'
+.  execute dbms 'call DCCPROCF.BACKUPS.MXDBSLIST'
+.  execute dbms 'call DCCPROCF.BACKUPS.MXMSTLIST'
+.  execute dbms 'call DCCPROCF.BACKUPS.MXCONLIST'
+.  execute dbms 'call DCCPROCF.BACKUPS.MXEMAIL'
+.  execute dbms 'call DCCPROCF.BACKUPS.MXPRODJOB'
+.  execute dbms 'call DCCPROCF.BACKUPS.MXRESTART'
+. pql disconnect database 'DCC'
+. execute dbms 'call DCCPROCF.BACKUPS.MXMEMLIST'
+. execute dbms 'call DCCPROCF.BACKUPS.MXOUTLIST'
+. execute dbms 'call DCCPROCF.BACKUPS.MXRECCOUNTS'
+. execute dbms 'call DCCPROCF.BACKUPS.MXUSAGE'
+end program
+remark 'Finished: Backup Routine -> MakeLists.pql'

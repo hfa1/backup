@@ -1,0 +1,51 @@
+| File name: PROGRAMS.pql
+| Path:      <GDATA1>DCC\
+| Creator:   David Merle
+| Created:   08/01/2008
+| Retired:
+| Called by: Backup Routine
+| Calls:
+| Reason:    Runs all user programs (except SPSS code) that are updated nightly
+| Output:    A lot, see below
+| Modified:
+remark 'Start: Backup Routine -> RunPrograms.pql'
+include file '\\Dccmaincsfs\data4\DCC\SRM\SetGlobals.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\05RestartMasters.pql'
+program
+. integer * 1 NO YES SR#
+. integer * 4 STAT#
+. string * 100 PATH$ SPSS$
+. set STAT# (-1) NO (0) YES (1)
+. include file DBSLIST
+. for DB# = 1,DB#C
+.  execute dbms "include file '\\Dccmaincsfs\data4\DCC\SRM\SetGlobals.pql'"
+.  if (STA$(DB#) <> 'Live' and STA$(DB#) <> 'Not active') next for
+|
+.  pql connect database DB$N(DB#)
+               prefix   DIR$(DB#)
+               iostat STAT#
+.  PATH$ = sbst(DIR$(DB#),1,srst(DIR$(DB#),DB$N(DB#)) + len(DB$N(DB#)))
+.  SPSS$ = PATH$ + '\Database\SPSS\'
+.  ifthen (STAT# < 0)
+.   write '09RunPrograms cannot connect to '  DB$N(DB#)
+.  else
+.   execute dbms "call DCCPROCF.SYSTEM.ALLRECS"
+.   write ["ALLCALL for " + DB$N(DB#)]
+.   execute dbms ["attribute PREFIX filename='" + DIR$(DB#) + "'"]
+.   execute dbms "condense"
+.   ifthen (exists(meminfo('SYSTEM.ALLCALL',1)) = YES)
+.    execute dbms 'TASK NAME ' + DB$N(DB#) + '.SYSTEM.ALLCALL'
+.    write 'Running ' [dbname(0)] ' SYSTEM.ALLCALL'
+.    execute dbms 'call SYSTEM.ALLCALL'
+.   endif
+.   ifthen (exists(meminfo('DAILY.ALLCALL',1)) = YES)
+.    execute dbms 'TASK NAME ' + DB$N(DB#) + '.DAILY.ALLCALL'
+.    write 'Running ' [dbname(0)] ' DAILY.ALLCALL'
+.    execute dbms 'call DAILY.ALLCALL'
+.   endif
+.   pql disconnect database DB$N(DB#)
+.  endif
+|
+. end for
+end program
+remark 'Finished: Backup Routine -> RunPrograms.pql'

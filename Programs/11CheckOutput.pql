@@ -1,0 +1,60 @@
+| File name: 11CheckOutput.pql
+| Path:      <GDATA1>DCC\
+| Creator:   David Merle
+| Created:   01/01/2008
+| Retired:
+| Called by: <GDATA1>DCC\00RunBackup.pql
+| Calls:     <GDATA1>DCC\SIRQQ\Lists\OUTLIST.txt
+| Reason:    Checks all output files to see if they are up-to-date
+| Output:    <GDATA1>DCC\OLDs\
+| Attributes:
+| Modified:
+|
+remark 'Start: Backup Routine -> CheckOutput.pql'
+
+program
+|Declare var
+. integer * 2 O# LINES#
+. integer * 1 OLD YES NO MODIFIED
+. string * 32 TEXT$
+. date TODAY# MODDATE ('MM/DD/YYYY')
+. TODAY# = today(0)
+|Initialize vars
+. set NO O# OLD LINES# (0) YES (1) MODIFIED (6)
+|Check the output files registered in the DCC database and compiled in Outlist.txt
+. open (OLDLIST) dsn='<GDATA1>DCC\BackupRoutine\Lists\OLDLIST.txt' write lrecl = 200
+. include file OUTLIST
+. for O# = 1, OUT#
+.  MODDATE = filetime(OUT$(O#),MODIFIED)
+.  if (sbst(reverse(OUT$(O#)),6,3) = 'CER') next for   |Don't count files that are 'do repeat' stand-ins (RECX.sav)
+.  ifthen (fileis(OUT$(O#)) = NO)
+.   write (OLDLIST) [OUT$(O#) + ' does not exist']
+.  elseif (MODDATE < TODAY#)
+.   write (OLDLIST) [OUT$(O#) + ' >> ' + PRO$(O#) + ' ' + datec(MODDATE,'MM/DD/YYYY')]
+.   OLD = YES
+.  endif
+. end for
+. close (OLDLIST)
+. open (OLDLIST) dsn='<GDATA1>DCC\BackupRoutine\Lists\OLDLIST.txt' read lrecl = 200
+. loop
+.  read (OLDLIST,end=DONE) LINE$ (A100)
+.  LINES# = LINES# + 1
+. end loop
+. DONE:
+. close (OLDLIST)
+. ifthen (LINES# = 1) 
+.  TEXT$ = '1 outdated file'
+. else
+.  TEXT$ = format(LINES#) + ' outdated files'
+. endif
+. open (REPORT) write append lrecl = 200
+.  write (REPORT) '<tr>'
+.  write (REPORT) '    <td colspan="2" class="greenleft">11 Check Output</td>'
+.  write (REPORT) '    <td colspan="2" class="whitecenter">' [timec(now(0),'hh:mm:ss')] '</td>'
+.  write (REPORT) '    <td></td>'
+.  write (REPORT) '    <td colspan="2" class="greybutton"><a href="file://///Dccmaincsfs/Data1/DCC/BackupRoutine/Lists/OLDLIST.txt" class="button">' TEXT$ '</a></td>'
+.  write (REPORT) '</tr>'
+. close (REPORT)
+end program
+
+remark 'Finished: Backup Routine -> CheckOutput.pql'

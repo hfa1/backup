@@ -1,0 +1,137 @@
+| File name: 06CopyFiles.pql
+| Creator:   David Merle
+| Created:   01/01/2008
+| Retired:
+| Called by: Backup Routine
+| Calls:     DBSLIST
+| Reason:    Copies databases and important files to two backup locations
+| Output:    BUFOLD
+| Attributes:
+| Modified:
+|
+remark 'Start: Backup Routine -> 06CopyFiles.pql'
+program
+. open (REPORT) write append lrecl = 100
+.   write (REPORT) '<tr>'
+.   write (REPORT) '    <td colspan="2" class="greenleft">06 Copy Files</td>'
+.   write (REPORT) '    <td colspan="2" class="whitecenter">' [timec(now(0),'hh:mm:ss')] '</td>'
+.   write (REPORT) '</tr>'
+. close (REPORT)
+. pql connect database 'DCC'
+      prefix '<GDATA1>DCC\Database\'
+end program
+|
+retrieval | 06CopyFiles.pql
+|Declare vars
+. integer * 1 YES NO EXISTS# DELETE#
+. integer * 2 FILES# FILE#
+. string * 32 DB$
+. string * 200 DIR$ INF OUTF FILE$ DELETE$ BUFOLD CLONE$ BUYEAR 
+|Initialize vars
+. set FILES# FILE# NO EXISTS# DELETE# (0) YES (1)
+. string * 32 TODAY$ YEAR$
+. TODAY$ = datec(today(0),'MM/DD/YYYY')
+. YEAR$ = sbst(TODAY$,7,4)
+. BUYEAR = '<GDATA5>' + YEAR$ + '\'
+. ifthen (fileis(BUYEAR) = NO)
+.  t = makedir(BUYEAR)
+. endif
+. BUFOLD = BUYEAR + datec(today(0),'YYYY_MM_DD\')
+. ifthen (fileis(BUFOLD) = NO)
+.  t = makedir(BUFOLD)
+. endif
+. ifthen (fileis(BUFOLD + 'Databases\') = NO)
+.  t = makedir(BUFOLD + 'Databases\')
+. endif
+. ifthen (fileis(BUFOLD + 'Exports\') = NO)
+.  t = makedir(BUFOLD + 'Exports\')
+. endif
+. ifthen (fileis(BUFOLD + 'Programs\') = NO)
+.  t = makedir(BUFOLD + 'Programs\')
+. endif
+. CLONE$ = '<GDATA5>Clone\'
+. FILES# = filecnt(CLONE$ + '*.*')
+. for FILE# = FILES#,1,-1 
+.  FILE$ = filen(CLONE$ + '*',FILE#)
+.  t = delfile(CLONE$ + FILE$)
+. end for
+|Delete everything in the delete folder
+. FILES# = filecnt('<GDATA1>DCC\Delete\*.*')
+. for FILE# = FILES#,1,-1 
+.  FILE$ = filen('<GDATA1>DCC\Delete\*.*',FILE#)
+.  t = delfile('<GDATA1>DCC\Delete\' + FILE$)
+. end for
+|2. Copy all PQL programs in the BackupRoutine folder
+. FILES# = filecnt('<GDATA1>DCC\BackupRoutine\Programs\*.pql')
+. for FILE# = 1, FILES#                                
+.  FILE$  = filen('<GDATA1>DCC\BackupRoutine\Programs\*.pql',FILE#)
+.  INF  = '<GDATA1>DCC\BackupRoutine\Programs\' + FILE$
+.  OUTF = BUFOLD + 'Programs\' + FILE$
+.  pql escape ['cmd /c copy "' + INF + '" "' + OUTF + '"']
+. end for
+. process rec ADMIN
+.  get vars DB$ = DCCDB
+.  DB$ = trim(DB$)
+.  ifthen (trim(vallab(STAGE)) = 'Live' or trim(vallab(STAGE)) = 'Not active')
+|4. Copy database files to Clone folder
+.   DIR$ = FOLDER
+.   ifthen (sbst(reverse(DIR$),1,1) ne '\')
+.    DIR$ = DIR$ + '\'
+.   endif
+.   FILES# = filecnt(DIR$ + DB$ + '.sr*')
+.   for FILE# = 1, FILES#                                
+.    FILE$  = filen(DIR$ + DB$ + '.sr*',FILE#)
+.    INF  = DIR$ + FILE$
+.    OUTF = CLONE$ + FILE$
+.    pql escape ['cmd /c copy "' + INF + '" "' + OUTF + '"']
+|5. Copy files to the Database folder
+.    OUTF = BUFOLD + 'Databases\' + FILE$
+.    pql escape ['cmd /c copy "' + INF + '" "' + OUTF + '"']
+.   end for
+|6. Delete all .sr5 files
+.   DELETE$ = DIR$ + DB$ + '.sr5'
+.   EXISTS# = fileis(DELETE$)
+.   DELETE# = delfile(DELETE$)
+.   ifthen (EXISTS# = YES AND DELETE# <> 0) 
+.    open (REPORT) write append lrecl = 100
+.     write (REPORT) '<tr>'
+.     write (REPORT) '    <td bgcolor="#CCFF99" colspan="3">Open file</td>'
+.     write (REPORT) '    <td bgcolor="#FFFFFF" colspan="8" align="left">' DELETE$ '</td>'
+.     write (REPORT) '</tr>'
+.    close (REPORT)
+.   endif
+.  endif
+. end rec
+|7. Copy all programs that run nightly
+. process rec PROGRAM
+.  ifthen (exists(FOLDER) = YES and len(FOLDER) > 0 and ACTIVE = 1)
+.   DIR$ = FOLDER
+.   ifthen (sbst(reverse(DIR$),1,1) ne '\')
+.    DIR$ = DIR$ + '\'
+.   endif
+.   ifthen (fileis(DIR$ + FILENAME) = YES)
+.    INF  = DIR$ + FILENAME
+.    OUTF = BUFOLD + 'Programs\' + FILENAME
+.    pql escape ['cmd /c copy "' + INF + '" "' + OUTF + '"']
+.   endif
+.  endif
+. end rec
+|8. Copy special files
+. INF = '\\Dccmaincsfs\Data4\DCC\Procfile\DCCPROCF.srp'
+. OUTF = BUFOLD + 'Programs\DCCPROCF.srp'
+. pql escape ['cmd /c copy "' + INF + '" "' + OUTF + '"']
+
+. INF = '\\Dccmaincsfs\Data4\DCC\Procfile\GUIPROCF.srp'
+. OUTF = BUFOLD + 'Programs\GUIPROCF.srp'
+. pql escape ['cmd /c copy "' + INF + '" "' + OUTF + '"']
+
+|How to copy using xcopy
+c. FROM$ = '<GDATA5>' + datec(today(0),"YYYY_MM_DD") + '_SIRXS\*'
+c. TO$ = '\\192.168.53.224\C$\Data5\' + datec(today(0),"YYYY_MM_DD") + '_SIRXS\*'
+c. pql escape ['cmd /c xcopy "<GDATA5>2010_05_17_SIRXS\*" "\\192.168.53.224\C$\Data5\2010_05_17_SIRXS\*" /E /I']
+end retrieval
+|
+program
+. pql disconnect database 'DCC'
+end program
+remark 'Finished: Backup Routine -> 06CopyFiles.pql'

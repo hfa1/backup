@@ -1,0 +1,28 @@
+| File name: 00RunBackup.pql
+| Path:      <GDATA1>\DCC\
+| Creator:   David Merle
+| Created:   01/01/2008
+| Retired:
+| Called by: Scheduled task
+| Calls:     A lot...see below
+| Reason:    Runs the nightly backup procedure
+| Output:    LOG
+| Attributes:
+| Modified:
+| Comments:
+
+| The backup output is never printed, make the page size as big as possible yet still within SIR limits.
+PAGESIZE 4000, 3000  NOEJECT
+
+include file '\\Dccmaincsfs\data4\DCC\SRM\SetGlobals.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\02StartReport.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\03ServerSpeed.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\04MakeLists.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\06CopyFiles.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\06MakeExports.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\07CheckDBs.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\08Counts.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\08MakeJournal.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\09MakeAudit.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\11CheckOutput.pql'
+include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\12SendEmail.pql'
