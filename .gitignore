@@ -42,8 +42,12 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# ARchive Directory- The old way of version control
+# Archive Directory- The old way of version control
 /Programs/Archive
 
 # Word Docs
 *.doc
+*.docx
+
+# Log File
+/Programs/All.log
