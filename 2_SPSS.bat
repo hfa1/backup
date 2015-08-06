@@ -1,1 +1,1 @@
-"\\192.168.53.236\C$\Program Files\IBM\SPSS\Statistics\22\stats.exe" \\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\2_SPSS.spj -production
+"\\192.168.53.236\C$\Program Files\IBM\SPSS\Statistics\23\stats.exe" \\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\2_SPSS.spj -production
