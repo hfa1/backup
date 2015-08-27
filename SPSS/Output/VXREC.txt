@@ -1,0 +1,2054 @@
+﻿
+INSERT
+    FILE='C:\Users\dmerle\AppData\Local\Temp\8\spss16532\VXREC7247382931642081382.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  46  0  * Encoding: UTF-8.
+  47  0  _SET UNICODE=OFF.
+  48  0  
+  49  0  *PROGRAM:CEH.VXREC.sps*.
+  50  0  **BEGIN: \\Dccmaincsfs\DATA1\CEH\DAILY\VXREC***.
+  51  0  
+  52  0  
+  53  0  *** birth outcomes from lifetime immunization records
+  54  0  *** for babies missing data in med rec
+  55  0  
+  56  0  *** \\Dccmaincsfs\DATA1\ceh\daily\VXREC.SPS
+  57  0  
+  58  0  *** NOTE: data is entered in weeks and months, pounds and grams, and inches and centimeters.
+  59  0  *** Conversion must be run to be compatible with medical record abstraction!
+  60  0  
+  61  0  **also adding in verbal report for missing gender - may 2003.
+  62  0  
+  63  0  GET FILE='\\Dccmaincsfs\DATA1\CEH\SPSS_1\vxrec.sav'.
+  64  0  
+  65  0  ***GA converted to weeks.
+  66  0  If (GA10) GA=(GA*4+4).
+  67  0  
+  68  0  ***bweight converted to grams.
+  69  0  If (bweight12) bweight=(bweight*16*28.35).
+  70  0  
+  71  0  ***blength converted to cm.
+  72  0  If (blength25) blength=(blength*2.54).
+  73  0  
+  74  0  ***bhead converted to cm.
+  75  0  If (bhead20) bhead=(bhead*2.54).
+  76  0  execute.
+  77  0  
+  78  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\usevxrec.sav'.
+  79  0  execute.
+  80  0  
+  81  0  *************Merge with medrec data.
+  82  0  
+  83  0  get file ='\\Dccmaincsfs\DATA1\ceh\daily\medrec.sav'.
+  84  0  
+  85  0  MATCH FILES /FILE=*
+  86  0   /FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\Usevxrec.sav'
+  87  0   /BY sid.
+  88  0  EXECUTE.
+  89  0  
+  90  0  * use vx data for GA.
+  91  0  
+  92  0  Compute GestAge=-9.
+  93  0  If (B09>0) GestAge=B09.
+  94  0  If (GestAge=-9) GestAge=GA.
+  95  0  If missing(GestAge) GestAge=-9.
+  96  0  execute.
+  97  0  
+  98  0  * use vx data for BW.
+  99  0  
+ 100  0  Compute BirthWt=-9.
+ 101  0  If (birthwt=-9) birthwt=bweight.
+ 102  0  If (B11>0) BirthWt=B11.
+ 103  0  If missing(BirthWt) BirthWt=-9.
+ 104  0  execute.
+ 105  0  
+ 106  0  * use vx data for length.
+ 107  0  
+ 108  0  Compute BirthLth=-9.
+ 109  0  If (B10>0) BirthLth=B10.
+ 110  0  If (BirthLth=-9) BirthLth=BLENGTH.
+ 111  0  If missing(BirthLth) BirthLth=-9.
+ 112  0  execute.
+ 113  0  
+ 114  0  * use vx data for HC
+ 115  0  
+ 116  0  Compute BirthHC=-9.
+ 117  0  If (B13>0) BirthHC=B13.
+ 118  0  If (BirthHC=-9) BirthHC=BHEAD.
+ 119  0  If missing(BirthHC) BirthHC=-9.
+ 120  0  execute.
+ 121  0  
+ 122  0  VARIABLE LABELS GestAge 'Gestational Age med rec + vx rec'  BirthWt 'Birth Weight med rec + vx rec'
+ 123  0                BirthLth 'Birth Length med rec + vx rec'  BirthHC 'Birth Head Circumf med rec + vx rec'.
+ 124  0  MISSING VALUE GestAge  BirthWt  BirthLth BirthHC  (-9).
+ 125  0  VALUE LABELS GestAge  BirthWt  BirthLth BirthHC  -9 'missing' .
+ 126  0  Execute.
+ 127  0  
+ 128  0  MATCH FILES /FILE=*
+ 129  0   /FILE='\\Dccmaincsfs\DATA1\CEH\SPSS_1\gender.sav'
+ 130  0   /BY sid.
+ 131  0  EXECUTE.
+ 132  0  
+ 133  0  MATCH FILES /FILE=*
+ 134  0   /FILE='\\Dccmaincsfs\DATA1\CEH\SPSS_1\bdraw.sav'
+ 135  0   /BY sid.
+ 136  0  EXECUTE.
+ 137  0  
+ 138  0  MATCH FILES /FILE=*
+ 139  0   /FILE='\\Dccmaincsfs\DATA1\CEH\SPSS_1\dob.sav'
+ 140  0   /BY sid.
+ 141  0  EXECUTE.
+ 142  0  
+ 143  0  compute newgendr=b05.
+ 144  0  if missing(gender) gender=-9.
+ 145  0  if missing(newgendr) newgendr=bd03.
+ 146  0  if missing(newgendr) newgendr=gender.
+ 147  0  VARIABLE LABELS  newgendr 'Gender = med rec + blood draw + verbal report'.
+ 148  0  MISSING VALUES  newgendr  gender  (-9).
+ 149  0  VALUE LABELS  newgendr  gender  -9 'missing' 1 'female' 2 'male'.
+ 150  0  execute.
+ 151  0  
+ 152  0  compute newDOB=b06.
+ 153  0  if missing(newDOB) newDOB=bd04.
+ 154  0  if missing(newDOB) newDOB=dobfill.
+ 155  0  VARIABLE LABELS  newDOB 'DOB = med rec + blood draw + backfill'.
+ 156  0  FORMATS newDOB (DATE10).
+ 157  0  execute.
+ 158  0  
+ 159  0  ***GESTFIN syntax from Megan Williams and Ginny Rauh.
+ 160  0  COMPUTE temp =XDATE.TDAY(m07)-XDATE.TDAY(newDOB).
+ 161  0  COMPUTE gest1=40*7-temp.
+ 162  0  Compute gest2 = -9.
+ 163  0  IF(gest1 >= 207 & gest1 = 213) gest2=30.
+ 164  0  EXECUTE.
+ 165  0  IF(gest1 >= 214 & gest1 = 220) gest2=31.
+ 166  0  EXECUTE.
+ 167  0  IF(gest1 >= 221 & gest1 = 227) gest2=32.
+ 168  0  EXECUTE.
+ 169  0  IF(gest1 >= 228 & gest1 = 234) gest2=33.
+ 170  0  EXECUTE.
+ 171  0  IF(gest1 >= 235 & gest1 = 241) gest2=34.
+ 172  0  EXECUTE.
+ 173  0  IF(gest1 >= 242 & gest1 = 248) gest2=35.
+ 174  0  EXECUTE.
+ 175  0  IF(gest1 >= 249 & gest1 = 255) gest2=36.
+ 176  0  EXECUTE.
+ 177  0  IF(gest1 >= 256 & gest1 = 262) gest2=37.
+ 178  0  EXECUTE.
+ 179  0  IF(gest1 >= 263 & gest1 = 269) gest2=38.
+ 180  0  EXECUTE.
+ 181  0  IF(gest1 >= 270 & gest1 = 276) gest2=39.
+ 182  0  EXECUTE.
+ 183  0  IF(gest1 >= 277 & gest1 = 283) gest2=40.
+ 184  0  EXECUTE.
+ 185  0  IF(gest1 >= 284 & gest1 = 290) gest2=41.
+ 186  0  EXECUTE.
+ 187  0  IF(gest1 >= 291 & gest1 = 297) gest2=42.
+ 188  0  EXECUTE.
+ 189  0  IF(gest1 >= 298 & gest1 = 304) gest2=43.
+ 190  0  EXECUTE.
+ 191  0  IF(gest1 >= 305 & gest1 = 311) gest2=44.
+ 192  0  EXECUTE.
+ 193  0  IF(gest1 >= 312 & gest1 = 318) gest2=45.
+ 194  0  EXECUTE.
+ 195  0  
+ 196  0  var label gest1 'gestational age in days' / gest2 'gestational age in weeks'.
+ 197  0  
+ 198  0  COMPUTE gestfin =gestage.
+ 199  0  EXECUTE .
+ 200  0  IF (missing(gestage)) gestfin=gest2.
+ 201  0  EXECUTE.
+ 202  0  var label gestfin 'gestational age final in weeks'.
+ 203  0  
+ 204  0  missing value gestfin gest2 (-9).
+ 205  0  
+ 206  0  save outfile ="\\Dccmaincsfs\DATA1\ceh\daily\medrec_vxrec_gender combined.sav" /drop temp gest1 gest2 DOBFILL   BD03 BD04 G
+            ENDER GA BWEIGHT BLENGTH BHEAD DSTAMP38 B05 B06 B09 B10 B11 B13.
+ 207  0  execute.
+ 208  0  
+ 209  0  ****NOTE:  ADJUSTMENT OF BAYLEY SCORES FOR 24-MONTH OLDS USED FOR RAUH SMOKING PAPER.
+ 210  0  
+ 211  0  GET
+ 212  0    FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\bayley.sav'.
+ 213  0  
+ 214  0  COMPUTE stopdate = DATE.DMY(1,5,2003) .
+ 215  0  VARIABLE LABELS stopdate 'end of adjustment' .
+ 216  0  EXECUTE .
+ 217  0  
+ 218  0  IF (date_24  stopdate) pre = 1 .
+ 219  0  VARIABLE LABELS pre 'Pre or post 5/1/2003' .
+ 220  0  EXECUTE .
+ 221  0  IF (date_24 >=  stopdate) pre = 0 .
+ 222  0  VARIABLE LABELS pre 'Pre or post 5/1/2003' .
+ 223  0  EXECUTE .
+ 224  0  val labels pre 1 'Before 5-1-2003' 0 'After 5-1-2003'.
+ 225  0  
+ 226  0  **Adjustment code used in Ginnys Dec 2003 smoking paper** is NBAY24.
+ 227  0  RECODE
+ 228  0    tinit_24
+ 229  0    (' AR'=1)  ('AR'=1)  ('DD'=2)  ('DM'=2)  ('DMD'=2) ('***', ''=9) (else=3) INTO  tester .
+ 230  0  VARIABLE LABELS tester '24 month test'.
+ 231  0  val labels tester 1 'AR' 2 'DM'.
+ 232  0  EXECUTE .
+ 233  0  compute tester24=tester.
+ 234  0  
+ 235  0  *Define Variable Properties.
+ 236  0  *tester24.
+ 237  0  VARIABLE LABELS tester24  'Bayley tester at 24 months'.
+ 238  0  VALUE LABELS  tester24
+ 239  0       1  'AR'
+ 240  0       2  'DM'
+ 241  0       3  'Other'  .
+ 242  0  EXECUTE.
+ 243  0  missing values tester24 (9).
+ 244  0  
+ 245  0  if (pre eq 1 & tester24 eq 1) nbay24=mdi_24 +4.
+ 246  0  if (pre eq 1 & tester24 eq 2) nbay24=mdi_24-3.
+ 247  0  if (pre eq 0 & tester24 eq 1) nbay24=mdi_24.
+ 248  0  if (pre eq 0 & tester24 eq 2) nbay24=mdi_24.
+ 249  0  if (tester24 eq 3) nbay24=mdi_24.
+ 250  0  EXECUTE.
+ 251  0  
+ 252  0  VARIABLE LABELS nbay24  'Bayley mdi 24 mo Ginny approved'.
+ 253  0  EXECUTE.
+ 254  0  
+ 255  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\bayley adjustment.sav' /keep sid date_24 nbay24
+ 256  0   /COMPRESSED.
+ 257  0  
+ 258  0  ***********BASIC BABY DEMOGRAPHICS FILE.
+ 259  0  
+ 260  0  get file ='\\Dccmaincsfs\DATA1\ceh\daily\b_ethnicity.sav'.
+ 261  0  
+ 262  0  MATCH FILES /FILE=*
+ 263  0   /FILE='\\Dccmaincsfs\Data1\CEH\DAILY\medrec_vxrec_gender combined.sav'
+ 264  0   /RENAME (b01 b02 b03 b07 b08 b12 b14 b15a b15b b15c b16 b17 b18 b19 b20 b20a b20b bd01 bd01a
+ 265  0      bd01b bd02 bd02a bd02b bd05 bd06 BirthHC BirthLth BirthWt chart_b chart_m dstamp17 dstamp19
+ 266  0      dstamp60 final_b final_m GestAge m01 m02 m03 m04a m04b m04c m04d m04e m04e1 m04f m04f1 m04g m04g1
+ 267  0      m04h m04h2 m04i m05 m06 m07 m07a m07a23 m08 m09 m10_ft m10_in m11 m12 m13 m13a m14a m14b m14c m14d
+ 268  0      m14e m14f rini_b rini_m sibid techin = d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16
+ 269  0      d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27 d28 d29 d30 d31 d32 d33 d34 d35 d36 d37 d38 d39 d40 d41
+ 270  0      d42 d43 d44 d45 d46 d47 d48 d49 d50 d51 d52 d53 d54 d55 d56 d57 d58 d59 d60 d61 d62 d63 d64 d65 d66
+ 271  0      d67 d68 d69 d70 d71 d72 d73 d74)
+ 272  0   /BY  sid
+ 273  0   /DROP= d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24
+ 274  0      d25 d26 d27 d28 d29 d30 d31 d32 d33 d34 d35 d36 d37 d38 d39 d40 d41 d42 d43 d44 d45 d46 d47 d48 d49
+ 275  0      d50 d51 d52 d53 d54 d55 d56 d57 d58 d59 d60 d61 d62 d63 d64 d65 d66 d67 d68 d69 d70 d71 d72 d73 d74.
+ 276  0  EXECUTE.
+ 277  0  
+ 278  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\basic_baby_demogs.sav'.
+ 279  0  
+ 280  0  ********************MD EVALUATIONS AGE CALCULATION.
+ 281  0  GET FILE='\\Dccmaincsfs\DATA1\CEH\SPSS_1\mdeval.sav'.
+ 282  0  
+ 283  0  MATCH FILES /FILE=*
+ 284  0   /FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\medrec_vxrec_gender combined.sav'
+ 285  0   /RENAME (b01 b02 b03 b07 b08 b12 b14 b15a b15b b15c b16 b17 b18 b19 b20 b20a b20b bd01 bd01a bd01b bd02 bd02a bd02b bd05 B
+            irthHC
+ 286  0    BirthLth BirthWt chart_b chart_m dstamp17 dstamp19 dstamp60 final_b final_m GestAge m01 m02 m03 m04a m04b m04c m04d m04e 
+            m04e1
+ 287  0    m04f m04f1 m04g m04g1 m04h m04h2 m04i m05 m06 m07 m07a m07a23 m08 m09 m10_ft m10_in m11 m12 m13 m13a m14a m14b m14c m14d 
+            m14e
+ 288  0    m14f newgendr rini_b rini_m techin bd06 = d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d
+            22 d23 d24
+ 289  0    d25 d26 d27 d28 d29 d30 d31 d32 d33 d34 d35 d36 d37 d38 d39 d40 d41 d42 d43 d44 d45 d46 d47 d48 d49 d50 d51 d52 d53 d54 d
+            55 d56
+ 290  0    d57 d58 d59 d60 d61 d62 d63 d64 d65 d66 d67 d68 d69 d70 d71 d72 d73 d74)
+ 291  0   /BY sid
+ 292  0   /DROP= d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 d16 d17 d18 d19 d20 d21 d22 d23 d24 d25 d26 d27 d28 d29 d30 d
+            31 d32
+ 293  0    d33 d34 d35 d36 d37 d38 d39 d40 d41 d42 d43 d44 d45 d46 d47 d48 d49 d50 d51
+ 294  0   d52 d53 d54 d55 d56 d57 d58 d59 d60 d61 d62 d63 d64 d65 d66 d67 d68 d69 d70 d71 d72 d73 d74.
+ 295  0  EXECUTE.
+ 296  0  
+ 297  0  * Date and Time Wizard: AgeMonthsMDEval .
+ 298  0  COMPUTE AgeMonthsMDEval = DATEDIF(dateeval, newDOB, "months").
+ 299  0  VARIABLE LABEL AgeMonthsMDEval "Age in Months at time of MD Evaluation".
+ 300  0  VARIABLE LEVEL AgeMonthsMDEval (SCALE).
+ 301  0  FORMATS AgeMonthsMDEval (F5.0).
+ 302  0  VARIABLE WIDTH AgeMonthsMDEval (5).
+ 303  0  EXECUTE.
+ 304  0  
+ 305  0  * Date and Time Wizard: AgeYearsMDEval.
+ 306  0  COMPUTE AgeYearsMDEval = DATEDIF(dateeval, newDOB, "years").
+ 307  0  VARIABLE LABEL AgeYearsMDEval "Age in Years at time of MD Evaluation".
+ 308  0  VARIABLE LEVEL AgeYearsMDEval (SCALE).
+ 309  0  FORMATS AgeYearsMDEval (F5.0).
+ 310  0  VARIABLE WIDTH AgeYearsMDEval (5).
+ 311  0  EXECUTE.
+ 312  0  
+ 313  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\mdeval_age.sav'.
+ 314  0  
+ 315  0  ********************TANNER STAGING AGE CALCULATION.
+ 316  0  GET FILE='\\Dccmaincsfs\DATA1\CEH\SPSS_1\tanner.sav'.
+ 317  0  
+ 318  0  select if  DRLASTNA ne 'JEAN' and DRLASTNA ne 'MERESCA'.
+ 319  0  compute tanner=1.
+ 320  0  execute.
+ 321  0  
+ 322  0  if  DRLASTNA="HASSSOUN " DRLASTNA="HASSOUN".
+ 323  0  if  DRLASTNA="HASSON " DRLASTNA="HASSOUN".
+ 324  0  if  DRLASTNA="HASSOM " DRLASTNA="HASSOUN".
+ 325  0  if DRLASTNA="A.HASSOUN" DRLASTNA="HASSOUN".
+ 326  0  execute.
+ 327  0  
+ 328  0  MATCH FILES /FILE=*
+ 329  0    /FILE='\\Dccmaincsfs\Data1\CEH\DAILY\basic_baby_demogs.sav'
+ 330  0    /RENAME (gestfin = d0)
+ 331  0    /BY SID
+ 332  0    /DROP= d0.
+ 333  0  EXECUTE.
+ 334  0  
+ 335  0  * Date and Time Wizard: TannerAgeMos.
+File #1
+     KEY:        3
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+ 336  0  COMPUTE  TannerAgeMos=(tsdate - newDOB) / (30.4375 * time.days(1)).
+ 337  0  VARIABLE LABEL  TannerAgeMos "Age in Months at Tanner Staging".
+ 338  0  VARIABLE LEVEL  TannerAgeMos (SCALE).
+ 339  0  FORMATS  TannerAgeMos (F8.2).
+ 340  0  VARIABLE WIDTH  TannerAgeMos(8).
+ 341  0  EXECUTE.
+ 342  0  
+ 343  0  * Date and Time Wizard: TannerAgeYrs.
+ 344  0  COMPUTE  TannerAgeYrs=DATEDIF(tsdate, newDOB, "years").
+ 345  0  VARIABLE LABEL  TannerAgeYrs "Age in Years at Tanner Staging".
+ 346  0  VARIABLE LEVEL  TannerAgeYrs (SCALE).
+ 347  0  FORMATS  TannerAgeYrs (F5.0).
+ 348  0  VARIABLE WIDTH  TannerAgeYrs(5).
+ 349  0  EXECUTE.
+ 350  0  
+ 351  0  select if tanner=1.
+ 352  0  select if TannerAgeYrs>0.
+ 353  0  execute.
+ 354  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\tanner_age.sav' /drop tanner.
+ 355  0  
+ 356  0  ***CBCL renames.
+ 357  0  GET file='\\Dccmaincsfs\DATA1\CEH\SPSS_1\CBCL1to5.sav'
+ 358  0       /rename=(formver   dataver   formno   formid   type   dfo   age   agemths   educcode    fobcode   fobgend   fparntss  
+             fsubjses   fspouses   agncycde
+ 359  0                  clincode   sc1name   sc1raw   sc1t   sc1clint   sc1pct   sc2name   sc2raw   sc2t   sc2clint   sc2pct   sc3n
+            ame   sc3raw   sc3t   sc3clint
+ 360  0                  sc3pct   sc4name   sc4raw   sc4t   sc4clint   sc4pct   sc5name   sc5raw   sc5t   sc5clint   sc5pct   sc6nam
+            e   sc6raw   sc6t   sc6clint
+ 361  0                  sc6pct   sc7name   sc7raw   sc7t   sc7clint   sc7pct   sc8name   sc8raw   sc8t   sc8clint   sc8pct   sc9nam
+            e   sc9raw   sc9t   sc9clint
+ 362  0                  sc9pct   sc10name    sc10raw   sc10t   sc10clnt   sc10pct   sc11name    sc11raw   sc11t   sc11clnt   sc11pc
+            t   sc12name   sc12raw
+ 363  0                  sc12t   sc12clnt   sc12pct   sc13name   sc13raw   sc13t   sc13clnt   sc13pct   sc14name   sc14raw   sc14t  
+             sc14clnt   sc14pct   sc15name
+ 364  0                  sc15raw   sc15t   sc15clnt   sc15pct   icc1   icc1sig   icc2   icc2sig   icc3   icc3sig   icc4   icc4sig  i
+            cc5   icc5sig   icc6   icc6sig   icc7
+ 365  0                  icc7sig   icc8   icc8sig   comp1nam   comp1raw   comp1t   comp1pct   comp2nam   comp2raw   comp2t   comp2pc
+            t   comp3nam   comp3raw
+ 366  0                  comp3t   comp3pct   comp4nam   comp4raw   comp4t   comp4pct   adap1nam   adap1raw   adap1t   adap1pct   ada
+            p2nam   adap2raw
+ 367  0                  adap2t   adap2pct   adap3nam   adap3raw   adap3t   adap3pct   adap4nam   adap4raw   adap4t   adap4pct   ada
+            p5nam   adap5raw   adap5t
+ 368  0                  adap5pct   adap6nam   adap6raw   adap6t   adap6pct   sub1nam   sbuse1rw   subuse1t   sbus1pct   sub2name   
+            sbuse2rw   subuse2t
+ 369  0                  sbus2pct   sub3name   sbuse3rw   subuse3t   sbus3pct   sub4name   sbuse4rw   subuse4t   sbus4pct   compact1
+               compact2   compact3
+ 370  0                  compact4   compact5   compact6   compsoc1   compsoc2   compsoc3   compsoc4   compsoc5   compsoc6   compsch1
+               compsch2
+ 371  0                  compsch3   compsch4   dsm1name   dsm1raw   dsm1t   dsm1pct   dsm2name   dsm2raw   dsm2t   dsm2pct   dsm3nam
+            e   dsm3raw
+ 372  0                  dsm3t   dsm3pct   dsm4name    dsm4raw    dsm4t   dsm4pct   dsm5name   dsm5raw   dsm5t   dsm5pct   dsm6name 
+              dsm6raw
+ 373  0                  dsm6t   dsm6pct   dsm7name   dsm7raw   dsm7t   dsm7pct   dsm8name   dsm8raw   dsm8t   dsm8pct   ldsal   lds
+            alpct   ldsvc   ldsvcpct
+ 374  0                  origin   fdfcode1   fdfcode2   sdfcode1   intrvwr   rater   early   wksearly   weight   lb_gram   infectin 
+              noenglsh   slowtalk   worried   spontan
+ 375  0                  combines   facltyco   schlcode   ctmcod   ctypcod   fstatus   usertext   sparents   ssubjses id= formver_3 
+              dataver_3    formno_3    formid_3
+ 376  0                  type_3   dfo_3   age_3   agemonths   educcode_3   fobcode_3   fobgender   fparentses_3
+ 377  0                  fsubjses_3   fspouseses_3   agencycode_3   clincode_3   sc1name_3   sc1raw_3   sc1t_3   sc1clint_3   sc1pct
+            _3   sc2name_3   sc2raw_3
+ 378  0                  sc2t_3   sc2clint_3   sc2pct_3   sc3name_3   sc3raw_3   sc3t_3   sc3clint_3   sc3pct_3   sc4name_3   sc4raw
+            _3   sc4t_3   sc4clint_3
+ 379  0                  sc4pct_3   sc5name_3   sc5raw_3   sc5t_3    sc5clint_3    sc5pct_3   sc6name_3   sc6raw_3   sc6t_3   sc6cli
+            nt_3    sc6pct_3   sc7name_3
+ 380  0                  sc7raw_3   sc7t_3   sc7clint_3   sc7pct_3    sc8name_3   sc8raw_3    sc8t_3    sc8clint_3    sc8pct_3    sc
+            9name_3    sc9raw_3   sc9t_3
+ 381  0                  sc9clint_3    sc9pct_3    sc10name_3   sc10raw_3   sc10t_3   sc10clint_3   sc10pct_3   sc11name_3   sc11raw
+            _3   sc11t_3   sc11clint_3
+ 382  0                  sc11pct_3   sc12name_3   sc12raw_3   sc12t_3   sc12clint_3   sc12pct_3   sc13name_3   sc13raw_3   sc13t_3  
+             sc13clint_3   sc13pct_3
+ 383  0                  sc14name_3   sc14raw_3   sc14t_3   sc14clint_3   sc14pct_3   sc15name_3   sc15raw_3   sc15t_3   sc15clint_3
+               sc15pct_3   icc1_3
+ 384  0                  icc1sig_3   icc2_3   icc2sig_3   icc3_3   icc3sig_3   icc4_3   icc4sig_3   icc5_3   icc5sig_3   icc6_3   ic
+            c6sig_3   icc7_3   icc7sig_3
+ 385  0                  icc8_3   icc8sig_3   comp1name_3   comp1raw_3   comp1t_3   comp1pct_3   comp2name_3   comp2raw_3   comp2t_3
+               comp2pct_3
+ 386  0                  comp3name_3   comp3raw_3    comp3t_3    comp3pct_3   comp4name_3   comp4raw_3   comp4t_3   comp4pct_3   ada
+            p1name_3
+ 387  0                  adap1raw_3   adap1t_3   adap1pct_3    adap2name_3    adap2raw_3   adap2t_3   adap2pct_3   adap3name_3   ada
+            p3raw_3   adap3t_3
+ 388  0                  adap3pct_3   adap4name_3   adap4raw_3   adap4t_3   adap4pct_3   adap5name_3    adap5raw_3   adap5t_3   adap
+            5pct_3    adap6name_3
+ 389  0                  adap6raw_3   adap6t_3   adap6pct_3   sub1name_3   subuse1raw_3   subuse1t_3   subuse1pct_3   sub2name_3   s
+            ubuse2raw_3
+ 390  0                  subuse2t_3   subuse2pct_3   sub3name_3   subuse3raw_3   subuse3t_3   subuse3pct_3   sub4name_3   subuse4raw
+            _3   subuse4t_3
+ 391  0                  subuse4pct_3   compact1_3   compact2_3   compact3_3   compact4_3   compact5_3   compact6_3   compsoc1_3   c
+            ompsoc2_3
+ 392  0                  compsoc3_3   compsoc4_3   compsoc5_3   compsoc6_3   compsch1_3   compsch2_3   compsch3_3   compsch4_3   dsm
+            1name_3
+ 393  0                  dsm1raw_3   dsm1t_3   dsm1pct_3   dsm2name_3   dsm2raw_3   dsm2t_3   dsm2pct_3    dsm3name_3   dsm3raw_3   
+             dsm3t_3
+ 394  0                  dsm3pct_3    dsm4name_3    dsm4raw_3   dsm4t_3   dsm4pct_3   dsm5name_3   dsm5raw_3   dsm5t_3   dsm5pct_3  
+             dsm6name_3
+ 395  0                  dsm6raw_3   dsm6t_3   dsm6pct_3   dsm7name_3   dsm7raw_3   dsm7t_3   dsm7pct_3   dsm8name_3   dsm8raw_3   d
+            sm8t_3
+ 396  0                  dsm8pct_3   ldsal_3   ldsalpct_3    ldsvc_3   ldsvcpct_3   origin_3   fudefcode1_3   fudefcode2_3   sudefco
+            de1_3    interviewr_3
+ 397  0                  rater_3   early_3   weeksearly_3    weight_3   lb_gram_3   infections_3   nonenglish_3   slowtalk_3   worri
+            ed_3   spontan_3
+ 398  0                  combines_3   facilityco_3   schoolcode_3   ctimecode_3   ctypecode_3   fstatus_3   usertext_3   sparentses_
+            3   ssubjses_3 id_3).
+ 399  0  SORT cases by SID.
+ 400  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\CBCL1to5_renames.sav'.
+ 401  0  
+ 402  0  ***Plasma Pesticide omit qa/qc problems.
+ 403  0  ***if SIDTYPE indicated, this was a qa/qc data error.
+ 404  0  **reference \\Dccmaincsfs\Data1\ceh\labs\pesticide\CDC_QAQC_FLAG_MAY2010\.
+ 405  0  
+ 406  0  GET file='\\Dccmaincsfs\DATA1\CEH\SPSS_1\plpest_b.sav'.
+ 407  0  MATCH FILES /FILE=*
+ 408  0    /FILE='\\Dccmaincsfs\DATA1\CEH\LABS\Pesticide\CDC_QAQC_FLAG_MAY2010\C_FILE_IDs.sav'
+ 409  0    /BY sid.
+ 410  0  EXECUTE.
+ 411  0  select if sidtype=' '.
+ 412  0  execute.
+ 413  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\plpest_b_qaqc.sav'/drop sidtype.
+ 414  0  
+ 415  0  GET file='\\Dccmaincsfs\DATA1\CEH\SPSS_1\plpest_m.sav'.
+ 416  0  MATCH FILES /FILE=*
+ 417  0    /FILE='\\Dccmaincsfs\DATA1\CEH\LABS\Pesticide\CDC_QAQC_FLAG_MAY2010\M_FILE_IDs.sav'
+ 418  0    /BY sid.
+ 419  0  EXECUTE.
+ 420  0  select if sidtype=' '.
+ 421  0  execute.
+ 422  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\plpest_m_qaqc.sav'/drop sidtype.
+ 423  0  
+ 424  0  GET file='\\Dccmaincsfs\DATA1\CEH\daily\plpest_b_qaqc.sav'.
+ 425  0  MATCH FILES /FILE=*
+ 426  0    /FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\plpest_m_qaqc.sav'
+ 427  0    /BY SID.
+ 428  0  EXECUTE.
+ 429  0  Compute lnmchlop = ln(mr_chlop).
+ 430  0  Compute lncchlop = ln(cr_chlop).
+ 431  0  DO IF (not missing(lncchlop)).
+ 432  1  COMPUTE comchlop=lncchlop.
+ 433  1  ELSE.
+ 434  1  COMPUTE comchlop=(0.034 + (0.76*lnmchlop)).
+ 435  1  END IF.
+ 436  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\plpest_m_b_qaqc_comchlopONLY.sav'/keep sid CR_CHLOP CF_CHLOP C_BATCH
+ 437  0           MR_CHLOP MF_CHLOP M_BATCH lnmchlop lncchlop comchlop.
+ 438  0  
+ 439  0  **************************************************.
+ 440  0  ***FELS recodes.
+ 441  0  
+ 442  0  ***FELS recodes.
+ 443  0  
+ 444  0  **changes in codes based on email communications with AR in March 2012.  Emails are in text doc in FELS folder**
+ 445  0  GET file='\\Dccmaincsfs\Data1\CEH\FELS\FELS.sav'.
+ 446  0  
+ 447  0  ***************************************************************.
+ 448  0  **school sports**.
+ 449  0  ***************************************************************.
+ 450  0  GET file='\\Dccmaincsfs\DATA1\CEH\SPSS\FELS.sav'.
+ 451  0  
+ 452  0  if fels01a1="BASEBALL"     fels01a1="BASEBALL".
+ 453  0  if fels01a1="BASEBALL/SOFTBALL"       fels01a1="BASEBALL".
+ 454  0  if fels01a1="SOFTBALL"        fels01a1="BASEBALL".
+ 455  0  
+ 456  0  if fels01b1="BASEBALL"     fels01b1="BASEBALL".
+ 457  0  if fels01b1="BASEBALL/SOFTBALL"       fels01b1="BASEBALL".
+ 458  0  if fels01b1="SOFTBALL"        fels01b1="BASEBALL".
+ 459  0  
+ 460  0  if fels01c1="BASEBALL"     fels01c1="BASEBALL".
+ 461  0  if fels01c1="BASEBALL/SOFTBALL"       fels01c1="BASEBALL".
+ 462  0  if fels01c1="SOFTBALL"        fels01c1="BASEBALL".
+ 463  0  
+ 464  0  if fels01d1="BASEBALL"     fels01d1="BASEBALL".
+ 465  0  if fels01d1="BASEBALL/SOFTBALL"       fels01d1="BASEBALL".
+ 466  0  if fels01d1="SOFTBALL"        fels01d1="BASEBALL".
+ 467  0  
+ 468  0  if fels01e1="BASEBALL"     fels01e1="BASEBALL".
+ 469  0  if fels01e1="BASEBALL/SOFTBALL"       fels01e1="BASEBALL".
+ 470  0  if fels01e1="SOFTBALL"        fels01e1="BASEBALL".
+ 471  0  execute.
+ 472  0  
+ 473  0  if fels01a1="BAKETBALL"     fels01a1="BASKETBALL".
+ 474  0  if fels01b1="BAKETBALL"     fels01b1="BASKETBALL".
+ 475  0  if fels01c1="BAKETBALL"     fels01c1="BASKETBALL".
+ 476  0  if fels01d1="BAKETBALL"     fels01d1="BASKETBALL".
+ 477  0  if fels01e1="BAKETBALL"     fels01e1="BASKETBALL".
+ 478  0  execute.
+ 479  0  
+ 480  0  if fels01a1="BASEKETBALL"     fels01a1="BASKETBALL".
+ 481  0  if fels01b1="BASEKETBALL"     fels01b1="BASKETBALL".
+ 482  0  if fels01c1="BASEKETBALL"     fels01c1="BASKETBALL".
+ 483  0  if fels01d1="BASEKETBALL"     fels01d1="BASKETBALL".
+ 484  0  if fels01e1="BASEKETBALL"     fels01e1="BASKETBALL".
+ 485  0  execute.
+ 486  0  
+ 487  0  if fels01a1="BASETBALL"     fels01a1="BASKETBALL".
+ 488  0  if fels01b1="BASETBALL"     fels01b1="BASKETBALL".
+ 489  0  if fels01c1="BASETBALL"     fels01c1="BASKETBALL".
+ 490  0  if fels01d1="BASETBALL"     fels01d1="BASKETBALL".
+ 491  0  if fels01e1="BASETBALL"     fels01e1="BASKETBALL".
+ 492  0  execute.
+ 493  0  
+ 494  0  if fels01a1="DANCING"     fels01a1="DANCE".
+ 495  0  if fels01b1="DANCING"     fels01b1="DANCE".
+ 496  0  if fels01c1="DANCING"     fels01c1="DANCE".
+ 497  0  if fels01d1="DANCING"     fels01d1="DANCE".
+ 498  0  if fels01e1="DANCING"     fels01e1="DANCE".
+ 499  0  execute.
+ 500  0  
+ 501  0  if fels01a1="DADGEBALL"     fels01a1="DODGE BALL".
+ 502  0  if fels01b1="DADGEBALL"     fels01b1="DODGE BALL".
+ 503  0  if fels01c1="DADGEBALL"     fels01c1="DODGE BALL".
+ 504  0  if fels01d1="DADGEBALL"     fels01d1="DODGE BALL".
+ 505  0  if fels01e1="DADGEBALL"     fels01e1="DODGE BALL".
+ 506  0  execute.
+ 507  0  
+ 508  0  if fels01a1="DODGEBALL"     fels01a1="DODGE BALL".
+ 509  0  if fels01b1="DODGEBALL"     fels01b1="DODGE BALL".
+ 510  0  if fels01c1="DODGEBALL"     fels01c1="DODGE BALL".
+ 511  0  if fels01d1="DODGEBALL"     fels01d1="DODGE BALL".
+ 512  0  if fels01e1="DODGEBALL"     fels01e1="DODGE BALL".
+ 513  0  execute.
+ 514  0  if fels01a1="DOSDGEBALL"     fels01a1="DODGE BALL".
+ 515  0  if fels01b1="DOSDGEBALL"     fels01b1="DODGE BALL".
+ 516  0  if fels01c1="DOSDGEBALL"     fels01c1="DODGE BALL".
+ 517  0  if fels01d1="DOSDGEBALL"     fels01d1="DODGE BALL".
+ 518  0  if fels01e1="DOSDGEBALL"     fels01e1="DODGE BALL".
+ 519  0  execute.
+ 520  0  
+ 521  0  if fels01a1=" DOUBLE DOUTCH"     fels01a1=" DOUBLE DUTCH".
+ 522  0  if fels01b1=" DOUBLE DOUTCH"     fels01b1=" DOUBLE DUTCH".
+ 523  0  if fels01c1=" DOUBLE DOUTCH"     fels01c1=" DOUBLE DUTCH".
+ 524  0  if fels01d1=" DOUBLE DOUTCH"     fels01d1=" DOUBLE DUTCH".
+ 525  0  if fels01e1=" DOUBLE DOUTCH"     fels01e1=" DOUBLE DUTCH".
+ 526  0  execute.
+ 527  0  
+ 528  0  if fels01a1=" DUCKDUCKGOOSE"     fels01a1=" DUCK DUCK GOOSE".
+ 529  0  if fels01b1=" DUCKDUCKGOOSE"     fels01b1=" DUCK DUCK GOOSE".
+ 530  0  if fels01c1=" DUCKDUCKGOOSE"     fels01c1=" DUCK DUCK GOOSE".
+ 531  0  if fels01d1=" DUCKDUCKGOOSE"     fels01d1=" DUCK DUCK GOOSE".
+ 532  0  if fels01e1=" DUCKDUCKGOOSE"     fels01e1=" DUCK DUCK GOOSE".
+ 533  0  execute.
+ 534  0  
+ 535  0  if  fels01a1="FLAG FOOTBALL"       fels01a1="FOOTBALL".
+ 536  0  if  fels01b1="FLAG FOOTBALL"        fels01b1="FOOTBALL".
+ 537  0  if  fels01c1="FLAG FOOTBALL"        fels01c1="FOOTBALL".
+ 538  0  if  fels01d1="FLAG FOOTBALL"        fels01d1="FOOTBALL".
+ 539  0  if fels01e1="FLAG FOOTBALL"        fels01e1="FOOTBALL".
+ 540  0  EXECUTE .
+ 541  0  
+ 542  0  if  fels01a1="PLAY FOOTBALL"       fels01a1="FOOTBALL".
+ 543  0  if  fels01b1="PLAY FOOTBALL"        fels01b1="FOOTBALL".
+ 544  0  if  fels01c1="PLAY FOOTBALL"        fels01c1="FOOTBALL".
+ 545  0  if  fels01d1="PLAY FOOTBALL"        fels01d1="FOOTBALL".
+ 546  0  if fels01e1="PLAY FOOTBALL"        fels01e1="FOOTBALL".
+ 547  0  EXECUTE .
+ 548  0  
+ 549  0  if  fels01a1="GYMCLASS(SCORE)"       fels01a1="GYM CLASS".
+ 550  0  if  fels01b1="GYMCLASS(SCORE)"        fels01b1="GYM CLASS".
+ 551  0  if  fels01c1="GYMCLASS(SCORE)"        fels01c1="GYM CLASS".
+ 552  0  if  fels01d1="GYMCLASS(SCORE)"        fels01d1="GYM CLASS".
+ 553  0  if fels01e1="GYMCLASS(SCORE)"        fels01e1="GYM CLASS".
+ 554  0  execute.
+ 555  0  
+ 556  0  if  fels01a1="RELAY RACE"       fels01a1="RACING".
+ 557  0  if  fels01b1="RELAY RACE"        fels01b1="RACING".
+ 558  0  if  fels01c1="RELAY RACE"        fels01c1="RACING".
+ 559  0  if  fels01d1="RELAY RACE"        fels01d1="RACING".
+ 560  0  if fels01e1="RELAY RACE"        fels01e1="RACING".
+ 561  0  execute.
+ 562  0  
+ 563  0  Do repeat x=fels01a1 fels01b1 fels01c1 fels01d1 fels01e1/y=schoolmets1 schoolmets2 schoolmets3 schoolmets4 schoolmets5.
+ 564  0  If x='3 WALL BALL'      y=12.
+ 565  0  If x='AIR HOCKEY'       y=4.
+ 566  0  If x='BASEBALL'   y=5.
+ 567  0  If x='BASKETBALL'      y=8.
+ 568  0  If x='BEACH BALL'       y=2.5.
+ 569  0  If x='BOWLING'      y=3.
+ 570  0  If x='CAPTURE FLAG'     y=8.
+ 571  0  If x='CATCH'            y=2.5.
+ 572  0  If x='CHEERLEADING'     y=4.5.
+ 573  0  If x='CLIMBING ROPE'     y=11.
+ 574  0  If x='COPS & ROBBERS'  y=5.
+ 575  0  If x='DANCE'   y=4.5.
+ 576  0  If x='DODGE BALL'    y=5.
+ 577  0  If x='DOUBLE DUTCH'     y=10.
+ 578  0  If x='DRILLS'    y=8.
+ 579  0  If x='DUCK DUCK GOOSE'   y=5.
+ 580  0  If x='EGG RUN'          y=5.
+ 581  0  If x='FOOTBALL'    y=8.
+ 582  0  If x='FREEZE TAG'       y=5.
+ 583  0  If x='GOLF'   y=4.5.
+ 584  0  If x='GYM CLASS'  y=5.
+ 585  0  If x='GYMNASTICS'       y=4.
+ 586  0  If x='HANDBALL'   y=12.
+ 587  0  If x='HIDE AND SEEK'    y=5.
+ 588  0  If x='HOCKEY'    y=8.
+ 589  0  If x='HULA HOOP'        y=5.
+ 590  0  If x='JOGGING'          y=8.
+ 591  0  If x='JUMP'             y=8.
+ 592  0  If x='JUMP ROPE'    y=10.
+ 593  0  If x='KICK BALL'          y=5.
+ 594  0  If x='KICKBALL'    y=5.
+ 595  0  If x='LACROSSE'    y=8.
+ 596  0  If x='LINE SOCCER'      y=7.
+ 597  0  If x='MAD BALL'         y=5.
+ 598  0  If x='MAT BALL'         y=5.
+ 599  0  If x='MISS MARY MACK'  y=5.
+ 600  0  If x='MOUSE TRAP'       y=5.
+ 601  0  If x='PADDLEBALL'       y=6.
+ 602  0  If x='RACES'            y=8.
+ 603  0  If x='RACING'    y=8.
+ 604  0  If x='RAN (TRACK)'    y=8.
+ 605  0  If x='RELAY'            y=8.
+ 606  0  If x='RELY RECESS'      y=8.
+ 607  0  If x='ROLLER COASTER'  y=5.
+ 608  0  If x='RUGBY'            y=10.
+ 609  0  If x='RUNAROUNDTRACK'   y=6.
+ 610  0  If x='RUNNING'     y=6.
+ 611  0  If x='RUNNING RACES'   y=8.
+ 612  0  If x='RUNNING TRACKS'    y=8.
+ 613  0  If x='SAFETY TAG'       y=5.
+ 614  0  If x='SHOOTING HOOPS'   y=4.5.
+ 615  0  If x='SOCCER'    y=8.
+ 616  0  If x='STREET SQUASH'    y=7.
+ 617  0  If x='TAG'              y=5.
+ 618  0  If x='TAP'              y=4.5.
+ 619  0  If x='TENNIS'    y=7.
+ 620  0  If x='TETHERBALL'       y=5.
+ 621  0  If x='TRACK'    y=8.
+ 622  0  If x='TRENCH'           y=5.
+ 623  0  If x='TUG OF WAR'       y=5.
+ 624  0  If x='VOLLEYBALL'    y=3.
+ 625  0  If x='WIFFLE BALL'    y=5.
+ 626  0  If x='ZOMBIES'          y=5.
+ 627  0  End repeat.
+ 628  0  
+ 629  0  ***************************************************************.
+ 630  0  **non school sports**
+ 631  0  ***************************************************************.
+ 632  0  if fels02a1="BASEBALL"     fels02a1="BASEBALL".
+ 633  0  if fels02a1="BASEBALL/SOFTBALL"       fels02a1="BASEBALL".
+ 634  0  if fels02a1="BASERBALL"        fels02a1="BASEBALL".
+ 635  0  if fels02a1="SOFTBALL"        fels02a1="BASEBALL".
+ 636  0  
+ 637  0  if fels02b1="BASEBALL"     fels02b1="BASEBALL".
+ 638  0  if fels02b1="BASEBALL/SOFTBALL"       fels02b1="BASEBALL".
+ 639  0  if fels02b1="BASERBALL"        fels02b1="BASEBALL".
+ 640  0  if fels02b1="SOFTBALL"        fels02b1="BASEBALL".
+ 641  0  
+ 642  0  if fels02c1="BASEBALL"     fels02c1="BASEBALL".
+ 643  0  if fels02c1="BASEBALL/SOFTBALL"       fels02c1="BASEBALL".
+ 644  0  if fels02c1="BASERBALL"        fels02c1="BASEBALL".
+ 645  0  if fels02c1="SOFTBALL"        fels02c1="BASEBALL".
+ 646  0  
+ 647  0  if fels02d1="BASEBALL"     fels02d1="BASEBALL".
+ 648  0  if fels02d1="BASEBALL/SOFTBALL"       fels02d1="BASEBALL".
+ 649  0  if fels02d1="BASERBALL"        fels02d1="BASEBALL".
+ 650  0  if fels02d1="SOFTBALLA"   fels02c1="BASEBALL".
+ 651  0  
+ 652  0  if fels02e1="BASEBALL"     fels02e1="BASEBALL".
+ 653  0  if fels02e1="BASEBALL/SOFTBALL"       fels02e1="BASEBALL".
+ 654  0  if fels02e1="BASERBALL"        fels02e1="BASEBALL".
+ 655  0  if fels02e1="SOFTBALL"        fels02e1="BASEBALL".
+ 656  0  execute.
+ 657  0  
+ 658  0  if fels02a1="BASEKETBALL"     fels02a1="BASKETBALL".
+ 659  0  if fels02a1="BASETBALL"       fels02a1="BASKETBALL".
+ 660  0  
+ 661  0  if fels02b1="BASEKETBALL"     fels02b1="BASKETBALL".
+ 662  0  if fels02b1="BASETBALL"       fels02b1="BASKETBALL".
+ 663  0  
+ 664  0  if fels02c1="BASEKETBALL"     fels02c1="BASKETBALL".
+ 665  0  if fels02c1="BASETBALL"       fels02c1="BASKETBALL".
+ 666  0  
+ 667  0  if fels02d1="BASEKETBALL"     fels02d1="BASKETBALL".
+ 668  0  if fels02d1="BASETBALL"       fels02d1="BASKETBALL".
+ 669  0  
+ 670  0  if fels02e1="BASEKETBALL"     fels02e1="BASKETBALL".
+ 671  0  if fels02e1="BASETBALL"       fels02e1="BASKETBALL".
+ 672  0  execute.
+ 673  0  
+ 674  0  if fels02a1="BICYCLE"     fels02a1=" BIKE RIDING".
+ 675  0  if fels02a1="BIKE"       fels02a1=" BIKE RIDING".
+ 676  0  if fels02a1="BIKE RIDE"        fels02b1=" BIKE RIDING".
+ 677  0  if fels02a1="BIKING"        fels02a1=" BIKE RIDING".
+ 678  0  if fels02a1="RIDING BIKE"        fels02a1=" BIKE RIDING".
+ 679  0  
+ 680  0  if fels02b1="BICYCLE"     fels02b1=" BIKE RIDING".
+ 681  0  if fels02b1="BIKE"       fels02b1=" BIKE RIDING".
+ 682  0  if fels02b1="BIKE RIDE"        fels02b1=" BIKE RIDING".
+ 683  0  if fels02b1="BIKING"        fels02b1=" BIKE RIDING".
+ 684  0  if fels02b1="RIDING BIKE"        fels02b1=" BIKE RIDING".
+ 685  0  
+ 686  0  if fels02c1="BICYCLE"     fels02c1=" BIKE RIDING".
+ 687  0  if fels02c1="BIKE"       fels02c1=" BIKE RIDING".
+ 688  0  if fels02c1="BIKE RIDE"        fels02c1=" BIKE RIDING".
+ 689  0  if fels02c1="BIKING"        fels02c1=" BIKE RIDING".
+ 690  0  if fels02c1="RIDING BIKE"        fels02c1=" BIKE RIDING".
+ 691  0  
+ 692  0  if fels02d1="BICYCLE"     fels02d1=" BIKE RIDING".
+ 693  0  if fels02d1="BIKE"       fels02d1=" BIKE RIDING".
+ 694  0  if fels02d1="BIKE RIDE"        fels02d1=" BIKE RIDING".
+ 695  0  if fels02d1="BIKING"        fels02d1=" BIKE RIDING".
+ 696  0  if fels02d1="RIDING BIKE"        fels02d1=" BIKE RIDING".
+ 697  0  
+ 698  0  if fels02e1="BICYCLE"     fels02e1=" BIKE RIDING".
+ 699  0  if fels02e1="BIKE"       fels02e1=" BIKE RIDING".
+ 700  0  if fels02e1="BIKE RIDE"        fels02e1=" BIKE RIDING".
+ 701  0  if fels02e1="BIKING"        fels02e1=" BIKE RIDING".
+ 702  0  if fels02e1="RIDING BIKE"        fels02e1=" BIKE RIDING".
+ 703  0  execute.
+ 704  0  
+ 705  0  if  fels02a1="CHEERLEADING"       fels02a1="CHEERLEADER".
+ 706  0  if  fels02b1="CHEERLEADING"        fels02b1="CHEERLEADER".
+ 707  0  if  fels02c1="CHEERLEADING"        fels02c1="CHEERLEADER".
+ 708  0  if  fels02d1="CHEERLEADING"        fels02d1="CHEERLEADER".
+ 709  0  if fels02e1="CHEERLEADING"        fels02e1="CHEERLEADER".
+ 710  0  execute.
+ 711  0  
+ 712  0  if  fels02a1="COPSANDROBBERS"       fels02a1="COPS & ROBBERS".
+ 713  0  if  fels02b1="COPSANDROBBERS"        fels02b1="COPS & ROBBERS".
+ 714  0  if  fels02c1="COPSANDROBBERS"        fels02c1="COPS & ROBBERS".
+ 715  0  if  fels02d1="COPSANDROBBERS"        fels02d1="COPS & ROBBERS".
+ 716  0  if fels02e1="COPSANDROBBERS"        fels02e1="COPS & ROBBERS".
+ 717  0  execute.
+ 718  0  
+ 719  0  if  fels02a1="DANCE AND SING"       fels02a1="DANCE".
+ 720  0  if  fels02b1="DANCE AND SING"        fels02b1="DANCE".
+ 721  0  if  fels02c1="DANCE AND SING"        fels02c1="DANCE".
+ 722  0  if  fels02d1="DANCE AND SING"        fels02d1="DANCE".
+ 723  0  if fels02e1="DANCE AND SING"        fels02e1="DANCE".
+ 724  0  execute.
+ 725  0  
+ 726  0  if fels02a1="DODGEBALL"     fels02a1="DODGE BALL".
+ 727  0  if fels02b1="DODGEBALL"     fels02b1="DODGE BALL".
+ 728  0  if fels02c1="DODGEBALL"     fels02c1="DODGE BALL".
+ 729  0  if fels02d1="DODGEBALL"     fels02d1="DODGE BALL".
+ 730  0  if fels02e1="DODGEBALL"     fels02e1="DODGE BALL".
+ 731  0  execute.
+ 732  0  
+ 733  0  if fels02a1="EXCERCISE "     fels02a1="EXERCISE ".
+ 734  0  if fels02b1="EXCERCISE "     fels02b1="EXERCISE ".
+ 735  0  if fels02c1="EXCERCISE "     fels02c1="EXERCISE ".
+ 736  0  if fels02d1="EXCERCISE "     fels02d1="EXERCISE ".
+ 737  0  if fels02e1="EXCERCISE "     fels02e1="EXERCISE ".
+ 738  0  execute.
+ 739  0  
+ 740  0  if fels02a1="FRISEBEE "     fels02a1="FRISBEE ".
+ 741  0  if fels02b1="FRISEBEE "     fels02b1="FRISBEE ".
+ 742  0  if fels02c1="FRISEBEE "     fels02c1="FRISBEE ".
+ 743  0  if fels02d1="FRISEBEE "     fels02d1="FRISBEE ".
+ 744  0  if fels02e1="FRISEBEE "     fels02e1="FRISBEE ".
+ 745  0  execute.
+ 746  0  
+ 747  0  if  fels02a1="FOOTBALLPRACTIC"     fels02a1="FOOTBALL".
+ 748  0  if  fels02b1="FOOTBALLPRACTIC"     fels02b1="FOOTBALL".
+ 749  0  if  fels02c1="FOOTBALLPRACTIC"     fels02c1="FOOTBALL".
+ 750  0  if  fels02d1="FOOTBALLPRACTIC"     fels02d1="FOOTBALL".
+ 751  0  if fels02e1="FOOTBALLPRACTIC"        fels02e1="FOOTBALL".
+ 752  0  execute.
+ 753  0  
+ 754  0  if fels02a1="HAND BALL "     fels02a1="HANDBALL ".
+ 755  0  if fels02b1="HAND BALL "     fels02b1="HANDBALL ".
+ 756  0  if fels02c1="HAND BALL "     fels02c1="HANDBALL ".
+ 757  0  if fels02d1="HAND BALL "     fels02d1="HANDBALL ".
+ 758  0  if fels02e1="HAND BALL "     fels02e1="HANDBALL ".
+ 759  0  execute.
+ 760  0  
+ 761  0  if fels02a1="HIDE N GO SEEK"     fels02a1=" HIDE AND SEEK".
+ 762  0  if fels02a1="HIDE SEEK"       fels02a1=" HIDE AND SEEK".
+ 763  0  if fels02a1="HIDEANDGOSEEK"        fels02a1=" HIDE AND SEEK".
+ 764  0  if fels02a1="HIDE + TO SEEK"        fels02a1=" HIDE AND SEEK".
+ 765  0  if fels02a1="HIDE & GO SEEK"        fels02a1=" HIDE AND SEEK".
+ 766  0  if fels02a1="HIDE & SEEK"        fels02a1=" HIDE AND SEEK".
+ 767  0  if fels02a1="HIDE + SEEK"        fels02a1=" HIDE AND SEEK".
+ 768  0  if fels02a1="HIDE/SEEK"        fels02a1=" HIDE AND SEEK".
+ 769  0  if fels02a1="HIDE+GO SEEK"        fels02a1=" HIDE AND SEEK".
+ 770  0  
+ 771  0  if fels02b1="HIDE N GO SEEK"     fels02b1=" HIDE AND SEEK".
+ 772  0  if fels02b1="HIDE SEEK"       fels02b1=" HIDE AND SEEK".
+ 773  0  if fels02b1="HIDEANDGOSEEK"        fels02b1=" HIDE AND SEEK".
+ 774  0  if fels02b1="HIDE + TO SEEK"        fels02b1=" HIDE AND SEEK".
+ 775  0  if fels02b1="HIDE & GO SEEK"        fels02b1=" HIDE AND SEEK".
+ 776  0  if fels02b1="HIDE & SEEK"        fels02b1=" HIDE AND SEEK".
+ 777  0  if fels02b1="HIDE + SEEK"        fels02b1=" HIDE AND SEEK".
+ 778  0  if fels02b1="HIDE/SEEK"        fels02b1=" HIDE AND SEEK".
+ 779  0  if fels02b1="HIDE+GO SEEK"        fels02b1=" HIDE AND SEEK".
+ 780  0  
+ 781  0  if fels02c1="HIDE N GO SEEK"     fels02c1=" HIDE AND SEEK".
+ 782  0  if fels02c1="HIDE SEEK"       fels02c1=" HIDE AND SEEK".
+ 783  0  if fels02c1="HIDEANDGOSEEK"        fels02c1=" HIDE AND SEEK".
+ 784  0  if fels02c1="HIDE + TO SEEK"        fels02c1=" HIDE AND SEEK".
+ 785  0  if fels02c1="HIDE & GO SEEK "        fels02c1=" HIDE AND SEEK".
+ 786  0  if fels02c1="HIDE & SEEK"        fels02c1=" HIDE AND SEEK".
+ 787  0  if fels02c1="HIDE + SEEK"        fels02c1=" HIDE AND SEEK".
+ 788  0  if fels02c1="HIDE/SEEK"        fels02c1=" HIDE AND SEEK".
+ 789  0  if fels02c1="HIDE+GO SEEK"        fels02c1=" HIDE AND SEEK".
+ 790  0  
+ 791  0  if fels02d1="HIDE N GO SEEK"     fels02d1=" HIDE AND SEEK".
+ 792  0  if fels02d1="HIDE SEEK"       fels02d1=" HIDE AND SEEK".
+ 793  0  if fels02d1="HIDEANDGOSEEK"        fels02d1=" HIDE AND SEEK".
+ 794  0  if fels02d1="HIDE + TO SEEK"        fels02d1=" HIDE AND SEEK".
+ 795  0  if fels02d1="HIDE & GO SEEK"        fels02d1=" HIDE AND SEEK".
+ 796  0  if fels02d1="HIDE & SEEK"        fels02d1=" HIDE AND SEEK".
+ 797  0  if fels02d1="HIDE + SEEK"        fels02d1=" HIDE AND SEEK".
+ 798  0  if fels02d1="HIDE/SEEK"        fels02d1=" HIDE AND SEEK".
+ 799  0  if fels02d1="HIDE+GO SEEK"        fels02d1=" HIDE AND SEEK".
+ 800  0  
+ 801  0  if fels02e1="HIDE N GO SEEK"     fels02e1=" HIDE AND SEEK".
+ 802  0  if fels02e1="HIDE SEEK"       fels02e1=" HIDE AND SEEK".
+ 803  0  if fels02e1="HIDEANDGOSEEK"        fels02e1=" HIDE AND SEEK".
+ 804  0  if fels02e1="HIDE + TO SEEK"        fels02e1=" HIDE AND SEEK".
+ 805  0  if fels02e1="HIDE & GO SEEK"        fels02e1=" HIDE AND SEEK".
+ 806  0  if fels02e1="HIDE & SEEK"        fels02e1=" HIDE AND SEEK".
+ 807  0  if fels02e1="HIDE + SEEK"        fels02e1=" HIDE AND SEEK".
+ 808  0  if fels02e1="HIDE/SEEK"        fels02e1=" HIDE AND SEEK".
+ 809  0  if fels02e1="HIDE+GO SEEK"        fels02e1=" HIDE AND SEEK".
+ 810  0  execute.
+ 811  0  
+ 812  0  if fels02a1="HULA HOOPS"    fels02a1="HULA HOOP".
+ 813  0  if fels02b1="HULA HOOPS"    fels02b1="HULA HOOP".
+ 814  0  if fels02c1="HULA HOOPS"    fels02c1="HULA HOOP".
+ 815  0  if fels02d1="HULA HOOPS"    fels02d1="HULA HOOP".
+ 816  0  if fels02e1="HULA HOOPS"    fels02e1="HULA HOOP".
+ 817  0  execute.
+ 818  0  
+ 819  0  if fels02a1="JUMPING ROPE"    fels02a1="JUMP ROPE".
+ 820  0  if fels02b1="JUMPING ROPE"    fels02b1="JUMP ROPE".
+ 821  0  if fels02c1="JUMPING ROPE"    fels02c1="JUMP ROPE".
+ 822  0  if fels02d1="JUMPING ROPE"    fels02d1="JUMP ROPE".
+ 823  0  if fels02e1="JUMPING ROPE"    fels02e1="JUMP ROPE".
+ 824  0  execute.
+ 825  0  
+ 826  0  if fels02a1="MANHUNTHIDESEEK"    fels02a1="MANHUNT".
+ 827  0  if fels02b1="MANHUNTHIDESEEK"    fels02b1="MANHUNT".
+ 828  0  if fels02c1="MANHUNTHIDESEEK"    fels02c1="MANHUNT".
+ 829  0  if fels02d1="MANHUNTHIDESEEK"    fels02d1="MANHUNT".
+ 830  0  if fels02e1="MANHUNTHIDESEEK"    fels02e1="MANHUNT".
+ 831  0  execute.
+ 832  0  
+ 833  0  if fels02a1="MONKEY BAR"    fels02a1="MONKEY BARS".
+ 834  0  if fels02b1="MONKEY BAR"    fels02b1="MONKEY BARS".
+ 835  0  if fels02c1="MONKEY BAR"    fels02c1="MONKEY BARS".
+ 836  0  if fels02d1="MONKEY BAR"    fels02d1="MONKEY BARS".
+ 837  0  if fels02e1="MONKEY BAR"    fels02e1="MONKEY BARS".
+ 838  0  execute.
+ 839  0  
+ 840  0  if fels02a1="RACES"     fels02a1="RACE".
+ 841  0  if fels02a1="RACING"       fels02a1="RACE".
+ 842  0  if fels02a1="RELAY"       fels02a1="RACE".
+ 843  0  if fels02a1="RELAY RACE"       fels02a1="RACE".
+ 844  0  if fels02a1="RELAY RACES"       fels02a1="RACE".
+ 845  0  if fels02a1="RELLA RACE"       fels02a1="RACE".
+ 846  0  
+ 847  0  if fels02b1="RACES"     fels02b1="RACE".
+ 848  0  if fels02b1="RACING"       fels02b1="RACE".
+ 849  0  if fels02b1="RELAY"       fels02b1="RACE".
+ 850  0  if fels02b1="RELAY RACE"       fels02b1="RACE".
+ 851  0  if fels02b1="RELAY RACES"       fels02b1="RACE".
+ 852  0  if fels02b1="RELLA RACE"       fels02b1="RACE".
+ 853  0  
+ 854  0  if fels02c1="RACES"     fels02c1="RACE".
+ 855  0  if fels02c1="RACING"       fels02c1="RACE".
+ 856  0  if fels02c1="RELAY"       fels02c1="RACE".
+ 857  0  if fels02c1="RELAY RACE"       fels02c1="RACE".
+ 858  0  if fels02c1="RELAY RACES"       fels02c1="RACE".
+ 859  0  if fels02c1="RELLA RACE"       fels02c1="RACE".
+ 860  0  
+ 861  0  if fels02d1="RACES"     fels02d1="RACE".
+ 862  0  if fels02d1="RACING"       fels02d1="RACE".
+ 863  0  if fels02d1="RELAY"       fels02d1="RACE".
+ 864  0  if fels02d1="RELAY RACE"       fels02d1="RACE".
+ 865  0  if fels02d1="RELAY RACES"       fels02d1="RACE".
+ 866  0  if fels02d1="RELLA RACE"       fels02d1="RACE".
+ 867  0  
+ 868  0  if fels02e1="RACES"     fels02e1="RACE".
+ 869  0  if fels02e1="RACING"       fels02e1="RACE".
+ 870  0  if fels02e1="RELAY"       fels02e1="RACE".
+ 871  0  if fels02e1="RELAY RACE"       fels02e1="RACE".
+ 872  0  if fels02e1="RELAY RACES"       fels02e1="RACE".
+ 873  0  if fels02e1="RELLA RACE"       fels02e1="RACE".
+ 874  0  execute.
+ 875  0  
+ 876  0  if fels02a1="RIDE MY SCOOTER"     fels02a1="RIDE SCOOTER".
+ 877  0  if fels02a1="RODE SCOOTER"       fels02a1="RIDE SCOOTER".
+ 878  0  
+ 879  0  if fels02b1="RIDE MY SCOOTER"     fels02b1="RIDE SCOOTER".
+ 880  0  if fels02b1="RODE SCOOTER"       fels02b1="RIDE SCOOTER".
+ 881  0  
+ 882  0  if fels02c1="RIDE MY SCOOTER"     fels02c1="RIDE SCOOTER".
+ 883  0  if fels02c1="RODE SCOOTER"       fels02c1="RIDE SCOOTER".
+ 884  0  
+ 885  0  if fels02d1="RIDE MY SCOOTER"     fels02d1="RIDE SCOOTER".
+ 886  0  if fels02d1="RODE SCOOTER"       fels02d1="RIDE SCOOTER".
+ 887  0  
+ 888  0  if fels02e1="RIDE MY SCOOTER"     fels02e1="RIDE SCOOTER".
+ 889  0  if fels02e1="RODE SCOOTER"       fels02e1="RIDE SCOOTER".
+ 890  0  execute.
+ 891  0  
+ 892  0  if fels02a1="ROLLER SKATE"     fels02a1="ROLLER SKATING".
+ 893  0  if fels02a1="ROLLERSKATING"       fels02a1="ROLLER SKATING".
+ 894  0  
+ 895  0  if fels02b1="ROLLER SKATE"     fels02b1="ROLLER SKATING".
+ 896  0  if fels02b1="ROLLERSKATING"       fels02b1="ROLLER SKATING".
+ 897  0  
+ 898  0  if fels02c1="ROLLER SKATE"     fels02c1="ROLLER SKATING".
+ 899  0  if fels02c1="ROLLERSKATING"       fels02c1="ROLLER SKATING".
+ 900  0  
+ 901  0  if fels02d1="ROLLER SKATE"     fels02d1="ROLLER SKATING".
+ 902  0  if fels02d1="ROLLERSKATING"       fels02d1="ROLLER SKATING".
+ 903  0  
+ 904  0  if fels02e1="ROLLER SKATE"     fels02e1="ROLLER SKATING".
+ 905  0  if fels02e1="ROLLERSKATING"       fels02e1="ROLLER SKATING".
+ 906  0  execute.
+ 907  0  
+ 908  0  if fels02a1="RUN AROUND"     fels02a1="RUN".
+ 909  0  if fels02a1="RUNNING AROUND"       fels02a1="RUN".
+ 910  0  
+ 911  0  if fels02b1="RUN AROUND"     fels02b1="RUN".
+ 912  0  if fels02b1="RUNNING AROUND"       fels02b1="RUN".
+ 913  0  
+ 914  0  if fels02c1="RUN AROUND"     fels02c1="RUN".
+ 915  0  if fels02c1="RUNNING AROUND"       fels02c1="RUN".
+ 916  0  
+ 917  0  if fels02d1="RUN AROUND"     fels02d1="RUN".
+ 918  0  if fels02d1="RUNNING AROUND"       fels02d1="RUN".
+ 919  0  
+ 920  0  if fels02e1="RUN AROUND"     fels02e1="RUN".
+ 921  0  if fels02e1="RUNNING AROUND"       fels02e1="RUN".
+ 922  0  execute.
+ 923  0  
+ 924  0  if  fels02a1="RIDE SCOOTER"       fels02a1="SCOOTER".
+ 925  0  if fels02a1="RIDE MY SCOOTER"     fels02a1="SCOOTER".
+ 926  0  if fels02a1="RODE SCOOTER"       fels02a1="SCOOTER".
+ 927  0  
+ 928  0  if  fels02b1="RIDE SCOOTER"        fels02b1="SCOOTER".
+ 929  0  if fels02b1="RIDE MY SCOOTER"     fels02b1="SCOOTER".
+ 930  0  if fels02b1="RODE SCOOTER"       fels02b1="SCOOTER".
+ 931  0  
+ 932  0  if  fels02c1="RIDE SCOOTER"        fels02c1="SCOOTER".
+ 933  0  if fels02c1="RIDE MY SCOOTER"     fels02c1="SCOOTER".
+ 934  0  if fels02c1="RODE SCOOTER"       fels02c1="SCOOTER".
+ 935  0  
+ 936  0  if  fels02d1="RIDE SCOOTER"        fels02d1="SCOOTER".
+ 937  0  if fels02d1="RIDE MY SCOOTER"     fels02d1="SCOOTER".
+ 938  0  if fels02d1="RODE SCOOTER"       fels02d1="SCOOTER".
+ 939  0  
+ 940  0  if fels02e1="RIDE SCOOTER"        fels02e1="SCOOTER".
+ 941  0  if fels02e1="RIDE MY SCOOTER"     fels02e1="SCOOTER".
+ 942  0  if fels02e1="RODE SCOOTER"       fels02e1="SCOOTER".
+ 943  0  execute.
+ 944  0  
+ 945  0  if  fels02a1="SKATE BOARD"       fels02a1="SKATE BOARDING".
+ 946  0  if  fels02b1="SKATE BOARD"        fels02b1="SKATE BOARDING".
+ 947  0  if  fels02c1="SKATE BOARD"        fels02c1="SKATE BOARDING".
+ 948  0  if  fels02d1="SKATE BOARD"        fels02d1="SKATE BOARDING".
+ 949  0  if fels02e1="SKATE BOARD"        fels02e1="SKATE BOARDING".
+ 950  0  execute.
+ 951  0  
+ 952  0  if fels02a1="SWIM"    fels02a1="SWIMMING".
+ 953  0  if fels02b1="SWIM"    fels02b1="SWIMMING".
+ 954  0  if fels02c1="SWIM"    fels02c1="SWIMMING".
+ 955  0  if fels02d1="SWIM"    fels02d1="SWIMMING".
+ 956  0  if fels02e1="SWIM"    fels02e1="SWIMMING".
+ 957  0  execute.
+ 958  0  
+ 959  0  if fels02a1="FREDKRUGERTAG"     fels02a1="TAG".
+ 960  0  if fels02a1="FREEZE TAG"       fels02a1="TAG".
+ 961  0  if fels02a1="KNEE TAG"        fels02a1="TAG".
+ 962  0  if fels02a1="FREEZING"       fels02a1="TAG".
+ 963  0  if fels02a1="TAG/FREEZING"       fels02a1="TAG".
+ 964  0  if fels02a1="MAN HUNT (TAG)"   fels02a1="TAG".
+ 965  0  
+ 966  0  if fels02b1="FREDKRUGERTAG"     fels02b1="TAG".
+ 967  0  if fels02b1="FREEZE TAG"       fels02b1="TAG".
+ 968  0  if fels02b1="KNEE TAG"        fels02b1="TAG".
+ 969  0  if fels02b1="FREEZING"       fels02b1="TAG".
+ 970  0  if fels02b1="TAG/FREEZING"       fels02b1="TAG".
+ 971  0  if fels02b1="MAN HUNT (TAG)"   fels02b1="TAG".
+ 972  0  
+ 973  0  if fels02c1="FREDKRUGERTAG"     fels02c1="TAG".
+ 974  0  if fels02c1="FREEZE TAG"       fels02c1="TAG".
+ 975  0  if fels02c1="KNEE TAG"        fels02c1="TAG".
+ 976  0  if fels02c1="FREEZING"       fels02c1="TAG".
+ 977  0  if fels02c1="TAG/FREEZING"       fels02c1="TAG".
+ 978  0  if fels02c1="MAN HUNT (TAG)"   fels02c1="TAG".
+ 979  0  
+ 980  0  if fels02d1="FREDKRUGERTAG"     fels02d1="TAG".
+ 981  0  if fels02d1="FREEZE TAG"       fels02d1="TAG".
+ 982  0  if fels02d1="KNEE TAG"        fels02d1="TAG".
+ 983  0  if fels02d1="FREEZING"       fels02d1="TAG".
+ 984  0  if fels02d1="TAG/FREEZING"       fels02d1="TAG".
+ 985  0  if fels02d1="MAN HUNT (TAG)"   fels02d1="TAG".
+ 986  0  
+ 987  0  if fels02e1="FREDKRUGERTAG"     fels02e1="TAG".
+ 988  0  if fels02e1="FREEZE TAG"       fels02e1="TAG".
+ 989  0  if fels02e1="KNEE TAG"        fels02e1="TAG".
+ 990  0  if fels02e1="FREEZING"       fels02e1="TAG".
+ 991  0  if fels02e1="TAG/FREEZING"       fels02e1="TAG".
+ 992  0  if fels02e1="MAN HUNT (TAG)"   fels02e1="TAG".
+ 993  0  execute.
+ 994  0  
+ 995  0  if fels02a1="TAS"    fels02a1="TAP".
+ 996  0  if fels02b1="TAS"    fels02b1="TAP".
+ 997  0  if fels02c1="TAS"    fels02c1="TAP".
+ 998  0  if fels02d1="TAS"    fels02d1="TAP".
+ 999  0  if fels02e1="TAS"    fels02e1="TAP".
+1000  0  execute.
+1001  0  
+1002  0  DO REPEAT x=fels02a1 fels02b1  fels02c1   fels02d1   fels02e1 /y=nonschoolmets1  nonschoolmets2 nonschoolmets3 nonschoolmet
+            s4  nonschoolmets5.
+1003  0  If x='ACTIVE'          y=5.
+1004  0  If x='AEROBICEXERCISE' y=6.5.
+1005  0  If x='BALLET'          y=4.8.
+1006  0  If x='BASEBALL'         y=5.
+1007  0  If x='BASKETBALL'     y=8.
+1008  0  If x='BICYCLE'         y=8.
+1009  0  If x='BIG FOOT'     y=5.
+1010  0  If x='BIKE RIDING'     y=8.
+1011  0  If x='BOOGIE MAN'      y=5.
+1012  0  If x='BOWLING'     y=3.
+1013  0  If x='CANOEING'        y=3.5.
+1014  0  If x='CAPTURETHEFLAG'  y=6.
+1015  0  If x='CARD'            y=5.
+1016  0  If x='CARDIO'          y=9.
+1017  0  If x='CATCH'     y=2.5.
+1018  0  If x='CATCHING BALL'   y=2.5.
+1019  0  If x='CATEN'           y=5.
+1020  0  If x='CHEERLEADER'     y=4.5.
+1021  0  If x='COPS & ROBBERS'  y=5.
+1022  0  If x='DANCE'  y=4.5.
+1023  0  If x='DANCE CLASS'     y=4.5.
+1024  0  If x='DANCING'         y=4.5.
+1025  0  If x='DOCTOR GERM' y=5.
+1026  0  If x='DODGE BALL' y=5.
+1027  0  If x='DODGEBALL'       y=5.
+1028  0  If x='DOG CATCHER' y=5.
+1029  0  If x='DOMINOES'        y=1.5.
+1030  0  If x='DOUBLE DUTCH' y=10.
+1031  0  If x='DUCK DUCK GOOSE' y=5.
+1032  0  If x='EXERCISE'        y=5.5.
+1033  0  If x='EXTREME SOCCER'  y=7.
+1034  0  If x='FOOTBALL' y=8.
+1035  0  If x='FRISBEE'   y=3.
+1036  0  If x='GARDENING'       y=4.
+1037  0  If x='GOLF'            y=4.5.
+1038  0  If x='GYMNASTICS'      y=4.
+1039  0  If x='HAG FOOTBALL'    y=8.
+1040  0  If x='HANDBALL' y=12.
+1041  0  If x='HELP TAG'        y=5.
+1042  0  If x='HIDE AND SEEK' y=5.
+1043  0  If x='HOCKEY' y=8.
+1044  0  If x='HULA HOOP' y=5.
+1045  0  If x='HUNTER' y=5.
+1046  0  If x='ICE HOCKEY'      y=8.
+1047  0  If x='ICE SKATING' y=7.
+1048  0  If x='JOG'             y=7.
+1049  0  If x='JOGGING'         y=7.
+1050  0  If x='JUMP ROPE' y=10.
+1051  0  If x='JUMPING'         y=8.
+1052  0  If x='JUMPING JACKS' y=8.
+1053  0  If x='KARATE' y=10.
+1054  0  If x='KICKBALL' y=5.
+1055  0  If x='LACROSSE' y=8.
+1056  0  If x='MANHUNT'         y=5.
+1057  0  If x='MEMORY' y=5.
+1058  0  If x='MONKEY BARS'    y=5.
+1059  0  If x='MONSTER'         y=5.
+1060  0  If x='MOTHER MAY I'     y=5.
+1061  0  If x='NUMBER'          y=5.
+1062  0  If x='PULL UP'         y=8.
+1063  0  If x='PUSH UP'         y=8.
+1064  0  If x='RACE'  y=8.
+1065  0  If x='RACE/TRACK'      y=8.
+1066  0  If x='RACES (RUNNING)'  y=8.
+1067  0  If x='RACING(RUNNING)' y=8.
+1068  0  If x='RACING/RUNNING'   y=8.
+1069  0  If x='RAN (TRACK)'   y=8.
+1070  0  If x='RAQUETBALL'      y=7.
+1071  0  If x='RED/GREEN LIGHT' y=5.
+1072  0  If x='RIDE BIKE'   y=8.
+1073  0  If x='ROCK CLIMBING'   y=8.
+1074  0  If x='ROLLER BLADE'    y=7.
+1075  0  If x='ROLLER COASTER'  y=5.
+1076  0  If x='ROLLER SKATING'  y=7.
+1077  0  If x='RUN'  y=6.
+1078  0  If x='RUNAROUNDTRACK'  y=6.
+1079  0  If x='RUNNING'    y=6.
+1080  0  If x='RUNNING TRACKS' y=8.
+1081  0  If x='RUNNING/RACING'  y=8.
+1082  0  If x='SCOOTER'     y=5.
+1083  0  If x='SKATE BOARDING' y=5.
+1084  0  If x='SKATEBALL'       y=5.
+1085  0  If x='SKATEBOARDING'   y=5.
+1086  0  If x='SLEDDING'   y=7.
+1087  0  If x='SOCCER'   y=7.
+1088  0  If x='SPARK'   y=5.
+1089  0  If x='SQUASH'          y=12.
+1090  0  If x='STREET SQUASH' y=7.
+1091  0  If x='SWIMMING'   y=10.
+1092  0  If x='SWINGING'        y=5.
+1093  0  If x='TAE KUAN DO'     y=10.
+1094  0  If x='TAG'    y=5.
+1095  0  If x='TAKEDOWN'        y=5.
+1096  0  If x='TALENT SHOW'     y=3.
+1097  0  If x='TAP'  y=4.5.
+1098  0  If x='TAP DANCE'       y=4.5.
+1099  0  If x='TENNIS' y=7.
+1100  0  If x='THROWNING BALL'  y=2.5.
+1101  0  If x='TOSSING BALL'     y=2.5.
+1102  0  If x='TRACK' y=8.
+1103  0  If x='TRAPEZE'         y=4.
+1104  0  If x='TUG-A-WAR'       y=5.
+1105  0  If x='VIDEO GAMES'     y=2.
+1106  0  If x='VOLLEYBALL' y=3.
+1107  0  If x='WALKING'         y=4.
+1108  0  If x='WALKONTREADMILL' y=3.3.
+1109  0  If x='WATER TAG'       y=5.
+1110  0  If x='WII BASEBALL' y=4.
+1111  0  If x='WII BOWLING' y=2.
+1112  0  If x='WII BOXING' y=8.
+1113  0  If x='WII FIT' y=3.5.
+1114  0  If x='WII GOLF' y=3.5.
+1115  0  If x='WII JUST DANCE'  y=5.
+1116  0  If x='WII SPORTS'      y=5.
+1117  0  If x='WRESTLING'       y=6.
+1118  0  If x='X-BOX'           y=1.5.
+1119  0  If x='ZOMBI TAG'       y=5.
+1120  0  End repeat.
+1121  0  
+1122  0  ***************************************************************.
+1123  0  **chores**.
+1124  0  ***************************************************************.
+1125  0  if fels07a1="CLEAN BATHROOM"     fels07a1="BATHROOM".
+1126  0  if fels07a1="CLEANTHEBATHRM"       fels07a1="BATHROOM".
+1127  0  if fels07a1="CLEANUPBATH&RM"        fels07a1="BATHROOM".
+1128  0  if fels07a1="SCRUB BATHROOM"       fels07a1="BATHROOM".
+1129  0  if fels07a1="CLEAN BATH TUB"     fels07a1="BATHROOM".
+1130  0  if fels07a1="CLEAN BATHTUB"     fels07a1="BATHROOM".
+1131  0  if fels07a1="BATHROOM CLEAN "     fels07a1="BATHROOM".
+1132  0  if fels07a1="WASHINGBATHROOM"   fels07a1="BATHROOM".
+1133  0  
+1134  0  if fels07b1="CLEAN BATHROOM"     fels07b1="BATHROOM".
+1135  0  if fels07b1="CLEANTHEBATHRM"       fels07b1="BATHROOM".
+1136  0  if fels07b1="CLEANUPBATH&RM"        fels07b1="BATHROOM".
+1137  0  if fels07b1="SCRUB BATHROOM"       fels07b1="BATHROOM".
+1138  0  if fels07b1="CLEAN BATH TUB"     fels07b1="BATHROOM".
+1139  0  if fels07b1="CLEAN BATHTUB"     fels07b1="BATHROOM".
+1140  0  if fels07b1="BATHROOM CLEAN"     fels07b1="BATHROOM".
+1141  0  if fels07b1="WASHINGBATHROOM"   fels07b1="BATHROOM".
+1142  0  
+1143  0  if fels07c1="CLEAN BATHROOM"     fels07c1="BATHROOM".
+1144  0  if fels07c1="CLEANTHEBATHRM"       fels07c1="BATHROOM".
+1145  0  if fels07c1="CLEANUPBATH&RM"        fels07c1="BATHROOM".
+1146  0  if fels07c1="SCRUB BATHROOM"       fels07c1="BATHROOM".
+1147  0  if fels07c1="CLEAN BATH TUB"     fels07c1="BATHROOM".
+1148  0  if fels07c1="CLEAN BATHTUB"     fels07c1="BATHROOM".
+1149  0  if fels07c1="BATHROOM CLEAN"     fels07c1="BATHROOM".
+1150  0  if fels07c1="WASHINGBATHROOM"   fels07c1="BATHROOM".
+1151  0  
+1152  0  if fels07d1="CLEAN BATHROOM"     fels07d1="BATHROOM".
+1153  0  if fels07d1="CLEANTHEBATHRM"       fels07d1="BATHROOM".
+1154  0  if fels07d1="CLEANUPBATH&RM"        fels07d1="BATHROOM".
+1155  0  if fels07d1="SCRUB BATHROOM"       fels07d1="BATHROOM".
+1156  0  if fels07d1="CLEAN BATH TUB"     fels07d1="BATHROOM".
+1157  0  if fels07d1="CLEAN BATHTUB"     fels07d1="BATHROOM".
+1158  0  if fels07d1="BATHROOM CLEAN"     fels07d1="BATHROOM"
+1159  0  if fels07d1="WASHINGBATHROOM"   fels07d1="BATHROOM".
+1160  0  execute.
+1161  0  
+1162  0  if fels07a1="CAT LITTER"     fels07a1="CHANGE CAT LITTER".
+1163  0  if fels07a1="CHANGECATLITTER"       fels07a1="CHANGE CAT LITTER".
+1164  0  if fels07a1="CLEAN CATLITTER"       fels07a1="CHANGE CAT LITTER".
+1165  0  
+1166  0  if fels07b1="CAT LITTER"     fels07b1="CHANGE CAT LITTER".
+1167  0  if fels07b1="CHANGECATLITTER"       fels07b1="CHANGE CAT LITTER".
+1168  0  if fels07b1="CLEAN CATLITTER"       fels07b1="CHANGE CAT LITTER".
+1169  0  
+1170  0  if fels07c1="CAT LITTER"     fels07c1="CHANGE CAT LITTER".
+1171  0  if fels07c1="CHANGECATLITTER"       fels07c1="CHANGE CAT LITTER".
+1172  0  if fels07c1="CLEAN CATLITTER"       fels07c1="CHANGE CAT LITTER".
+1173  0  
+1174  0  if fels07d1="CAT LITTER"     fels07d1="CHANGE CAT LITTER".
+1175  0  if fels07d1="CHANGECATLITTER"       fels07d1="CHANGE CAT LITTER".
+1176  0  if fels07d1="CLEAN CATLITTER"       fels07d1="CHANGE CAT LITTER".
+1177  0  execute.
+1178  0  
+1179  0  if fels07a1="CLEAN BED"            fels07a1="CLEAN BEDROOM".
+1180  0  if fels07a1="CLEAN MY ROOM"       fels07a1="CLEAN BEDROOM".
+1181  0  if fels07a1="CLEANING ROOM"        fels07a1="CLEAN BEDROOM".
+1182  0  if fels07a1="PICK UP ROOM"          fels07a1="CLEAN BEDROOM".
+1183  0  if fels07a1="BEDROOMCLEANING"   fels07a1="CLEAN BEDROOM".
+1184  0  if fels07a1="CLEAM MY ROOM"   fels07a1="CLEAN BEDROOM".
+1185  0  
+1186  0  if fels07b1="CLEAN BED"           fels07b1="CLEAN BEDROOM".
+1187  0  if fels07b1="CLEAN MY ROOM"       fels07b1="CLEAN BEDROOM".
+1188  0  if fels07b1="CLEANING ROOM"        fels07b1="CLEAN BEDROOM".
+1189  0  if fels07b1="PICK UP ROOM"        fels07b1="CLEAN BEDROOM".
+1190  0  if fels07b1="BEDROOMCLEANING"        fels07b1="CLEAN BEDROOM".
+1191  0  if fels07b1="CLEAM MY ROOM"        fels07b1="CLEAN BEDROOM".
+1192  0  
+1193  0  if fels07c1="CLEAN BED"          fels07c1="CLEAN BEDROOM".
+1194  0  if fels07c1="CLEAN MY ROOM"       fels07c1="CLEAN BEDROOM".
+1195  0  if fels07c1="CLEANING ROOM"        fels07c1="CLEAN BEDROOM".
+1196  0  if fels07c1="PICK UP ROOM"        fels07c1="CLEAN BEDROOM".
+1197  0  if fels07c1="BEDROOMCLEANING"        fels07c1="CLEAN BEDROOM".
+1198  0  if fels07c1="CLEAM MY ROOM"        fels07c1="CLEAN BEDROOM".
+1199  0  
+1200  0  if fels07d1="CLEAN BED"         fels07d1="CLEAN BEDROOM".
+1201  0  if fels07d1="CLEAN MY ROOM"       fels07d1="CLEAN BEDROOM".
+1202  0  if fels07d1="CLEANING ROOM"        fels07d1="CLEAN BEDROOM".
+1203  0  if fels07d1="PICK UP ROOM"        fels07d1="CLEAN BEDROOM".
+1204  0  if fels07d1="BEDROOMCLEANING"        fels07d1="CLEAN BEDROOM".
+1205  0  if fels07d1="CLEAM MY ROOM"        fels07d1="CLEAN BEDROOM".
+1206  0  execute.
+1207  0  
+1208  0  if  fels07a1="CLEANBOOKSHELF"       fels07a1="CLEAN BOOKCASE".
+1209  0  if  fels07b1="CLEANBOOKSHELF"        fels07b1="CLEAN BOOKCASE".
+1210  0  if  fels07c1="CLEANBOOKSHELF"        fels07c1="CLEAN BOOKCASE".
+1211  0  if  fels07d1="CLEANBOOKSHELF"        fels07d1="CLEAN BOOKCASE".
+1212  0  execute.
+1213  0  
+1214  0  if  fels07a1="WASH DISH"       fels07a1="CLEAN DISHES".
+1215  0  if  fels07b1="WASH DISH"        fels07b1="CLEAN DISHES".
+1216  0  if  fels07c1="WASH DISH"        fels07c1="CLEAN DISHES".
+1217  0  if  fels07d1="WASH DISH"        fels07d1="CLEAN DISHES".
+1218  0  execute.
+1219  0  
+1220  0  if  fels07a1="CLEAN THE FLOOR"       fels07a1="CLEAN FLOOR".
+1221  0  if  fels07b1="CLEAN THE FLOOR"        fels07b1="CLEAN FLOOR".
+1222  0  if  fels07c1="CLEAN THE FLOOR"        fels07c1="CLEAN FLOOR".
+1223  0  if  fels07d1="CLEAN THE FLOOR"        fels07d1="CLEAN FLOOR".
+1224  0  execute.
+1225  0  
+1226  0  if  fels07a1="CLEAN TRASH"       fels07a1="CLEAN GARBAGE".
+1227  0  if  fels07b1="CLEAN TRASH"        fels07b1="CLEAN GARBAGE".
+1228  0  if  fels07c1="CLEAN TRASH"        fels07c1="CLEAN GARBAGE".
+1229  0  if  fels07d1="CLEAN TRASH"        fels07d1="CLEAN GARBAGE".
+1230  0  execute.
+1231  0  
+1232  0  if fels07a1="CLEAN HOME"     fels07a1="CLEAN HOUSE".
+1233  0  if fels07a1="CLEAN THE HOUSE"       fels07a1="CLEAN HOUSE".
+1234  0  if fels07a1="CLEANWHOLEHOUSE"        fels07a1="CLEAN HOUSE".
+1235  0  if fels07a1=" HELPCLEANHOUSE "        fels07a1="CLEAN HOUSE".
+1236  0  
+1237  0  if fels07b1="CLEAN HOME"     fels07b1="CLEAN HOUSE".
+1238  0  if fels07b1="CLEAN THE HOUSE"       fels07b1="CLEAN HOUSE".
+1239  0  if fels07b1="CLEANWHOLEHOUSE"        fels07b1="CLEAN HOUSE".
+1240  0  if fels07b1="HELPCLEANHOUSE"        fels07b1="CLEAN HOUSE".
+1241  0  
+1242  0  if fels07c1="CLEAN HOME"     fels07c1="CLEAN HOUSE".
+1243  0  if fels07c1="CLEAN THE HOUSE"       fels07c1="CLEAN HOUSE".
+1244  0  if fels07c1="CLEANWHOLEHOUSE"        fels07c1="CLEAN HOUSE".
+1245  0  if fels07c1="HELPCLEANHOUSE"        fels07c1="CLEAN HOUSE".
+1246  0  
+1247  0  if fels07d1="CLEAN HOME"     fels07d1="CLEAN HOUSE".
+1248  0  if fels07d1="CLEAN THE HOUSE"       fels07d1="CLEAN HOUSE".
+1249  0  if fels07d1="CLEANWHOLEHOUSE"        fels07d1="CLEAN HOUSE".
+1250  0  if fels07d1="HELPCLEANHOUSE"        fels07d1="CLEAN HOUSE".
+1251  0  execute.
+1252  0  
+1253  0  if  fels07a1="CLEANINGKITCHEN"       fels07a1="CLEAN KITCHEN".
+1254  0  if  fels07a1="CLEAN KTICHEN"       fels07a1="CLEAN KITCHEN".
+1255  0  
+1256  0  if  fels07b1="CLEANINGKITCHEN"       fels07b1="CLEAN KITCHEN".
+1257  0  if  fels07b1="CLEAN KTICHEN"       fels07b1="CLEAN KITCHEN".
+1258  0  
+1259  0  if  fels07c1="CLEANINGKITCHEN"       fels07c1="CLEAN KITCHEN".
+1260  0  if  fels07c1="CLEAN KTICHEN"       fels07c1="CLEAN KITCHEN".
+1261  0  
+1262  0  if  fels07d1="CLEANINGKITCHEN"       fels07d1="CLEAN KITCHEN".
+1263  0  if  fels07d1="CLEAN KTICHEN"       fels07d1="CLEAN KITCHEN".
+1264  0  execute.
+1265  0  
+1266  0  if fels07a1="CLEANLIVINGRM"     fels07a1="CLEAN LIVING RM".
+1267  0  if fels07a1="CLEANLIVINGROOM"       fels07a1="CLEAN LIVING RM".
+1268  0  if fels07a1="CLEAN LIVING RO"       fels07a1="CLEAN LIVING RM".
+1269  0  
+1270  0  if fels07b1="CLEANLIVINGRM"     fels07b1="CLEAN LIVING RM".
+1271  0  if fels07b1="CLEANLIVINGROOM"       fels07b1="CLEAN LIVING RM".
+1272  0  if fels07b1="CLEAN LIVING RO"       fels07b1="CLEAN LIVING RM".
+1273  0  
+1274  0  if fels07c1="CLEANLIVINGRM"     fels07c1="CLEAN LIVING RM".
+1275  0  if fels07c1="CLEANLIVINGROOM"       fels07c1="CLEAN LIVING RM".
+1276  0  if fels07c1="CLEAN LIVING RO"       fels07c1="CLEAN LIVING RM".
+1277  0  
+1278  0  if fels07d1="CLEANLIVINGRM"     fels07d1="CLEAN LIVING RM".
+1279  0  if fels07d1="CLEANLIVINGROOM"       fels07d1="CLEAN LIVING RM".
+1280  0  if fels07d1="CLEAN LIVING RO"       fels07d1="CLEAN LIVING RM".
+1281  0  execute.
+1282  0  
+1283  0  if fels07a1="CLEAN THE ROOM"     fels07a1="CLEAN ROOM".
+1284  0  if fels07a1="TIDY UP ROOM"       fels07a1="CLEAN ROOM".
+1285  0  if fels07a1="CLEAN YOUR ROOM"       fels07a1="CLEAN ROOM".
+1286  0  if fels07a1="CLEANING MY RM"       fels07a1="CLEAN ROOM".
+1287  0  if fels07a1="CLEANING ROOMS"       fels07a1="CLEAN ROOM".
+1288  0  if fels07a1="CLEANTHEROOM"       fels07a1="CLEAN ROOM".
+1289  0  if fels07a1="CLEARINGMYROOM"       fels07a1="CLEAN ROOM".
+1290  0  if fels07a1="FIX BEDROOM"       fels07a1="CLEAN ROOM".
+1291  0  if fels07a1="FIX ROOM"       fels07a1="CLEAN ROOM".
+1292  0  if fels07a1="PICK UP ROOM"       fels07a1="CLEAN ROOM".
+1293  0  
+1294  0  if fels07b1="CLEAN THE ROOM"     fels07b1="CLEAN ROOM".
+1295  0  if fels07b1="TIDY UP ROOM"       fels07b1="CLEAN ROOM".
+1296  0  if fels07b1="CLEAN YOUR ROOM"       fels07b1="CLEAN ROOM".
+1297  0  if fels07b1="CLEANING MY RM"       fels07b1="CLEAN ROOM".
+1298  0  if fels07b1="CLEANING ROOMS"       fels07b1="CLEAN ROOM".
+1299  0  if fels07b1="CLEANTHEROOM"       fels07b1="CLEAN ROOM".
+1300  0  if fels07b1="CLEARINGMYROOM"       fels07b1="CLEAN ROOM".
+1301  0  if fels07a1="FIX BEDROOM"       fels07a1="CLEAN ROOM".
+1302  0  if fels07a1="FIX ROOM"       fels07a1="CLEAN ROOM".
+1303  0  if fels07a1="PICK UP ROOM"       fels07a1="CLEAN ROOM".
+1304  0  
+1305  0  if fels07c1="CLEAN THE ROOM"     fels07c1="CLEAN ROOM".
+1306  0  if fels07c1="TIDY UP ROOM"       fels07c1="CLEAN ROOM".
+1307  0  if fels07c1="CLEAN YOUR ROOM"       fels07c1="CLEAN ROOM".
+1308  0  if fels07c1="CLEANING MY RM"       fels07c1="CLEAN ROOM".
+1309  0  if fels07c1="CLEANING ROOMS"       fels07c1="CLEAN ROOM".
+1310  0  if fels07c1="CLEANTHEROOM"       fels07c1="CLEAN ROOM".
+1311  0  if fels07c1="CLEARINGMYROOM"       fels07c1="CLEAN ROOM".
+1312  0  if fels07a1="FIX BEDROOM"       fels07a1="CLEAN ROOM".
+1313  0  if fels07a1="FIX ROOM"       fels07a1="CLEAN ROOM".
+1314  0  if fels07a1="PICK UP ROOM"       fels07a1="CLEAN ROOM".
+1315  0  
+1316  0  if fels07d1="CLEAN THE ROOM"     fels07d1="CLEAN ROOM".
+1317  0  if fels07d1="TIDY UP ROOM"       fels07d1="CLEAN ROOM".
+1318  0  if fels07d1="CLEAN YOUR ROOM"       fels07d1="CLEAN ROOM".
+1319  0  if fels07d1="CLEANING MY RM"       fels07d1="CLEAN ROOM".
+1320  0  if fels07d1="CLEANING ROOMS"       fels07d1="CLEAN ROOM".
+1321  0  if fels07d1="CLEANTHEROOM"       fels07d1="CLEAN ROOM".
+1322  0  if fels07d1="CLEARINGMYROOM"       fels07d1="CLEAN ROOM".
+1323  0  if fels07a1="FIX BEDROOM"       fels07a1="CLEAN ROOM".
+1324  0  if fels07a1="FIX ROOM"       fels07a1="CLEAN ROOM".
+1325  0  if fels07a1="PICK UP ROOM"       fels07a1="CLEAN ROOM".
+1326  0  execute.
+1327  0  
+1328  0  if fels07a1="CLEAN THE TV"     fels07a1="CLEAN TV".
+1329  0  if fels07a1="CLEAN TV SCREEN"       fels07a1="CLEAN TV".
+1330  0  
+1331  0  if fels07b1="CLEAN THE TV"     fels07b1="CLEAN TV".
+1332  0  if fels07b1="CLEAN TV SCREEN"       fels07b1="CLEAN TV".
+1333  0  
+1334  0  if fels07c1="CLEAN THE TV"     fels07c1="CLEAN TV".
+1335  0  if fels07c1="CLEAN TV SCREEN"       fels07c1="CLEAN TV".
+1336  0  
+1337  0  if fels07d1="CLEAN THE TV"     fels07d1="CLEAN TV".
+1338  0  if fels07d1="CLEAN TV SCREEN"       fels07d1="CLEAN TV".
+1339  0  execute.
+1340  0  
+1341  0  if  fels07a1="TIDYUPINGENERAL"       fels07a1="CLEAN UP".
+1342  0  if  fels07b1="TIDYUPINGENERAL"        fels07b1="CLEAN UP".
+1343  0  if  fels07c1="TIDYUPINGENERAL"        fels07c1="CLEAN UP".
+1344  0  if  fels07d1="TIDYUPINGENERAL"        fels07d1="CLEAN UP".
+1345  0  execute.
+1346  0  
+1347  0  if  fels07a1="TIDYUPINGENERAL"       fels07a1="CLEAN UP".
+1348  0  if  fels07b1="TIDYUPINGENERAL"        fels07b1="CLEAN UP".
+1349  0  if  fels07c1="TIDYUPINGENERAL"        fels07c1="CLEAN UP".
+1350  0  if  fels07d1="TIDYUPINGENERAL"        fels07d1="CLEAN UP".
+1351  0  execute.
+1352  0  
+1353  0  if  fels07a1="CLEAN THE WALLS"       fels07a1="CLEAN WALLS".
+1354  0  if  fels07b1="CLEAN THE WALLS"        fels07b1="CLEAN WALLS".
+1355  0  if  fels07c1="CLEAN THE WALLS"        fels07c1="CLEAN WALLS".
+1356  0  if  fels07d1="CLEAN THE WALLS"        fels07d1="CLEAN WALLS".
+1357  0  execute.
+1358  0  
+1359  0  if  fels07a1="GROCERYSHOPPING"       fels07a1="GROCERIES".
+1360  0  if  fels07b1="GROCERYSHOPPING"        fels07b1="GROCERIES".
+1361  0  if  fels07c1="GROCERYSHOPPING"        fels07c1="GROCERIES".
+1362  0  if  fels07d1="GROCERYSHOPPING"        fels07d1="GROCERIES".
+1363  0  execute.
+1364  0  
+1365  0  if fels07a1="DO LAUNDRY"     fels07a1="LAUNDRY".
+1366  0  if fels07a1="WASH CLOTHES"       fels07a1="LAUNDRY".
+1367  0  if fels07a1="HELP LAUNDRY"       fels07a1="LAUNDRY".
+1368  0  if fels07a1="HELP W/ LAUNDRY"       fels07a1="LAUNDRY".
+1369  0  if fels07a1="HELP W/LAUNDRY"       fels07a1="LAUNDRY".
+1370  0  if fels07a1="LAUNDRY SORTING"       fels07a1="LAUNDRY".
+1371  0  if fels07a1="WASH CLOTHS"       fels07a1="LAUNDRY".
+1372  0  
+1373  0  if fels07b1="DO LAUNDRY"     fels07b1="LAUNDRY".
+1374  0  if fels07b1="WASH CLOTHES"       fels07b1="LAUNDRY".
+1375  0  if fels07b1="HELP LAUNDRY"          fels07b1="LAUNDRY".
+1376  0  if fels07b1="HELP W/ LAUNDRY"       fels07b1="LAUNDRY".
+1377  0  if fels07b1="HELP W/LAUNDRY"        fels07b1="LAUNDRY".
+1378  0  if fels07b1="LAUNDRY SORTING"       fels07b1="LAUNDRY".
+1379  0  if fels07b1="WASH CLOTHS"           fels07b1="LAUNDRY".
+1380  0  
+1381  0  if fels07c1="DO LAUNDRY"     fels07c1="LAUNDRY".
+1382  0  if fels07c1="WASH CLOTHES"       fels07c1="LAUNDRY".
+1383  0  if fels07c1="HELP LAUNDRY"          fels07c1="LAUNDRY".
+1384  0  if fels07c1="HELP W/ LAUNDRY"       fels07c1="LAUNDRY".
+1385  0  if fels07c1="HELP W/LAUNDRY"        fels07c1="LAUNDRY".
+1386  0  if fels07c1="LAUNDRY SORTING"       fels07c1="LAUNDRY".
+1387  0  if fels07c1="WASH CLOTHS"           fels07c1="LAUNDRY".
+1388  0  
+1389  0  if fels07d1="DO LAUNDRY"     fels07d1="LAUNDRY".
+1390  0  if fels07d1="WASH CLOTHES"       fels07d1="LAUNDRY".
+1391  0  if fels07d1="HELP LAUNDRY"          fels07d1="LAUNDRY".
+1392  0  if fels07d1="HELP W/ LAUNDRY"       fels07d1="LAUNDRY".
+1393  0  if fels07d1="HELP W/LAUNDRY"        fels07d1="LAUNDRY".
+1394  0  if fels07d1="LAUNDRY SORTING"       fels07d1="LAUNDRY".
+1395  0  if fels07d1="WASH CLOTHS"           fels07d1="LAUNDRY".
+1396  0  execute.
+1397  0  
+1398  0  if fels07a1="DOING MY BED"     fels07a1="MAKE BED".
+1399  0  if fels07a1="FIX BED"     fels07a1="MAKE BED".
+1400  0  if fels07a1="FIX MY BED"       fels07a1="MAKE BED".
+1401  0  if fels07a1="MAKE MY BED"        fels07a1="MAKE BED".
+1402  0  if fels07a1="MAKE THE BED"       fels07a1="MAKE BED".
+1403  0  if fels07a1="MAKE UP BED "     fels07a1="MAKE BED".
+1404  0  if fels07a1="MAKING BED"     fels07a1="MAKE BED".
+1405  0  if fels07a1="MAKING THE BED"     fels07a1="MAKE BED".
+1406  0  if fels07a1="FIX THE BED"     fels07a1="MAKE BED".
+1407  0  if fels07a1="FIXING MY BED "     fels07a1="MAKE BED".
+1408  0  if fels07a1="MAKE BED'S"     fels07a1="MAKE BED".
+1409  0  if fels07a1="MAKE THE BEDS"     fels07a1="MAKE BED".
+1410  0  
+1411  0  if fels07b1="DOING MY BED"     fels07b1="MAKE BED".
+1412  0  if fels07b1="FIX BED"     fels07b1="MAKE BED".
+1413  0  if fels07b1="FIX MY BED"       fels07b1="MAKE BED".
+1414  0  if fels07b1="MAKE MY BED"        fels07b1="MAKE BED".
+1415  0  if fels07b1="MAKE THE BED"     fels07b1="MAKE BED".
+1416  0  if fels07b1="MAKE UP BED"     fels07b1="MAKE BED".
+1417  0  if fels07b1="MAKING BED"     fels07b1="MAKE BED".
+1418  0  if fels07b1="MAKING THE BED"     fels07b1="MAKE BED".
+1419  0  if fels07b1="FIX THE BED"     fels07b1="MAKE BED".
+1420  0  if fels07b1="FIXING MY BED "     fels07b1="MAKE BED".
+1421  0  if fels07b1="MAKE BED'S"     fels07b1="MAKE BED".
+1422  0  if fels07b1="MAKE THE BEDS"     fels07b1="MAKE BED".
+1423  0  
+1424  0  if fels07c1="DOING MY BED"     fels07c1="MAKE BED".
+1425  0  if fels07c1="FIX BED"     fels07c1="MAKE BED".
+1426  0  if fels07c1="FIX MY BED"       fels07c1="MAKE BED".
+1427  0  if fels07c1="MAKE MY BED"        fels07c1="MAKE BED".
+1428  0  if fels07c1="MAKE THE BED"       fels07c1="MAKE BED".
+1429  0  if fels07c1="MAKE UP BED"     fels07c1="MAKE BED".
+1430  0  if fels07c1="MAKING BED"     fels07c1="MAKE BED".
+1431  0  if fels07c1="MAKING THE BED"     fels07c1="MAKE BED".
+1432  0  if fels07c1="FIX THE BED"     fels07c1="MAKE BED".
+1433  0  if fels07c1="FIXING MY BED "     fels07c1="MAKE BED".
+1434  0  if fels07c1="MAKE BED'S"     fels07c1="MAKE BED".
+1435  0  if fels07c1="MAKE THE BEDS"     fels07c1="MAKE BED".
+1436  0  
+1437  0  if fels07d1="DOING MY BED"     fels07d1="MAKE BED".
+1438  0  if fels07d1="FIX BED"      fels07d1="MAKE BED".
+1439  0  if fels07d1="FIX MY BED"       fels07d1="MAKE BED".
+1440  0  if fels07d1="MAKE MY BED"        fels07d1="MAKE BED".
+1441  0  if fels07d1="MAKE THE BED"       fels07d1="MAKE BED".
+1442  0  if fels07d1="MAKE UP BED"     fels07d1="MAKE BED".
+1443  0  if fels07d1="MAKING BED"     fels07d1="MAKE BED".
+1444  0  if fels07d1="MAKING THE BED"     fels07d1="MAKE BED".
+1445  0  if fels07d1="FIX THE BED"     fels07d1="MAKE BED".
+1446  0  if fels07d1="FIXING MY BED "     fels07d1="MAKE BED".
+1447  0  if fels07d1="MAKE BED'S"     fels07d1="MAKE BED".
+1448  0  if fels07d1="MAKE THE BEDS"     fels07d1="MAKE BED".
+1449  0  
+1450  0  if fels07a1="MOP FLOORS"     fels07a1="MOP".
+1451  0  if fels07a1="MOP THE FLOOR"       fels07a1="MOP".
+1452  0  if fels07a1="MOP/SWEEP"        fels07a1="MOP".
+1453  0  if fels07a1="MOP/SWEEP FLOOR"       fels07a1="MOP".
+1454  0  if fels07a1="MOPPING"     fels07a1="MOP".
+1455  0  if fels07a1="MOPPING FLOOR"     fels07a1="MOP".
+1456  0  if fels07a1="MOP & SWEEP"    fels07a1="MOP".
+1457  0  if fels07a1="MOP FLOOR"           fels07a1="MOP".
+1458  0  if fels07a1="MOP MY ROOM"      fels07a1="MOP".
+1459  0  if fels07a1="MOP THE KITCHEN"       fels07a1="MOP".
+1460  0  if fels07a1="MOPE"            fels07a1="MOP".
+1461  0  if fels07a1="MOPING"             fels07a1="MOP".
+1462  0  
+1463  0  if fels07b1="MOP FLOORS"     fels07b1="MOP".
+1464  0  if fels07b1="MOP THE FLOOR"       fels07b1="MOP".
+1465  0  if fels07b1="MOP/SWEEP"        fels07b1="MOP".
+1466  0  if fels07b1="MOP/SWEEP FLOOR"     fels07b1="MOP".
+1467  0  if fels07b1="MOPPING"     fels07b1="MOP".
+1468  0  if fels07b1="MOPPING FLOOR"     fels07b1="MOP".
+1469  0  if fels07b1="MOP & SWEEP"      fels07b1="MOP".
+1470  0  if fels07b1="MOP FLOOR"           fels07b1="MOP".
+1471  0  if fels07b1="MOP MY ROOM"      fels07b1="MOP".
+1472  0  if fels07b1="MOP THE KITCHEN"     fels07b1="MOP".
+1473  0  if fels07b1="MOPE"            fels07b1="MOP".
+1474  0  if fels07b1="MOPING"            fels07b1="MOP".
+1475  0  
+1476  0  if fels07c1="MOP FLOORS"     fels07c1="MOP".
+1477  0  if fels07c1="MOP THE FLOOR"       fels07c1="MOP".
+1478  0  if fels07c1="MOP/SWEEP"        fels07c1="MOP".
+1479  0  if fels07c1="MOP/SWEEP FLOOR"       fels07c1="MOP".
+1480  0  if fels07c1="MOPPING"      fels07c1="MOP".
+1481  0  if fels07c1="MOPPING FLOOR"     fels07c1="MOP".
+1482  0  if fels07c1="MOP & SWEEP"       fels07c1="MOP".
+1483  0  if fels07c1="MOP FLOOR"           fels07c1="MOP".
+1484  0  if fels07c1="MOP MY ROOM"        fels07c1="MOP".
+1485  0  if fels07c1="MOP THE KITCHEN"       fels07c1="MOP".
+1486  0  if fels07c1="MOPE"            fels07c1="MOP".
+1487  0  if fels07c1="MOPING"            fels07c1="MOP".
+1488  0  
+1489  0  if fels07d1="MOP FLOORS"     fels07d1="MOP".
+1490  0  if fels07d1="MOP THE FLOOR"       fels07d1="MOP".
+1491  0  if fels07d1="MOP/SWEEP"        fels07d1="MOP".
+1492  0  if fels07d1="MOP/SWEEP FLOOR"       fels07d1="MOP".
+1493  0  if fels07d1="MOPPING"      fels07d1="MOP".
+1494  0  if fels07d1="MOPPING FLOOR"     fels07d1="MOP".
+1495  0  if fels07d1="MOP & SWEEP"    fels07d1="MOP".
+1496  0  if fels07d1="MOP FLOOR"           fels07d1="MOP".
+1497  0  if fels07d1="MOP MY ROOM"        fels07d1="MOP".
+1498  0  if fels07d1="MOP THE KITCHEN"       fels07d1="MOP".
+1499  0  if fels07d1="MOPE"            fels07d1="MOP".
+1500  0  if fels07d1="MOPING"            fels07d1="MOP".
+1501  0  execute.
+1502  0  
+1503  0  if fels07a1="ORGANIZECLOTHES"     fels07a1="PICK UP CLOTHES".
+1504  0  if fels07a1="ORGANIZINGCLOTH"       fels07a1="PICK UP CLOTHES".
+1505  0  if fels07a1="PICKUPCLOTHING"       fels07a1="PICK UP CLOTHES".
+1506  0  if fels07a1="PUTCLOTHESAWAY"     fels07a1="PICK UP CLOTHES".
+1507  0  if fels07a1="FOLD CLOTHING"      fels07a1="PICK UP CLOTHES".
+1508  0  if fels07a1="FOLDING CLOTHES"      fels07a1="PICK UP CLOTHES".
+1509  0  if fels07a1="PUTCLOTHESAWAY"    fels07a1="PICK UP CLOTHES".
+1510  0  
+1511  0  if fels07b1="ORGANIZECLOTHES"     fels07b1="PICK UP CLOTHES".
+1512  0  if fels07b1="ORGANIZINGCLOTH"       fels07b1="PICK UP CLOTHES".
+1513  0  if fels07b1="PICKUPCLOTHING"     fels07b1="PICK UP CLOTHES".
+1514  0  if fels07c1="PUTCLOTHESAWAY"     fels07c1="PICK UP CLOTHES".
+1515  0  if fels07b1="FOLD CLOTHING"      fels07b1="PICK UP CLOTHES".
+1516  0  if fels07b1="FOLDING CLOTHES"      fels07b1="PICK UP CLOTHES".
+1517  0  if fels07c1="PUTCLOTHESAWAY"    fels07c1="PICK UP CLOTHES".
+1518  0  
+1519  0  if fels07c1="ORGANIZECLOTHES"     fels07c1="PICK UP CLOTHES".
+1520  0  if fels07c1="ORGANIZINGCLOTH"       fels07c1="PICK UP CLOTHES".
+1521  0  if fels07c1="PICKUPCLOTHING"       fels07c1="PICK UP CLOTHES".
+1522  0  if fels07c1="PUTCLOTHESAWAY"     fels07c1="PICK UP CLOTHES".
+1523  0  if fels07c1="FOLD CLOTHING"       fels07c1="PICK UP CLOTHES".
+1524  0  if fels07c1="FOLDING CLOTHES"       fels07c1="PICK UP CLOTHES".
+1525  0  if fels07c1="PUTCLOTHESAWAY"     fels07c1="PICK UP CLOTHES".
+1526  0  
+1527  0  if fels07d1="ORGANIZECLOTHES"     fels07d1="PICK UP CLOTHES".
+1528  0  if fels07d1="ORGANIZINGCLOTH"       fels07d1="PICK UP CLOTHES".
+1529  0  if fels07d1="PICKUPCLOTHING"       fels07d1="PICK UP CLOTHES".
+1530  0  if fels07d1="PUTCLOTHESAWAY"     fels07d1="PICK UP CLOTHES".
+1531  0  if fels07d1="FOLD CLOTHING"       fels07d1="PICK UP CLOTHES".
+1532  0  if fels07d1="FOLDING CLOTHES"       fels07d1="PICK UP CLOTHES".
+1533  0  if fels07d1="PUTCLOTHESAWAY"     fels07d1="PICK UP CLOTHES".
+1534  0  execute.
+1535  0  
+1536  0  if  fels07a1="ERRANDS"       fels07a1="RUN ERRANDS".
+1537  0  if  fels07b1="ERRANDS"        fels07b1="RUN ERRANDS".
+1538  0  if  fels07c1="ERRANDS"        fels07c1="RUN ERRANDS".
+1539  0  if  fels07d1="ERRANDS"        fels07d1="RUN ERRANDS".
+1540  0  execute.
+1541  0  
+1542  0  if  fels07a1="SETTING TABLE"       fels07a1="SET TABLE".
+1543  0  if  fels07b1="SETTING TABLE"        fels07b1="SET TABLE".
+1544  0  if  fels07c1="SETTING TABLE"        fels07c1="SET TABLE".
+1545  0  if  fels07d1="SETTING TABLE"        fels07d1="SET TABLE".
+1546  0  execute.
+1547  0  if fels07a1="SWEEP FLOOR"      fels07a1="SWEEP".
+1548  0  if fels07a1="SWEEP KITCHEN"    fels07a1="SWEEP".
+1549  0  if fels07a1="SWEEP ROOM"             fels07a1="SWEEP".
+1550  0  if fels07a1="SWEEP THE FLOOR"        fels07a1="SWEEP".
+1551  0  if fels07a1="SWEEP UP"               fels07a1="SWEEP".
+1552  0  if fels07a1="SWEEPING"               fels07a1="SWEEP".
+1553  0  if fels07a1="SWEEPING FLOOR"         fels07a1="SWEEP".
+1554  0  if fels07a1="SWEEPING FLOORS"        fels07a1="SWEEP".
+1555  0  if fels07a1="SWEEPINGHALLWAY"        fels07a1="SWEEP".
+1556  0  if fels07a1="SWEEPLIVINGROOM"        fels07a1="SWEEP".
+1557  0  if fels07a1="SWEEP/MOP"              fels07a1="SWEEP".
+1558  0  if fels07a1="SWEAP"                  fels07a1="SWEEP".
+1559  0  if fels07a1="SWEEP + MOP"            fels07a1="SWEEP".
+1560  0  if fels07a1="SWEEP THE HOUSE"        fels07a1="SWEEP".
+1561  0  
+1562  0  if fels07b1="SWEEP FLOOR"      fels07b1="SWEEP".
+1563  0  if fels07b1="SWEEP KITCHEN"    fels07b1="SWEEP".
+1564  0  if fels07b1="SWEEP ROOM"             fels07b1="SWEEP".
+1565  0  if fels07b1="SWEEP THE FLOOR"        fels07b1="SWEEP".
+1566  0  if fels07b1="SWEEP UP"               fels07b1="SWEEP".
+1567  0  if fels07b1="SWEEPING"               fels07b1="SWEEP".
+1568  0  if fels07b1="SWEEPING FLOOR"         fels07b1="SWEEP".
+1569  0  if fels07b1="SWEEPING FLOORS"        fels07b1="SWEEP".
+1570  0  if fels07b1="SWEEPINGHALLWAY"        fels07b1="SWEEP".
+1571  0  if fels07b1="SWEEPLIVINGROOM"        fels07b1="SWEEP".
+1572  0  if fels07b1="SWEEP/MOP"              fels07b1="SWEEP".
+1573  0  if fels07b1="SWEAP"                  fels07b1="SWEEP".
+1574  0  if fels07b1="SWEEP + MOP"            fels07b1="SWEEP".
+1575  0  if fels07b1="SWEEP THE HOUSE"        fels07b1="SWEEP".
+1576  0  
+1577  0  if fels07c1="SWEEP FLOOR"      fels07c1="SWEEP".
+1578  0  if fels07c1="SWEEP KITCHEN"    fels07c1="SWEEP".
+1579  0  if fels07c1="SWEEP ROOM"             fels07c1="SWEEP".
+1580  0  if fels07c1="SWEEP THE FLOOR"        fels07c1="SWEEP".
+1581  0  if fels07c1="SWEEP UP"               fels07c1="SWEEP".
+1582  0  if fels07c1="SWEEPING"               fels07c1="SWEEP".
+1583  0  if fels07c1="SWEEPING FLOOR"         fels07c1="SWEEP".
+1584  0  if fels07c1="SWEEPING FLOORS"        fels07c1="SWEEP".
+1585  0  if fels07c1="SWEEPINGHALLWAY"        fels07c1="SWEEP".
+1586  0  if fels07c1="SWEEPLIVINGROOM"        fels07c1="SWEEP".
+1587  0  if fels07c1="SWEEP/MOP"              fels07c1="SWEEP".
+1588  0  if fels07c1="SWEAP"                  fels07c1="SWEEP".
+1589  0  if fels07c1="SWEEP + MOP"            fels07c1="SWEEP".
+1590  0  if fels07c1="SWEEP THE HOUSE"        fels07c1="SWEEP".
+1591  0  
+1592  0  if fels07d1="SWEEP FLOOR"      fels07d1="SWEEP".
+1593  0  if fels07d1="SWEEP KITCHEN"    fels07d1="SWEEP".
+1594  0  if fels07d1="SWEEP ROOM"             fels07d1="SWEEP".
+1595  0  if fels07d1="SWEEP THE FLOOR"        fels07d1="SWEEP".
+1596  0  if fels07d1="SWEEP UP"               fels07d1="SWEEP".
+1597  0  if fels07d1="SWEEPING"               fels07d1="SWEEP".
+1598  0  if fels07d1="SWEEPING FLOOR"         fels07d1="SWEEP".
+1599  0  if fels07d1="SWEEPING FLOORS"        fels07d1="SWEEP".
+1600  0  if fels07d1="SWEEPINGHALLWAY"        fels07d1="SWEEP".
+1601  0  if fels07d1="SWEEPLIVINGROOM"        fels07d1="SWEEP".
+1602  0  if fels07d1="SWEEP/MOP"              fels07d1="SWEEP".
+1603  0  if fels07d1="SWEAP"                  fels07d1="SWEEP".
+1604  0  if fels07d1="SWEEP + MOP"            fels07d1="SWEEP".
+1605  0  if fels07d1="SWEEP THE HOUSE"        fels07d1="SWEEP".
+1606  0  execute.
+1607  0  
+1608  0  if fels07a1="TAKEGARBAGEOUT"       fels07a1="TAKE OUT TRASH".
+1609  0  if fels07a1="TAKEOUTGARBAGE"       fels07a1="TAKE OUT TRASH".
+1610  0  if fels07a1="TAKEOUTTHETRASH"      fels07a1="TAKE OUT TRASH".
+1611  0  if fels07a1="BRINGOUTGARBAGE"      fels07a1="TAKE OUT TRASH".
+1612  0  if  fels07a1="TRASH"    fels07a1="TAKE OUT TRASH".
+1613  0  if fels07a1="TRASH DETAIL"   fels07a1="TAKE OUT TRASH".
+1614  0  if fels07a1="GARBAGE"    fels07a1="TAKE OUT TRASH".
+1615  0  if fels07a1="HELPW/GARBAGE"   fels07a1="TAKE OUT TRASH".
+1616  0  if fels07a1="TAKE GARBAGE"   fels07a1="TAKE OUT TRASH".
+1617  0  if fels07a1="TAKE OUT GARBAG"   fels07a1="TAKE OUT TRASH".
+1618  0  if fels07a1="TAKE TRASH OUT"   fels07a1="TAKE OUT TRASH".
+1619  0  if fels07a1="TAKECAREGARBAGE"   fels07a1="TAKE OUT TRASH".
+1620  0  if fels07a1="TAKEOUT GARBAGE"   fels07a1="TAKE OUT TRASH".
+1621  0  if fels07a1="TAKEOUT TRASH"   fels07a1="TAKE OUT TRASH".
+1622  0  if fels07a1="TAKEOUTCARBAGE"   fels07a1="TAKE OUT TRASH".
+1623  0  if fels07a1="TAKEOUTTRASH"   fels07a1="TAKE OUT TRASH".
+1624  0  if fels07a1="THROW GARBAGE"   fels07a1="TAKE OUT TRASH".
+1625  0  if fels07a1="THROW TRASH"   fels07a1="TAKE OUT TRASH".
+1626  0  if fels07a1="THROWOUTGARBAGE"  fels07a1="TAKE OUT TRASH".
+1627  0  if fels07a1="TRASH OUT"   fels07a1="TAKE OUT TRASH".
+1628  0  
+1629  0  if fels07b1="TAKEGARBAGEOUT"       fels07b1="TAKE OUT TRASH".
+1630  0  if fels07b1="TAKEOUTGARBAGE"       fels07b1="TAKE OUT TRASH".
+1631  0  if fels07b1="TAKEOUTTHETRASH"      fels07b1="TAKE OUT TRASH".
+1632  0  if fels07b1="BRINGOUTGARBAGE"      fels07b1="TAKE OUT TRASH".
+1633  0  if fels07b1="TRASH"    fels07b1="TAKE OUT TRASH".
+1634  0  if fels07b1="TRASH DETAIL"   fels07b1="TAKE OUT TRASH".
+1635  0  if fels07b1="GARBAGE"    fels07b1="TAKE OUT TRASH".
+1636  0  if fels07b1="HELPW/GARBAGE"   fels07b1="TAKE OUT TRASH".
+1637  0  if fels07b1="TAKE GARBAGE"   fels07b1="TAKE OUT TRASH".
+1638  0  if fels07b1="TAKE OUT GARBAG"   fels07b1="TAKE OUT TRASH".
+1639  0  if fels07b1="TAKE TRASH OUT"   fels07b1="TAKE OUT TRASH".
+1640  0  if fels07b1="TAKECAREGARBAGE"   fels07b1="TAKE OUT TRASH".
+1641  0  if fels07b1="TAKEOUT GARBAGE"   fels07b1="TAKE OUT TRASH".
+1642  0  if fels07b1="TAKEOUT TRASH"   fels07b1="TAKE OUT TRASH".
+1643  0  if fels07b1="TAKEOUTCARBAGE"   fels07b1="TAKE OUT TRASH".
+1644  0  if fels07b1="TAKEOUTTRASH"   fels07b1="TAKE OUT TRASH".
+1645  0  if fels07b1="THROW GARBAGE"   fels07b1="TAKE OUT TRASH".
+1646  0  if fels07b1="THROW TRASH"    fels07b1="TAKE OUT TRASH".
+1647  0  if fels07b1="THROWOUTGARBAGE"   fels07b1="TAKE OUT TRASH".
+1648  0  if fels07b1="TRASH OUT"    fels07b1="TAKE OUT TRASH".
+1649  0  
+1650  0  if fels07c1="TAKEGARBAGEOUT"       fels07c1="TAKE OUT TRASH".
+1651  0  if fels07c1="TAKEOUTGARBAGE"       fels07c1="TAKE OUT TRASH".
+1652  0  if fels07c1="TAKEOUTTHETRASH"      fels07c1="TAKE OUT TRASH".
+1653  0  if fels07c1="BRINGOUTGARBAGE"      fels07c1="TAKE OUT TRASH".
+1654  0  if fels07c1="TRASH"    fels07c1="TAKE OUT TRASH".
+1655  0  if  fels07c1="TRASH DETAIL"    fels07c1="TAKE OUT TRASH".
+1656  0  if fels07c1="GARBAGE"    fels07c1="TAKE OUT TRASH".
+1657  0  if fels07c1="HELPW/GARBAGE"   fels07c1="TAKE OUT TRASH".
+1658  0  if fels07c1="TAKE GARBAGE"   fels07c1="TAKE OUT TRASH".
+1659  0  if fels07c1="TAKE OUT GARBAG"   fels07c1="TAKE OUT TRASH".
+1660  0  if fels07c1="TAKE TRASH OUT"   fels07c1="TAKE OUT TRASH".
+1661  0  if fels07c1="TAKECAREGARBAGE"   fels07c1="TAKE OUT TRASH".
+1662  0  if fels07c1="TAKEOUT GARBAGE"   fels07c1="TAKE OUT TRASH".
+1663  0  if fels07c1="TAKEOUT TRASH"   fels07c1="TAKE OUT TRASH".
+1664  0  if fels07c1="TAKEOUTCARBAGE"   fels07c1="TAKE OUT TRASH".
+1665  0  if fels07c1="TAKEOUTTRASH"   fels07c1="TAKE OUT TRASH".
+1666  0  if fels07c1="THROW GARBAGE"   fels07c1="TAKE OUT TRASH".
+1667  0  if fels07c1="THROW TRASH"    fels07c1="TAKE OUT TRASH".
+1668  0  if fels07c1="THROWOUTGARBAGE"   fels07c1="TAKE OUT TRASH".
+1669  0  if fels07c1="TRASH OUT"    fels07c1="TAKE OUT TRASH".
+1670  0  
+1671  0  if fels07d1="TAKEGARBAGEOUT"       fels07d1="TAKE OUT TRASH".
+1672  0  if  fels07d1="TAKEOUTGARBAGE"       fels07d1="TAKE OUT TRASH".
+1673  0  if  fels07d1="TAKEOUTTHETRASH"      fels07d1="TAKE OUT TRASH".
+1674  0  if  fels07d1="BRINGOUTGARBAGE"      fels07d1="TAKE OUT TRASH".
+1675  0  if  fels07d1="TRASH"    fels07d1="TAKE OUT TRASH".
+1676  0  if  fels07d1="TRASH DETAIL"    fels07d1="TAKE OUT TRASH".
+1677  0  if fels07d1="GARBAGE"    fels07d1="TAKE OUT TRASH".
+1678  0  if fels07d1="HELPW/GARBAGE"   fels07d1="TAKE OUT TRASH".
+1679  0  if fels07d1="TAKE GARBAGE"   fels07d1="TAKE OUT TRASH".
+1680  0  if fels07d1="TAKE OUT GARBAG"   fels07d1="TAKE OUT TRASH".
+1681  0  if fels07d1="TAKE TRASH OUT"   fels07d1="TAKE OUT TRASH".
+1682  0  if fels07d1="TAKECAREGARBAGE"   fels07d1="TAKE OUT TRASH".
+1683  0  if fels07d1="TAKEOUT GARBAGE"   fels07d1="TAKE OUT TRASH".
+1684  0  if fels07d1="TAKEOUT TRASH"   fels07d1="TAKE OUT TRASH".
+1685  0  if fels07d1="TAKEOUTCARBAGE"   fels07d1="TAKE OUT TRASH".
+1686  0  if fels07d1="TAKEOUTTRASH"   fels07d1="TAKE OUT TRASH".
+1687  0  if fels07d1="THROW GARBAGE"   fels07d1="TAKE OUT TRASH".
+1688  0  if fels07d1="THROW TRASH"    fels07d1="TAKE OUT TRASH".
+1689  0  if fels07d1="THROWOUTGARBAGE"   fels07d1="TAKE OUT TRASH".
+1690  0  if fels07d1="TRASH OUT"    fels07d1="TAKE OUT TRASH".
+1691  0  execute.
+1692  0  
+1693  0  if fels07a1="VACUUMBEDROOMFL"     fels07a1="VACUUM".
+1694  0  if fels07a1="VACUUMING"       fels07a1="VACUUM".
+1695  0  
+1696  0  if fels07b1="VACUUMBEDROOMFL"     fels07b1="VACUUM".
+1697  0  if fels07b1="VACUUMING"       fels07b1="VACUUM".
+1698  0  
+1699  0  if fels07c1="VACUUMBEDROOMFL"     fels07c1="VACUUM".
+1700  0  if fels07c1="VACUUMING"       fels07c1="VACUUM".
+1701  0  
+1702  0  if fels07d1="VACUUMBEDROOMFL"     fels07d1="VACUUM".
+1703  0  if fels07d1="VACUUMING"       fels07d1="VACUUM".
+1704  0  execute.
+1705  0  
+1706  0  if fels07a1="TAKE OUTTHE DOG"       fels07a1="WALK DOG".
+1707  0  if fels07a1="WALK THE DOG"       fels07a1="WALK DOG".
+1708  0  if fels07a1="WALKING DOG"       fels07a1="WALK DOG".
+1709  0  
+1710  0  if fels07b1="TAKE OUTTHE DOG"       fels07b1="WALK DOG".
+1711  0  if fels07b1="WALK THE DOG"       fels07b1="WALK DOG".
+1712  0  if fels07b1="WALKING DOG"       fels07b1="WALK DOG".
+1713  0  
+1714  0  if fels07c1="TAKE OUTTHE DOG"       fels07c1="WALK DOG".
+1715  0  if fels07c1="WALK THE DOG"       fels07c1="WALK DOG".
+1716  0  if fels07c1="WALKING DOG"       fels07c1="WALK DOG".
+1717  0  
+1718  0  if fels07d1="TAKE OUTTHE DOG"       fels07d1="WALK DOG".
+1719  0  if fels07d1="WALK THE DOG"       fels07d1="WALK DOG".
+1720  0  if fels07d1="WALKING DOG"       fels07d1="WALK DOG".
+1721  0  execute.
+1722  0  
+1723  0  if  fels07a1="WASH THE DOG"       fels07a1="WASH DOG".
+1724  0  if  fels07a1="BATHE DOG"       fels07a1="WASH DOG".
+1725  0  
+1726  0  if  fels07b1="WASH THE DOG"        fels07b1="WASH DOG".
+1727  0  if  fels07b1="BATHE DOG"        fels07b1="WASH DOG".
+1728  0  
+1729  0  if  fels07c1="WASH THE DOG "        fels07c1="WASH DOG".
+1730  0  if  fels07c1="BATHE DOG "        fels07c1="WASH DOG".
+1731  0  
+1732  0  if  fels07d1="WASH THE DOG "        fels07d1="WASH DOG".
+1733  0  if  fels07d1="BATHE DOG "        fels07d1="WASH DOG".
+1734  0  execute.
+1735  0  
+1736  0  if fels07a1="CLEAN PLATES"     fels07a1="WASH DISHES".
+1737  0  if fels07a1="DISHES"       fels07a1="WASH DISHES".
+1738  0  if fels07a1="DO DISHES"        fels07a1="WASH DISHES".
+1739  0  if fels07a1="WASH THE DISHES"       fels07a1="WASH DISHES".
+1740  0  if fels07a1="WASHING DISHES"     fels07a1="WASH DISHES".
+1741  0  if fels07a1="DISH WASH"     fels07a1="WASH DISHES".
+1742  0  if fels07a1="DO THE DISHES"     fels07a1="WASH DISHES".
+1743  0  if fels07a1="DOING DISHES"     fels07a1="WASH DISHES".
+1744  0  if fels07a1="WAS DISHES"     fels07a1="WASH DISHES".
+1745  0  
+1746  0  if fels07b1="CLEAN PLATES"     fels07b1="WASH DISHES".
+1747  0  if fels07b1="DISHES"       fels07b1="WASH DISHES".
+1748  0  if fels07b1="DO DISHES"        fels07b1="WASH DISHES".
+1749  0  if fels07b1="WASHING DISHES"     fels07b1="WASH DISHES".
+1750  0  if fels07b1="DISH WASH"     fels07b1="WASH DISHES".
+1751  0  if fels07b1="DO THE DISHES"     fels07b1="WASH DISHES".
+1752  0  if fels07b1="DOING DISHES"     fels07b1="WASH DISHES".
+1753  0  if fels07b1="WAS DISHES"     fels07b1="WASH DISHES".
+1754  0  
+1755  0  if fels07c1="CLEAN PLATES"     fels07c1="WASH DISHES".
+1756  0  if fels07c1="DISHES"       fels07c1="WASH DISHES".
+1757  0  if fels07c1="DO DISHES"        fels07c1="WASH DISHES".
+1758  0  if fels07c1="WASH THE DISHES"       fels07c1="WASH DISHES".
+1759  0  if fels07c1="WASHING DISHES"     fels07c1="WASH DISHES".
+1760  0  if fels07c1="DISH WASH"     fels07c1="WASH DISHES".
+1761  0  if fels07c1="DO THE DISHES"     fels07c1="WASH DISHES".
+1762  0  if fels07c1="DOING DISHES"     fels07c1="WASH DISHES".
+1763  0  if fels07c1="WAS DISHES"     fels07c1="WASH DISHES".
+1764  0  
+1765  0  if fels07d1="CLEAN PLATES"     fels07d1="WASH DISHES".
+1766  0  if fels07d1="DISHES"       fels07d1="WASH DISHES".
+1767  0  if fels07d1="DO DISHES"        fels07d1="WASH DISHES".
+1768  0  if fels07d1="WASH THE DISHES"       fels07d1="WASH DISHES".
+1769  0  if fels07d1="WASHING DISHES"     fels07d1="WASH DISHES".
+1770  0  if fels07d1="DISH WASH"     fels07d1="WASH DISHES".
+1771  0  if fels07d1="DO THE DISHES"     fels07d1="WASH DISHES".
+1772  0  if fels07d1="DOING DISHES"     fels07d1="WASH DISHES".
+1773  0  if fels07d1="WAS DISHES"       fels07d1="WASH DISHES".
+1774  0  execute.
+1775  0  
+1776  0  Do repeat  x=fels07a1 fels07b1   fels07c1   fels07d1/y=choresmets1 choresmets2  choresmets3  choresmets4.
+1777  0  If x='BATHROOM'   y=2.5.
+1778  0  If x='BROOM'   y=3.3.
+1779  0  If x='CHANGE BEDSHEET'  y=2.
+1780  0  If x='CHANGE CAT LITTER'  y=2.5.
+1781  0  If x='CHANGE SHEETS'    y=2.
+1782  0  If x='CLEAN'   y=2.5.
+1783  0  If x='CLEAN AFTER PET'  y=2.5.
+1784  0  If x='CLEAN BASEMENT'   y=2.5.
+1785  0  If x='CLEAN BEDROOM'  y=2.5.
+1786  0  If x='CLEAN BOOKCASE'  y=2.5.
+1787  0  If x='CLEAN CLOSET'      y=2.5.
+1788  0  If x='CLEAN COMPUTER'  y=2.5.
+1789  0  If x='CLEAN DISHES'   y=2.3.
+1790  0  If x='CLEAN DOG'         y=3.5.
+1791  0  If x='CLEAN FISH TANK'   y=2.5.
+1792  0  If x='CLEAN FLOOR'       y=3.3.
+1793  0  If x='CLEAN FURNITURE'  y=2.5.
+1794  0  If x='CLEAN GARBAGE'      y=2.5.
+1795  0  If x='CLEAN GLASS'       y=2.5.
+1796  0  If x='CLEAN HOUSE'   y=2.5.
+1797  0  If x='CLEAN KITCHEN'   y=2.5.
+1798  0  If x='CLEAN LIVING RM'   y=2.5.
+1799  0  If x='CLEAN MIRRORS'    y=2.5.
+1800  0  If x='CLEAN MY CLOSET'  y=2.5.
+1801  0  If x='CLEAN PET AREA'   y=2.5.
+1802  0  If x='CLEAN RM CLOSET'  y=2.5.
+1803  0  If x='CLEAN ROOM'   y=2.5.
+1804  0  If x='CLEAN SINK'        y=2.5.
+1805  0  If x='CLEAN STOVE'       y=2.5.
+1806  0  If x='CLEAN TABLE'       y=2.5.
+1807  0  If x='CLEAN THE STEPS'  y=2.5.
+1808  0  If x='CLEAN TOILET'      y=2.5.
+1809  0  If x='CLEAN TV'   y=2.5.
+1810  0  If x='CLEAN UP'    y=2.5.
+1811  0  If x='CLEAN WALLS'    y=2.5.
+1812  0  If x='CLEANBROTHERSRM'   y=2.5.
+1813  0  If x='CLEANING'          y=2.5.
+1814  0  If x='CLEANOUT CLOSET'  y=2.5.
+1815  0  If x='CLEANTHEMIRROR'   y= 2.5.
+1816  0  If x='COOK'     y=2.
+1817  0  If x='DUST'    y=2.5.
+1818  0  If x='FEED ANIMAL'       y=2.
+1819  0  If x='FEED FISHES'       y=2.
+1820  0  If x='FEED THE CAT'   y=2.
+1821  0  If x='FEEDING DOG'       y=2.
+1822  0  If x='FIX CLOSET'   y=2.5.
+1823  0  If x='FIX TOYS'          y=2.5.
+1824  0  If x='FOLD CLOTHES'   y=2.
+1825  0  If x='GIVE PETS WATER'           y=2.
+1826  0  If x='GROCERIES'   y=2.5.
+1827  0  If x='HANG UP CLOTHES'     y=2.5.
+1828  0  If x='HANGING CLOTHES'  y=2.5.
+1829  0  If x='HELP COOKING'      y=2.
+1830  0  If x='HELP MOM CLEAN'   y=2.5.
+1831  0  If x='HELP MOM COOK'    y=2.
+1832  0  If x='HELP W/BAKING'     y=2.
+1833  0  If x='HELP W/MYSISTER'  y=2.5.
+1834  0  If x='HELPBABYSISTER'   y=2.5.
+1835  0  If x='HELPBABYSITTING'  y=2.5.
+1836  0  If x='HELPW/BROTHER'    y=2.5.
+1837  0  If x='LAUNDRY'    y=2.
+1838  0  If x='LIVING ROOM'       y=2.5.
+1839  0  If x='MAKE BED'   y=2.
+1840  0  If x='MAKE BREAKFAST'   y=2.
+1841  0  If x='MAKE JUICE'        y=2.
+1842  0  If x='MAKE TEA'          y=2.
+1843  0  If x='MAKEUPTHECOUCH'   y=2.5.
+1844  0  If x='MOP'     y=3.3.
+1845  0  If x='ORGANIZE SHOES'  y=2.5.
+1846  0  If x='PICK UP CLOTHES'  y=2.5.
+1847  0  If x='PICK UP THINGS'    y=2.5.
+1848  0  If x='PICK UP TOYS'    y=2.5.
+1849  0  If x='PICKUPAFTERDOG'   y=2.5.
+1850  0  If x='PICKUPLIVINGRM'   y=2.5.
+1851  0  If x='PLAY W/SISTER'     y=2.8.
+1852  0  If x='RUN ERRANDS'       y=2.3.
+1853  0  If x='SET TABLE'         y=2.5.
+1854  0  If x='SIBLINGS ROOM'     y=2.5.
+1855  0  If x='SWEEP'    y=3.3.
+1856  0  If x='TAKE OUT TRASH'    y=2.5.
+1857  0  If x='TAKECAREBROTHER'  y=2.5.
+1858  0  If x='TAKECAREOFMYDOG'  y=2.5.
+1859  0  If x='THE HALLWAY'       y=2.5.
+1860  0  If x='TUTOR BROTHER'    y=2.5.
+1861  0  If x='VACUUM'   y=3.5.
+1862  0  If x='WALK DOG'   y=3.
+1863  0  If x='WASH BATH TUB'    y=2.5.
+1864  0  If x='WASH CAR'   y=3.
+1865  0  If x='WASH DISHES'   y=2.5.
+1866  0  If x='WASH DOG'          y=3.5.
+1867  0  If x='WASH MEAL TABLE'   y=2.5.
+1868  0  If x='WASH THE CAR'      y=3.
+1869  0  If x='WASH THE WALLS'   y=2.5.
+1870  0  If x='WATCH BROTHER'    y=2.5.
+1871  0  If x='WATCHBROTHER'     y=2.5.
+1872  0  If x='WIPE TABLE'        y=2.5.
+1873  0  If x='WIPE WINDOW'       y=2.5.
+1874  0  If x='YARD WORK'         y=3.
+1875  0  End repeat.
+1876  0  execute.
+1877  0  Save Outfile='\\Dccmaincsfs\DATA1\CEH\DAILY\FELS_metscodes.sav'.
+1878  0  
+1879  0  ********************Urinary PAH TAPAS 2 AGE CALCULATION.
+1880  0  GET FILE='\\Dccmaincsfs\DATA1\CEH\SPSS_1\upaht2.sav'.
+1881  0  
+1882  0  compute upaht2=1.
+1883  0  execute.
+1884  0  
+1885  0  MATCH FILES /FILE=*
+1886  0    /FILE='\\Dccmaincsfs\Data1\CEH\DAILY\basic_baby_demogs.sav'
+1887  0    /RENAME (A18_0 newgendr gestfin = d0 d1 d2)
+1888  0    /BY SID
+1889  0    /DROP= d0 d1 d2.
+1890  0  EXECUTE.
+1891  0  
+1892  0  * Date and Time Wizard: age_upahT2.
+1893  0  COMPUTE  age_upahT2=(T2COLDAT - newDOB) / (365.25 * time.days(1)).
+1894  0  VARIABLE LABELS  age_upahT2 "age at urinary metabolite collection TAPAS 2".
+1895  0  VARIABLE LEVEL  age_upahT2 (SCALE).
+1896  0  FORMATS  age_upahT2 (F8.2).
+1897  0  VARIABLE WIDTH  age_upahT2(8).
+1898  0  EXECUTE.
+1899  0  
+1900  0  select if upaht2=1.
+1901  0  select if sibid=1.
+1902  0  execute.
+1903  0  
+1904  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\upaht2_age.sav' /drop upaht2.
+1905  0  
+1906  0  **postnatal urine collection flag.
+1907  0  GET FILE='\\Dccmaincsfs\Data1\CEH\SPSS_1\SGM1.sav'.
+1908  0  
+1909  0  MATCH FILES /FILE=*
+1910  0    /FILE='\\Dccmaincsfs\Data1\CEH\DAILY\basic_baby_demogs.sav'
+1911  0    /RENAME (A18_0 gestfin newgendr = d0 d1 d2)
+1912  0    /BY SID
+1913  0    /DROP= d0 d1 d2.
+1914  0  EXECUTE.
+1915  0  
+1916  0  * Date and Time Wizard: Fl_cdate.
+1917  0  COMPUTE  Fl_cdate=DATEDIF(newDOB, M1CDATE, "days").
+1918  0  VARIABLE LABELS  Fl_cdate "Flag; negative value=postnatal urine collection date".
+1919  0  VARIABLE LEVEL  Fl_cdate (SCALE).
+1920  0  FORMATS  Fl_cdate (F5.0).
+1921  0  VARIABLE WIDTH  Fl_cdate(5).
+1922  0  EXECUTE.
+1923  0  
+1924  0  select if sibid=1.
+1925  0  execute.
+1926  0  
+1927  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\SGM1_flag.sav' /drop newDOB.
+1928  0  
+1929  0  ****************flatten KOKO data.
+1930  0  GET FILE='\\Dccmaincsfs\DATA1\CEH\SPSS_1\KOKO.sav'.
+1931  0  
+1932  0  TEMPORARY.
+1933  0  select if (kmedstat='Post-').
+1934  0  save outfile='\\Dccmaincsfs\DATA1\CEH\DAILY\KOKO_post.sav'.
+1935  0  execute.
+1936  0  
+1937  0  TEMPORARY.
+1938  0  select if (kmedstat='Pre-').
+1939  0  save outfile='\\Dccmaincsfs\DATA1\CEH\DAILY\KOKO_pre.sav'.
+1940  0  execute.
+1941  0  
+1942  0  GET FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\KOKO_pre.sav'.
+1943  0  Rename variables (ACFEV1 ACFEV05 ACFV1FVC ACFV5FVC ACFVC ACTPEF AFEF2575 AFF27FVC
+1944  0          ATTMPTNO BACKEXTR EXPIREX KAGETEST KATSRECS KBPRFEV1 KBPRFVC KBPTFEV1 KBPTFVC
+1945  0          KDGNS KEFRT1SQ KEFRTFLG KETHPRCT KETHPRED KEXTRAP KFINTRP KHTCMS KPREDICT KQUALCDE
+1946  0          KREPCODE KTECH KUSECAUT MDSOURCE PFEF2575 PPEF PRFEV1 PRFV1FVC PRFVC WTKGS PFTDT_T
+1947  0          PFTDT_D KFRT1DTT KFRT1DTD KCALBDTT KCALBDTD=ACFEV1_pre ACFEV05_pre
+1948  0          ACFV1FVC_pre ACFV5FVC_pre ACFVC_pre ACTPEF_pre AFEF2575_pre AFF27FVC_pre
+1949  0          ATTMPTNO_pre BACKEXTR_pre EXPIREX_pre KAGETEST_pre KATSREC_pre KBPRFEV1_pre KBPRFVC_pre
+1950  0          KBPTFEV1_pre KBPTFVC_pre KDGNS_pre KEFRT1SQ_pre KEFRTFLG_pre KETHPRCT_pre KETHPRED_pre
+1951  0          KEXTRAP_pre KFINTRP_pre KHTCMS_pre KPREDICT_pre KQUALCDE_pre KREPCODE_pre KTECH_pre
+1952  0          KUSECAUT_pre MDSOURCE_pre PFEF2575_pre PPEF_pre PRFEV1_pre PRFV1FVC_pre PRFVC_pre
+1953  0          WTKGS_pre PFTDT_T_pre PFTDT_D_pre KFRT1DTT_pre KFRT1DTD_pre KCALBDTT_pre KCALBDTD_pre).
+1954  0  save outfile='\\Dccmaincsfs\DATA1\CEH\DAILY\KOKO_pre.sav' /drop kmedstat.
+1955  0  
+1956  0  GET FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\KOKO_post.sav'.
+1957  0  Rename variables (ACFEV1 ACFEV05 ACFV1FVC ACFV5FVC ACFVC ACTPEF AFEF2575 AFF27FVC
+1958  0          ATTMPTNO BACKEXTR EXPIREX KAGETEST KATSRECS KBPRFEV1 KBPRFVC KBPTFEV1 KBPTFVC
+1959  0          KDGNS KEFRT1SQ KEFRTFLG KETHPRCT KETHPRED KEXTRAP KFINTRP KHTCMS KPREDICT KQUALCDE
+1960  0          KREPCODE KTECH KUSECAUT MDSOURCE PFEF2575 PPEF PRFEV1 PRFV1FVC PRFVC WTKGS PFTDT_T
+1961  0          PFTDT_D KFRT1DTT KFRT1DTD KCALBDTT KCALBDTD=ACFEV1_post ACFEV05_post
+1962  0          ACFV1FVC_post ACFV5FVC_post ACFVC_post ACTPEF_post AFEF2575_post AFF27FVC_post
+1963  0          ATTMPTNO_post BACKEXTR_post EXPIREX_post KAGETEST_post KATSREC_post KBPRFEV1_post KBPRFVC_post
+1964  0          KBPTFEV1_post KBPTFVC_post KDGNS_post KEFRT1SQ_post KEFRTFLG_post KETHPRCT_post KETHPRED_post
+1965  0          KEXTRAP_post KFINTRP_post KHTCMS_post KPREDICT_post KQUALCDE_post KREPCODE_post KTECH_post
+1966  0          KUSECAUT_post MDSOURCE_post PFEF2575_post PPEF_post PRFEV1_post PRFV1FVC_post PRFVC_post
+1967  0          WTKGS_post PFTDT_T_post PFTDT_D_post KFRT1DTT_post KFRT1DTD_post KCALBDTT_post KCALBDTD_post).
+1968  0  save outfile='\\Dccmaincsfs\DATA1\CEH\DAILY\KOKO_post.sav' /drop kmedstat.
+1969  0  
+1970  0  GET FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\KOKO_pre.sav'.
+1971  0  MATCH FILES /FILE=*
+1972  0    /FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\KOKO_post.sav'
+1973  0    /BY SID SIBID.
+1974  0  EXECUTE.
+1975  0  save outfile='\\Dccmaincsfs\DATA1\CEH\DAILY\KOKO_flat.sav'.
+1976  0  
+1977  0  GET FILE='\\Dccmaincsfs\DATA1\PARTLIST\SPSS\TRACKING.sav'.
+1978  0  select if sibid=1.
+1979  0  select if typesamp>0.
+1980  0  select if enrlstat=1.
+1981  0  execute.
+1982  0  rename variables CEHID=SID.
+1983  0  SORT CASES BY SID (A).
+1984  0  save outfile='\\Dccmaincsfs\DATA1\PARTLIST\SPSS\Typesamp_enrlstat.sav'/ keep SID  ENRLSTAT TYPESAMP SIBID.
+1985  0  
+1986  0  ***rename CAARS variables per inconsistency found by Whitney Cowell in scoring manual vs. score sheet.
+1987  0  *GET FILE='\\Dccmaincsfs\DATA1\CEH\SPSS_1\CAARS FLAT.sav'.
+1988  0  *variable labels RAWSC_E_84 'CAARS Raw E-DSM-IV Inattentive' TSC_E_84 'CAARS T E-DSM-IV Inattentive' PER_E_84 'CAARS % Rge 
+            E-DSM-IV Inattentive'
+1989  0      RAWSC_F_84 'CAARS Raw F-DSM-IV HyperAct-Impulsive' TSC_F_84 'CAARS T F-DSM-IV HyperAct-Impulsive' PER_F_84 'CAARS % Rge
+             F-DSM-IV HyperAct-Impulsive'
+1990  0      RAWSC_G_84 'CAARS Raw H-DSM-IV Total ADHD Symptoms' TSC_G_84 'CAARS T G-DSM-IV Total ADHD Symptoms' PER_G_84 'CAARS % R
+            ge G-DSM-IV Total ADHD Symptoms'
+1991  0      RAWSC_H_84 'CAARS Raw H-ADHD Index' TSC_H_84 'CAARS T H-ADHD Index' PER_H_84 'CAARS % Rge H-ADHD Index'
+1992  0      RAWSC_E_108 'CAARS Raw E-DSM-IV Inattentive' TSC_E_108 'CAARS T E-DSM-IV Inattentive' PER_E_108 'CAARS % Rge E-DSM-IV I
+            nattentive'
+1993  0      RAWSC_F_108 'CAARS Raw F-DSM-IV HyperAct-Impulsive' TSC_F_108 'CAARS T F-DSM-IV HyperAct-Impulsive' PER_F_108 'CAARS % 
+            Rge F-DSM-IV HyperAct-Impulsive'
+1994  0      RAWSC_G_108 'CAARS Raw H-DSM-IV Total ADHD Symptoms' TSC_G_108 'CAARS T G-DSM-IV Total ADHD Symptoms' PER_G_108 'CAARS 
+            % Rge G-DSM-IV Total ADHD Symptoms'
+1995  0      RAWSC_H_108 'CAARS Raw H-ADHD Index' TSC_H_108 'CAARS T H-ADHD Index' PER_H_108 'CAARS % Rge H-ADHD Index'
+1996  0      RAWSC_E_132 'CAARS Raw E-DSM-IV Inattentive' TSC_E_132 'CAARS T E-DSM-IV Inattentive' PER_E_132 'CAARS % Rge E-DSM-IV I
+            nattentive'
+1997  0      RAWSC_F_132 'CAARS Raw F-DSM-IV HyperAct-Impulsive' TSC_F_132 'CAARS T F-DSM-IV HyperAct-Impulsive' PER_F_132 'CAARS % 
+            Rge F-DSM-IV HyperAct-Impulsive'
+1998  0      RAWSC_G_132 'CAARS Raw G-DSM-IV Total ADHD Symptoms' TSC_G_132 'CAARS T G-DSM-IV Total ADHD Symptoms' PER_G_132 'CAARS 
+            % Rge G-DSM-IV Total ADHD Symptoms'
+1999  0      RAWSC_H_132 'CAARS Raw H-ADHD Index' TSC_H_132 'CAARS T H-ADHD Index' PER_H_132 'CAARS % Rge H-ADHD Index'.
+2000  0  *save outfile='\\Dccmaincsfs\DATA1\CEH\daily\CAARS FLAT_renames.sav'.
+2001  0  
+2002  0  ****NOTE:  MERGE OF SPSS_1 FILES BECAUSE RETRIEVAL VARIABLES EXCEED MAXIMUM ALLOWED.
+2003  0  
+2004  0  *GET FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\fup_6to36.sav'.
+2005  0  
+2006  0  *MATCH FILES /FILE=*
+2007  0   /FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\fup_48to96.sav'
+2008  0   /BY sid.
+2009  0  *EXECUTE.
+2010  0  
+2011  0  *MATCH FILES /FILE=*
+2012  0   /FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\fup_108.sav'
+2013  0   /BY sid.
+2014  0  *EXECUTE.
+2015  0  
+2016  0  *SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\fup_6to108.sav'.
+2017  0  
+2018  0  
+2019  0  **END: \\Dccmaincsfs\DATA1\CEH\DAILY\VXREC***.
+2020  0  
+2021  0  
+2022  0  
+2023  0  
+2024  0  
+2025  0  
+2026  0  
+2027  0  
+2028  0  
+2029  0  
+2030  0  * End of INSERT and INCLUDE nesting level 01.
+

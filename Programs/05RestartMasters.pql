@@ -3,12 +3,6 @@
 | Creator:   David Merle
 |
 program
-. open (REPORT) write append lrecl = 100
-.  write (REPORT) '<TR>'
-.  write (REPORT) '    <td colspan="2" class="greenleft">05 Start Masters</td>'
-.  write (REPORT) '    <td colspan="2" class="whitecenter">' [timec(now(0),'hh:mm:ss')] '</td>'
-.  write (REPORT) '</tr>'
-. close (REPORT)
 .  execute dbms 'include file "\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\DisconnectMaster.pql" (192.168.53.236:3070)'
 .  execute dbms 'include file "\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\RestartMaster.pql"    (192.168.53.236:3070)'
 .  execute dbms 'include file "\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\DisconnectMaster.pql" (192.168.53.236:3080)'

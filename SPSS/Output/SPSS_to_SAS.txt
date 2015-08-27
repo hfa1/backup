@@ -1,0 +1,43 @@
+﻿
+INSERT
+    FILE='C:\Users\dmerle\AppData\Local\Temp\8\spss17340\SPSS_to_SAS479797375252124723.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  46  0  * Encoding: UTF-8.
+  47  0  _SET UNICODE=OFF.
+  48  0  
+  49  0  get file="\\Dccmaincsfs\Data1\ORIGINS\SPSS\FASTING.sav".
+  50  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\ORIGINS\SAS\FASTING.sas7bdat"
+  51  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  52  0  get file="\\Dccmaincsfs\Data1\ORIGINS\SPSS\DEMOG.sav".
+  53  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\ORIGINS\SAS\DEMOG.sas7bdat"
+  54  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  55  0  get file="\\Dccmaincsfs\Data1\ORIGINS\SPSS\SMOKING.sav".
+  56  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\ORIGINS\SAS\SMOKING.sas7bdat"
+  57  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  58  0  get file="\\Dccmaincsfs\Data1\ORIGINS\SPSS\ACTIVITY.sav".
+  59  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\ORIGINS\SAS\ACTIVITY.sas7bdat"
+  60  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  61  0  get file="\\Dccmaincsfs\Data1\ORIGINS\SPSS\ORAL.sav".
+  62  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\ORIGINS\SAS\ORAL.sas7bdat"
+  63  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  64  0  get file="\\Dccmaincsfs\Data1\ORIGINS\SPSS\RISKFACT.sav".
+  65  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\ORIGINS\SAS\RISKFACT.sas7bdat"
+  66  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  67  0  get file="\\Dccmaincsfs\Data1\ORIGINS\SPSS\ANTHRO.sav".
+  68  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\ORIGINS\SAS\ANTHRO.sas7bdat"
+  69  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  70  0  get file="\\Dccmaincsfs\Data1\ORIGINS\SPSS\PERIO.sav".
+  71  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\ORIGINS\SAS\PERIO.sas7bdat"
+  72  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  73  0  get file="\\Dccmaincsfs\Data1\ORIGINS\SPSS\PHQ9.sav".
+  74  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\ORIGINS\SAS\PHQ9.sas7bdat"
+  75  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  76  0  get file="\\Dccmaincsfs\Data1\ORIGINS\SPSS\GAD7.sav".
+  77  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\ORIGINS\SAS\GAD7.sas7bdat"
+  78  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  79  0  
+  80  0  
+  81  0  
+  82  0  * End of INSERT and INCLUDE nesting level 01.
+
