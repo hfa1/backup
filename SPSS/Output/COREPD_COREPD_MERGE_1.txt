@@ -1,0 +1,898 @@
+﻿
+INSERT
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss9648\COREPD_COREPD_MERGE_1316078845306691052.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  10  0  * Encoding: UTF-8.
+  11  0  _SET UNICODE=OFF.
+  12  0  
+  13  0  *PROGRAM:COREPD.COREPD_MERGE_1 SPS*.
+  14  0  *Put together all data files to form evaluated and non-evaluated file*.
+  15  0  *set journal '\\Dccmaincsfs\Data1\DCC\Output\SPSSOutput.txt'.
+  16  0  match files /file = '\\Dccmaincsfs\Data2\PARK1\COREPD\SPSS\INTAKE.SAV'  /in=intake
+  17  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\CORIEL.sav'  /in=coriel
+  18  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\DEMOG.sav'   /in=demog
+  19  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\SURGERY.sav' /in=surgery
+  20  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\NEURO.sav'   /in=neuro
+  21  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\FOLSTEIN.sav'/in=folstein
+  22  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\PHQ.sav'     /in=phq
+  23  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\PHQBKSUM.sav'/in=phqbksum
+  24  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\NEUROPSY.sav'/in=neuropsy
+  25  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\MEDHIST.sav' /in=medhist
+  26  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\RISKFACT.sav'/in=riskfact
+  27  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\BLESSED.sav' /in=blessed
+  28  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\TREMOR.sav'  /in=tremor
+  29  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\DEATHINF.sav'/in=deathinf
+  30  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\DRUG.sav'    /in=drug
+  31  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\MEDFORM.sav' /in=medform
+  32  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\CDR.sav'     /in=cdr
+  33  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\UPDRS.sav'   /in=updrs
+  34  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\BECK.sav'    /in=beck
+  35  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\SCOPI.sav'   /in=scopi
+  36  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\DIAGNOSE.sav'/in=diagnose
+  37  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\COR_CONT.sav'/in=cor_cont
+  38  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\VIDEO.sav'   /in=video
+  39  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\STATUS.sav'  /in=status
+  40  0              /file = '\\Dccmaincsfs\Data2\park1\corepd\SPSS\ELIGIBLE.sav'/in=elig
+  41  0              /by familyid.
+  42  0  string site (a2) famid(a4) person(a2).
+  43  0  compute site=substr(familyid,1,2).
+  44  0  compute famid=substr(familyid,3,4).
+  45  0  compute person=substr(familyid,7,2).
+  46  0  value labels site '01' 'Columbia' '02' 'Rush' '03' 'Penn' '04' 'Beth Is' '05' 'Parkinson Inst' '06' 'Marshfield'
+  47  0   '07' 'Struthers' '08' 'Duke' '09' 'IND' '10' 'J Hopkins' '11' 'Glenbrook' '12' 'Neurohealth' '13' 'U Tenn' '14' 'Puerto Ri
+            co'.
+  48  0  
+  49  0  select if (demog=1).
+  50  0  *freq site person.
+  51  0  save outfile= '\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_evaluated.sav'
+  52  0   /keep=ALL.
+
+Warning # 661 on line 52.  Command name: save
+The SUBSTR function is deprecated.  Consider using the CHAR.SUBSTR function.
+File #6
+     KEY: 01100401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #7
+     KEY: 01100401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #8
+     KEY: 01100401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #15
+     KEY: 01100401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #19
+     KEY: 01100401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #24
+     KEY: 01100401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #3
+     KEY: 01114401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #4
+     KEY: 01114401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #5
+     KEY: 01114401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #10
+     KEY: 01114401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #11
+     KEY: 01114401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #12
+     KEY: 01114401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #13
+     KEY: 01114401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #16
+     KEY: 01114401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #17
+     KEY: 01114401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #18
+     KEY: 01114401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #9
+     KEY: 01123501
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #21
+     KEY: 01123501
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #20
+     KEY: 01123801
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #23
+     KEY: 01123801
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #14
+     KEY: 01145901
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+  53  0  get file= '\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_evaluated.sav'.
+  54  0  
+  55  0  *******************************************************************************************************************.
+  56  0  *title 'COREPD PART 2--forms present(1) vs absent(0)'.
+  57  0  *subtitle '(Fully evaluated=has DEMOG form)'.
+  58  0  *get file=    '\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_evaluated.sav'.
+  59  0  *freq variables= site famid person  intake demog coriel surgery neuro folstein phq  phqbksum neuropsy
+  60  0    medhist riskfact blessed tremor deathinf drug medform cdr updrs beck
+  61  0    diagnose scopi video.
+  62  0  
+  63  0  *title 'Descriptives on all quantitative variables- fully evaluated'.
+  64  0  *descriptives variables=all.
+  65  0  
+  66  0  *******************************************************************************************************************.
+  67  0  *SCREENING DATA
+  68  0  ******************************************************************************************************************.
+  69  0  GET FILE= '\\Dccmaincsfs\Data2\PARK1\COREPD\SPSS\INTAKE.SAV'.
+  70  0  *use most recent status and first folstein*.
+  71  0  
+  72  0  match files file=*/in=intake
+  73  0                   /file= '\\Dccmaincsfs\Data2\park1\corepd\SPSS\eligible.sav'/in=elig
+  74  0                  /file= '\\Dccmaincsfs\Data2\park1\corepd\SPSS\status_last.sav'/in=status
+  75  0                  /file=  '\\Dccmaincsfs\Data2\park1\corepd\SPSS\coriel.sav'/in=coriel
+  76  0                 /file=  '\\Dccmaincsfs\Data2\park1\corepd\SPSS\folstein_first.sav'/in=folstein
+  77  0                 /file=  '\\Dccmaincsfs\Data2\park1\corepd\SPSS\famhist2.sav'/in=famhist2
+  78  0                /file=  '\\Dccmaincsfs\Data2\park1\corepd\SPSS\updrs.sav'/in=updrs
+  79  0                /file=  '\\Dccmaincsfs\Data2\park1\corepd\SPSS\updrs_s.sav'/in=updrs_s
+  80  0                /by familyid  .
+  81  0  
+  82  0  sort cases by familyid.
+File #7
+     KEY: 01114401
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #6
+     KEY: 01126301
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+  83  0  string site (a2) famid(a4) person(a2).
+  84  0  compute site=substr(familyid,1,2).
+  85  0  compute famid=substr(familyid,3,4).
+  86  0  compute person=substr(familyid,7,2).
+  87  0  freq person.
+
+
+Frequencies
+
+\\Dccmaincsfs\Data2\PARK1\COREPD\SPSS\INTAKE.SAV
+
+
+  88  0  select if (person='01').
+  89  0  freq person.
+
+
+Frequencies
+
+  90  0  sort cases by familyid.
+  91  0  value labels site '01' 'Columbia' '02' 'Rush' '03' 'Penn' '04' 'Beth Is' '05' 'Parkinson Inst' '06' 'Marshfield'
+  92  0   '07' 'Struthers' '08' 'Duke' '09' 'IND' '10' 'J Hopkins' '11' 'Glenbrook' '12' 'Neurohealth' '13' 'U Tenn' '14' 'Puerto Ri
+            co'.
+  93  0  
+  94  0  
+  95  0  *compute dup=0.
+  96  0  *if (famid=lag(famid)) dup=1.
+  97  0  *temporary.
+  98  0  *select if (dup=1).
+  99  0  *list site famid person.
+ 100  0  
+ 101  0  
+ 102  0  
+ 103  0  save outfile=   '\\Dccmaincsfs\Data2\PARK1\COREPD\SPSS\COREPD_SCREEN.SAV'
+ 104  0    /keep= familyid site famid person intake elig status coriel folstein famhist2 updrs updrs_s
+ 105  0    pdepi_en to spouse st_intvw to st_rela intakedt dob school ethnic hispanic ma_mat
+ 106  0     pa_mat ma_pat pa_pat s_prot s_cath
+ 107  0    s_jew s_muslim s_hindu s_none s_other1 s_unk ashken sephar
+ 108  0    g_prot g_chat g_jew g_muslim g_hindu g_none g_other1 g_unk onset_dt resttr
+ 109  0    actiontr brady stiff balance shuffle armswing facialex speech dystonia
+ 110  0    posture microgr freezing memory hall depress numbness legdrag s_other
+ 111  0    sec_symp yes_symp begin_sd hall_b4 hall_dt prior_dx since_dx mem_imp mem_dt
+ 112  0    dx_pd_dt curr_med sinemet si10_100 si25_100 si25_250 si_cr50 si_cr25 stalevo
+ 113  0    stal_50 stal_100 stal_150 permax per_05 per_25 per_100 parlodel par_25
+ 114  0    par_50 mirapex mira_125 mira_25 mira10 mira15 mira5 requip req_025 req_05
+ 115  0    req_10 req_20 req_30 req_40 req_50 ha_w_rx ha_wo_rx pall pall_dt thala
+ 116  0    thala_dt fetal fetal_dt stim stim_dt trb_slp pain_leg pain_imp hallwake
+ 117  0    dreams sev_symp sev_am sev_mild sev_sche disab_pd wake_up xcs_slp dyskin
+ 118  0    onset_dy dose_lev diurnal urin8_d urin8_n bowel_d bowel_w bowel_m dizzy15
+ 119  0    ever_fnt orth_hyp xcs_swt mscl_crp cramp_md unex_sen rdx_sml sweet_to
+ 120  0    taste_ch panc_atk panc_off smk_ever smk_curr peri_mp surg_mp surg_mpa
+ 121  0    surg_dat comp_mp age_mp age_men able_erc noct_erc rs_neuro rs_news rs_conf
+ 122  0    rs_otr dccdate     cr_inter cr_date name cr_zip
+ 123  0    cr_notus cr_orig cr_circl cr_ethnc amriindn blafricn pficilnd asian cr_whith
+ 124  0    cr_unkno cr_other cr_famhi cr_fothr cr_othid cr_age cr_bdate cr_gend cr_pd
+ 125  0    cr_lewy cr_palsy cr_atro cr_othr cr_ageon cr_asy_o cr_brady cr_activ
+ 126  0    cr_restt cr_post cr_rigid cr_gaitd cr_resp cr_strok cr_head cr_encep
+ 127  0    cr_oculo cr_neuro cr_susta cr_supra cr_cereb cr_gaze cr_fluct cr_hallu
+ 128  0    cr_dysa cr_memor cr_axial cr_oth cr_dx_ot diagnoby coll_by cr_smoke cr_yrs
+ 129  0    cr_hand cr_mmss cr_updrs cr_hoehn fointer fdate fodate foyear fomonth foweek
+ 130  0    fosesson foplace fofloor focity focounty fostate foapple fotable fopenny
+ 131  0    fotrial fospelld fospelll fospellr fospello fospellw fowatch fopencil
+ 132  0    fophrse fowithrh foldhalf foinlap foread fomemapp fomemtab fomempny fowrite
+ 133  0    fodraw foscore fs_date fs_int pd_gmptr pd_gfptr pd_gmmtr pd_gfmtr pd_hlfsb
+ 134  0    pd_cosin pd_other livegm_p livegf_p livegm_m livegr_m livehsb livehsib
+ 135  0    livecou liveothr un_inter un_date un_restf un_actnf un_bradf un_stiff un_balnf un_gaitf
+ 136  0    un_swinf un_exprf un_volf un_dystf un_postf un_micrf un_frezf un_lossf
+ 137  0    un_haluf un_dpref un_numbf un_dragf un_othrf un_rests un_actns un_brads
+ 138  0    un_stifs un_balns un_gaits un_swins un_exprs un_vols un_dysts un_posts
+ 139  0    un_micrs un_frezs un_losss un_halus un_dpres un_numbs un_drags un_othrs
+ 140  0    un_1date un_intel un_thout un_depre un_motiv un_spech un_saliv un_swalo
+ 141  0    un_hwrit un_cut un_dress un_hygn un_turn un_fall un_frez un_walk un_tremr
+ 142  0    un_treml un_sens un_motor un_post1 un_post3 un_bp un_hallu un_prior un_fyear
+ 143  0    un_spch un_facil un_lips un_rarm un_larm un_rleg un_lleg un_rarmp un_larmp
+ 144  0    un_neck un_rarmr un_larmr un_rlegr un_llegr un_rhand un_lhand un_rhndm
+ 145  0    un_lhndm un_rhndr un_lhndr un_rlega un_llega un_chair un_postr un_gait
+ 146  0    un_stabl un_brady un_pheno un_evalu un_hoehn un_adl un_dura un_disab un_pain
+ 147  0    un_morn un_predi un_unpre un_sudde un_propo un_anox un_sleep un_ortho
+ 148  0    si_inter si_date si_intel si_thout si_depre si_motiv si_spech si_saliv
+ 149  0    si_swalo si_hwrit si_cut si_dress si_hygn si_turn si_fall si_frez si_walk
+ 150  0    si_tremo si_sens si_spch si_facil si_lips si_rarm si_larm si_rleg si_lleg
+ 151  0    si_rarmp si_larmp si_neck si_rarmr si_larmr si_rlegr si_llegr si_rhand
+ 152  0    si_lhand si_rhndm si_lhndm si_rhndr si_lhndr si_rlega si_llega si_chair
+ 153  0    si_postr si_gait si_stabl si_brady si_dura si_disab si_pain si_morn si_predi
+ 154  0    si_sipre si_sudde si_propo si_anox si_sleep si_ortho si_bpse1 si_bpse2
+ 155  0    si_bpsu1 si_bpsu2 si_bpst1 si_bpst2 si_weigh si_pseat si_pstan si_hoehb
+ 156  0    si_hoehw si_adlpd si_adldy si_evalu  .
+ 157  0  
+ 158  0  *IDENTIFY DUPLICATES--for 6 families, site 01 and 09 were assigned the same famid (9/5/06-hfa).
+ 159  0  get file= '\\Dccmaincsfs\Data2\PARK1\COREPD\SPSS\COREPD_SCREEN.SAV'.
+ 160  0  
+ 161  0  *title 'COREPD SCREENING--forms present(1) vs absent(0)'.
+ 162  0  *subtitle '(Probands Only:intake/coriel/folstein/famhist2)'.
+ 163  0  *get file=    '\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_screen.sav'.
+ 164  0  *freq variables= site person intake coriel folstein famhist2 updrs updrs_s .
+ 165  0  
+ 166  0  *title 'Descriptives on all quantitative variables- screening'.
+ 167  0  *descriptives variables=all.
+ 168  0  
+ 169  0  *****************************************************************************************************************.
+ 170  0  **CREATE FILE WITH ALL DATA FROM PROBANDS*.
+ 171  0  get file= '\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_evaluated.sav'.
+ 172  0  select if (person='01').
+ 173  0  sort cases by familyid.
+ 174  0  match files file=*/in=eval/file= '\\Dccmaincsfs\Data2\PARK1\COREPD\SPSS\COREPD_SCREEN.SAV'/in=screen
+ 175  0    /by familyid.
+ 176  0  cross screen by eval.
+ 177  0  
+File #1
+     KEY: 01114401
+File #2
+     KEY: 01114401
+
+
+Crosstabs
+Notes
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:38:01                                                                                                           |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Comments                                             |                                                                                                                               |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Input                 |Filter                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|1185                                                                                                                           |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                                                                            |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics for each table are based on all the cases with valid data in the specified range(s) for all variables in each table.|
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Syntax                                               |cross screen by eval.                                                                                                          |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.13                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.13                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Dimensions Requested          |2                                                                                                                              |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cells Available               |524245                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+
+\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_evaluated.sav
+
+Warnings
+|-----------------------------------------------------------------------------------------------------------------------------------------|
+|Duplicate key in a file.  The BY variables do not uniquely identify each case on the indicated file.  Please check the results carefully.|
+|-----------------------------------------------------------------------------------------------------------------------------------------|
+|Duplicate key in a file.  The BY variables do not uniquely identify each case on the indicated file.  Please check the results carefully.|
+|-----------------------------------------------------------------------------------------------------------------------------------------|
+
+Case Processing Summary
+|-------------|-------------------------------------------|
+|             |Cases                                      |
+|             |-------------|---------------|-------------|
+|             |Valid        |Missing        |Total        |
+|             |-----|-------|-------|-------|-----|-------|
+|             |N    |Percent|N      |Percent|N    |Percent|
+|-------------|-----|-------|-------|-------|-----|-------|
+|screen * eval|1185 |100.0% |0      |0.0%   |1185 |100.0% |
+|---------------------------------------------------------|
+
+screen * eval Crosstabulation
+Count 
+|--------|--------|-----|
+|        |eval    |Total|
+|        |----|---|     |
+|        |0   |1  |     |
+|------|-|----|---|-----|
+|screen|1|959 |226|1185 |
+|--------|----|---|-----|
+|Total   |959 |226|1185 |
+|-----------------------|
+
+
+ 178  0  var labels eval 'Subject was EVALUATED, based on data types available'.
+ 179  0  value labels eval 0 'No' 1 'Yes'.
+ 180  0  
+ 181  0  value labels site '01' 'Columbia' '02' 'Rush' '03' 'Penn' '04' 'Beth Is' '05' 'Parkinson Inst' '06' 'Marshfield'
+ 182  0   '07' 'Struthers' '08' 'Duke' '09' 'IND' '10' 'J Hopkins' '11' 'Glenbrook' '12' 'Neurohealth' '13' 'U Tenn' '14' 'Puerto Ri
+            co'.
+ 183  0  
+ 184  0  
+ 185  0  
+ 186  0  save outfile=  '\\Dccmaincsfs\Data2\PARK1\COREPD\SPSS\COREPD_PROBAND.SAV'
+ 187  0    /keep= familyid site famid person eval intakedt onset_dt dob school ethnic hispanic
+ 188  0               intake elig status coriel folstein famhist2 updrs updrs_s demog surgery
+ 189  0               neuro phq phqbksum neuropsy medhist riskfact blessed tremor deathinf drug
+ 190  0               medform cdr beck diagnose scopi video
+ 191  0    pdepi_en to spouse
+ 192  0    st_intvw to st_rela
+ 193  0    ma_mat pa_mat ma_pat pa_pat s_prot s_cath
+ 194  0    s_jew s_muslim s_hindu s_none s_other1 s_unk ashken sephar
+ 195  0    g_prot g_chat g_jew g_muslim g_hindu g_none g_other1 g_unk
+ 196  0    resttr
+ 197  0    actiontr brady stiff balance shuffle armswing facialex speech dystonia
+ 198  0    posture microgr freezing memory hall depress numbness legdrag s_other
+ 199  0    sec_symp yes_symp begin_sd hall_b4 hall_dt prior_dx since_dx mem_imp mem_dt
+ 200  0    dx_pd_dt curr_med sinemet si10_100 si25_100 si25_250 si_cr50 si_cr25 stalevo
+ 201  0    stal_50 stal_100 stal_150 permax per_05 per_25 per_100 parlodel par_25
+ 202  0    par_50 mirapex mira_125 mira_25 mira10 mira15 mira5 requip req_025 req_05
+ 203  0    req_10 req_20 req_30 req_40 req_50 ha_w_rx ha_wo_rx pall pall_dt thala
+ 204  0    thala_dt fetal fetal_dt stim stim_dt trb_slp pain_leg pain_imp hallwake
+ 205  0    dreams sev_symp sev_am sev_mild sev_sche disab_pd wake_up xcs_slp dyskin
+ 206  0    onset_dy dose_lev diurnal urin8_d urin8_n bowel_d bowel_w bowel_m dizzy15
+ 207  0    ever_fnt orth_hyp xcs_swt mscl_crp cramp_md unex_sen rdx_sml sweet_to
+ 208  0    taste_ch panc_atk panc_off smk_ever smk_curr peri_mp surg_mp surg_mpa
+ 209  0    surg_dat comp_mp age_mp age_men able_erc noct_erc rs_neuro rs_news rs_conf
+ 210  0    rs_otr dccdate     inter date dem_ethn dem_hisp dem_grad dem_lern dem_hand dem_bplc dem_us
+ 211  0    dem_msta dem_hom1 dem_hom2 dem_hom3 dem_hom4 cr_inter cr_date name cr_zip
+ 212  0    cr_notus cr_orig cr_circl cr_ethnc amriindn blafricn pficilnd asian cr_whith
+ 213  0    cr_unkno cr_other cr_famhi cr_fothr cr_othid cr_age cr_bdate cr_gend cr_pd
+ 214  0    cr_lewy cr_palsy cr_atro cr_othr cr_ageon cr_asy_o cr_brady cr_activ
+ 215  0    cr_restt cr_post cr_rigid cr_gaitd cr_resp cr_strok cr_head cr_encep
+ 216  0    cr_oculo cr_neuro cr_susta cr_supra cr_cereb cr_gaze cr_fluct cr_hallu
+ 217  0    cr_dysa cr_memor cr_axial cr_oth cr_dx_ot diagnoby coll_by cr_smoke cr_yrs
+ 218  0    cr_hand cr_mmss cr_updrs cr_hoehn co_inter co_date co_zip co_notus co_orig co_circl co_ethnc co_whith co_unkno
+ 219  0    co_other co_famhi co_fothr co_othid co_age co_bdate co_gend co_spous co_pop
+ 220  0    co_rel co_alz1 co_amyo1 co_atax1 co_aut1 co_bip1 co_brai1 co_canc1 co_deme1
+ 221  0    co_depr1 co_diab1 co_dyst1 co_epil1 co_hype1 co_hear1 co_migr1 co_memo1
+ 222  0    co_ms1 co_musc1 co_park1 co_schi1 co_stro1 co_suic1 co_alz2 co_amyo2
+ 223  0    co_atax2 co_aut2 co_bip2 co_brai2 co_canc2 co_deme2 co_depr2 co_diab2
+ 224  0    co_dyst2 co_epil2 co_hype2 co_hear2 co_migr2 co_memo2 co_ms2 co_musc2
+ 225  0    co_park2 co_schi2 co_stro2 co_suic2 co_smoke co_yrs co_hand co_mmss co_updrs
+ 226  0    co_hoehn su_intvw su_date su_days su_oper su_past
+ 227  0    su_limit ex_inter ex_date ex_consc ex_spch ex_mem ex_visul ex_eye ex_cn
+ 228  0    ex_motor ex_sens ex_cordi ex_move ex_gait ex_reflx ex_tone ex_acuty ex_hear
+ 229  0    ex_bpsys ex_bpdia ex_weigh ex_h_ft ex_h_in fointer fodate foyear fomonth
+ 230  0    foweek fosesson foplace fofloor focity focounty fostate foapple fotable
+ 231  0    fopenny fotrial fospelld fospelll fospellr fospello fospellw fowatch
+ 232  0    fopencil fophrse fowithrh foldhalf foinlap foread fomemapp fomemtab fomempny
+ 233  0    fowrite fodraw foscore ph_intvw ph_date ph_begtm ph_medic ph_inte1 ph_down
+ 234  0    ph_asle1 ph_tire1 ph_appei ph_bad ph_conc1 ph_move ph_physi ph_dead1
+ 235  0    ph_suici ph_might ph_inte2 ph_depre ph_asle2 ph_energ ph_poor ph_failu
+ 236  0    ph_conc2 ph_slow ph_dead2 ph_sever ph_more ph_age ph_hosp ph_ever ph_age2
+ 237  0    ph_empty ph_discr ph_enjoy ph_manic ph_attac ph_befor ph_age3 ph_sudde
+ 238  0    ph_bothe ph_short ph_heart ph_chest ph_sweat ph_choke ph_hotfl ph_upset
+ 239  0    ph_dizzy ph_tingl ph_shake ph_dying ph_age4 ph_onedg ph_restl ph_tire2
+ 240  0    ph_aches ph_asle3 ph_conc3 ph_irrit ph_anxie ph_still ph_tired ph_sore
+ 241  0    ph_asle4 ph_conc4 ph_annoy ph_age5 ph_anxio ph_age6 ph_eatin ph_perio
+ 242  0    ph_often ph_vomit ph_dose ph_fast ph_exerc ph_gain ph_alco ph_mor2 ph_drink
+ 243  0    ph_stop ph_stnum ph_hung ph_hunum ph_late ph_lanum ph_along ph_alnum
+ 244  0    ph_drove ph_drnum ph_stom ph_back ph_arm ph_cramp ph_head ph_cpain ph_dizzi
+ 245  0    ph_faint ph_race ph_breat ph_sex ph_const ph_gas ph_ener ph_sleep ph_early
+ 246  0    ph_night ph_age7 ph_happy ph_worry ph_age8 ph_activ ph_extre ph_age9
+ 247  0    ph_dirty ph_voice ph_inclu ph_true ph_brlif ph_prob
+ 248  0    sum_inte sum_date sum_synd sum_othr sum_pnic sum_anxi sum_buli sum_bing
+ 249  0    sum_alco sum_soma sum_mini sum_mild sum_mode sum_sevr sum_chec sum_clea
+ 250  0    sum_ritu sum_hoar sum_path sum_tota ns_inter ns_date ns_lense ns_avilb
+ 251  0    ns_audit ns_haid ns_hand ns_swtch ns_test ns_sex ns_age ns_educ ns_flang
+ 252  0    ns_hemi ns_mms ns_t1r ns_t1st ns_t5r ns_t5st ns_t15r ns_t15st ns_tbr ns_tbst
+ 253  0    ns_sfree ns_sfrst ns_scued ns_scust ns_lfree ns_lfrst ns_lcued ns_lcust
+ 254  0    ns_repit ns_repst ns_intru ns_intst ns_prime ns_prist ns_middl ns_midst
+ 255  0    ns_recen ns_recst ns_hits ns_hitst ns_false ns_falst ns_vri ns_vrist ns_vrii
+ 256  0    ns_vriis ns_reten ns_tra ns_trail ns_traer ns_trb ns_trbil ns_trber ns_wordr
+ 257  0    ns_wordc ns_wordt ns_wordi ns_col_r ns_col_c ns_col_t ns_col_i ns_colwr
+ 258  0    ns_colwc ns_colwt ns_colwi ns_int_r ns_int_c ns_int_t ns_int_i ns_bensh
+ 259  0    ns_benco ns_cflrw ns_cflco ns_cflil ns_catrw ns_catre ns_catz ns_bvrtm
+ 260  0    ns_bvrtr ns_f_r ns_f_rz ns_f_l ns_f_lz hi_intvw hi_date hi_hype1 hi_diab1
+ 261  0    hi_myoc1 hi_chfa1 hi_arrh1 hi_hcho1 hi_copd1 hi_thyr1 hi_live1 hi_rena1
+ 262  0    hi_ulce1 hi_vasc1 hi_stro1 hi_seiz1 hi_arth1 hi_hipf1 hi_syph1 hi_drug1
+ 263  0    hi_gauc1 hi_ms1 hi_b121 hi_hyce1 hi_pneu1 hi_tube1 hi_canc1 hi_lung1
+ 264  0    hi_brea1 hi_colo1 hi_pros1 hi_mela1 hi_skin1 hi_ovar1 hi_uter1 hi_cerv1
+ 265  0    hi_leuk1 hi_lymp1 hi_thy_1 hi_lepr1 hi_othe1 hi_hype2 hi_diab2 hi_myoc2
+ 266  0    hi_chfa2 hi_arrh2 hi_hcho2 hi_copd2 hi_thyr2 hi_live2 hi_rena2 hi_ulce2
+ 267  0    hi_vasc2 hi_stro2 hi_seiz2 hi_arth2 hi_hipf2 hi_syph2 hi_drug2 hi_gauc2
+ 268  0    hi_ms2 hi_b122 hi_hyce2 hi_pneu2 hi_tube2 hi_canc2 hi_lung2 hi_brea2
+ 269  0    hi_colo2 hi_pros2 hi_mela2 hi_skin2 hi_ovar2 hi_uter2 hi_cerv2 hi_leuk2
+ 270  0    hi_lymp2 hi_thy_2 hi_lepr2 hi_othe2 hi_catsc hi_ctdt hi_mri hi_mridt
+ 271  0    hi_trbsl hi_pain hi_pace hi_hall hi_dream hi_wake hi_drows hi_urind hi_urinn
+ 272  0    hi_bowld hi_bowlw hi_bowlm hi_dizzy hi_faint hi_lowbl hi_sweat hi_cramp
+ 273  0    hi_relat hi_unexp hi_smell hi_sweet hi_taste hi_perim hi_surgi hi_ovary
+ 274  0    hi_ovadt hi_compl hi_age hi_erect hi_nrect hi_sever hi_requi hi_remai
+ 275  0    hi_take hi_on hi_consi hi_dysk hi_inter hi_dose hi_panic hi_off
+ 276  0    rf_intvw rf_date rf_smcig rf_100 rf_old rf_first
+ 277  0    rf_began rf_smoke rf_averg rf_life rf_quit rf_hours rf_times rf_now rf_peak
+ 278  0    rf_stops rf_hwold rf_hard rf_sevrl rf_nicot rf_smokc rf_oldc rf_stilc
+ 279  0    rf_stopc rf_manyc rf_smokp rf_oldp rf_stilp rf_stopp rf_manyp rf_instc
+ 280  0    rf_insts rf_brewc rf_brews rf_esprc rf_esprs rf_gteac rf_gteas rf_bteac
+ 281  0    rf_bteas rf_hcafc rf_hcafs rf_colac rf_colas rf_dietc rf_diets rf_coffc
+ 282  0    rf_coffs rf_start rf_stop rf_consu rf_yeary rf_yeara rf_curnt rf_beer
+ 283  0    rf_wine rf_liqor rf_lasty rf_lasta rf_rec rf_rect rf_recm rf_prvnt rf_rdate
+ 284  0    rf_vigr rf_vigti rf_vigm rf_mode rf_modti rf_modm rf_lite rf_light rf_ligtm
+ 285  0    rf_hdinj rf_1spec rf_1date rf_1unco rf_1hosp rf_2spec rf_2date rf_2unco
+ 286  0    rf_2hosp rf_3spec rf_3date rf_3unco rf_3hosp rf_empln rf_occup rf_jtitl
+ 287  0    rf_indtr rf_job_y rf_job_m bl_intvw bl_date bl_chor bl_chorp bl_money
+ 288  0    bl_monyp bl_thing bl_thinp bl_way bl_wayp bl_neigh bl_neibp bl_place
+ 289  0    bl_placp bl_remem bl_remep bl_dwell bl_dwelp bl_eat bl_eatp bl_dres bl_dresp
+ 290  0    bl_cont bl_contp bl_comp bl_rater bl_compl bl_acur tr_intvw tr_date tr_write
+ 291  0    tr_shake tr_cntol tr_peop tr_doct tr_ddiag tr_head tr_uncnt tr_rleg tr_lleg
+ 292  0    tr_voice tr_mouth tr_chest tr_other tr_tremb tr_hand tr_drink tr_fork
+ 293  0    tr_spill tr_buton interv dod tod lodeath pneum_i infec_i mayoc_i cardio_i
+ 294  0    pulmon_i cerbr_i malig_i parkin_i alzhe_i cause_i unknon_i pneum_u infec_u
+ 295  0    mayoc_u cardio_u pulmon_u cerbr_u malig_u parkin_u alzhe_u cause_u unknon_u
+ 296  0    autopsy lautopsy psource ssource dr_inter dr_date time dr_who dr_medic takemedi dr_trial dr_speci si_take
+ 297  0    si_blue si_bluet si_yelo si_yelot si_lblu si_lblut si_cr50 si_cr50t si_cr25
+ 298  0    si_cr25t si_help si_prob1 si_unct1 si_conf1 si_naus1 si_othr1 si_amnt
+ 299  0    si_week si_month si_year si_chang si_ever si_start si_stop si_unct2 si_conf2
+ 300  0    si_naus2 si_othr2 si_dosag st_take st_50 st_50t st_100 st_100t st_150
+ 301  0    st_150t st_help st_prob1 st_unct1 st_conf1 st_naus1 st_othr1 st_amnt st_week
+ 302  0    st_month st_year st_chang st_ever st_start st_stop st_unct2 st_conf2
+ 303  0    st_naus2 st_othr2 st_dosag pe_take pe_05 pe_05t pe_25gr pe_25t pe_1pink
+ 304  0    pe_1pint pe_help pe_prob1 pe_unct1 pe_conf1 pe_naus1 pe_othr1 pe_amnt
+ 305  0    pe_week pe_month pe_year pe_chang pe_ever pe_start pe_stop pe_unct2 pe_conf2
+ 306  0    pe_naus2 pe_othr2 pe_dosag pa_take pa_wht pa_whtt pa_5mg pa_5t pa_help
+ 307  0    pa_prob1 pa_unct1 pa_conf1 pa_naus1 pa_othr1 pa_amnt pa_week pa_month
+ 308  0    pa_year pa_chang pa_ever pa_start pa_stop pa_unct2 pa_conf2 pa_naus2
+ 309  0    pa_othr2 pa_dosag mi_take mi_125 mi_125t mi_25 mi_25t mi_1 mi_1t mi_15
+ 310  0    mi_15t mi_help mi_prob1 mi_unct1 mi_conf1 mi_naus1 mi_othr1 mi_amnt mi_week
+ 311  0    mi_month mi_year mi_chang mi_ever mi_start mi_stop mi_unct2 mi_conf2
+ 312  0    mi_naus2 mi_othr2 mi_dosag re_take re_25 re_25t re_5y re_5yt re_1 re_1t re_2
+ 313  0    re_2t re_3 re_3t re_4 re_4t re_5 re_5t re_help re_prob1 re_unct1 re_conf1
+ 314  0    re_naus1 re_othr1 re_amnt re_week re_month re_year re_chang re_ever re_start
+ 315  0    re_stop re_unct2 re_conf2 re_naus2 re_othr2 re_dosag sy_take sy_100rd
+ 316  0    sy_100t sy_help sy_prob1 sy_unct1 sy_conf1 sy_naus1 sy_othr1 sy_amnt sy_week
+ 317  0    sy_month sy_year sy_chang sy_ever sy_start sy_stop sy_unct2 sy_conf2
+ 318  0    sy_naus2 sy_othr2 sy_dosag se_take se_5mg se_5t se_help se_prob1 se_unct1
+ 319  0    se_conf1 se_naus1 se_othr1 se_amnt se_week se_month se_year se_chang se_ever
+ 320  0    se_start se_stop se_unct2 se_conf2 se_naus2 se_othr2 se_dosag co_take
+ 321  0    co_200mg co_200t co_help co_prob1 co_unct1 co_conf1 co_naus1 co_othr1
+ 322  0    co_amnt co_week co_month co_year co_chang co_ever co_start co_stop co_unct2
+ 323  0    co_conf2 co_naus2 co_othr2 co_dosag ta_take ta_100mg ta_100t ta_200mg
+ 324  0    ta_200t ta_help ta_prob1 ta_unct1 ta_conf1 ta_naus1 ta_othr1 ta_amnt ta_week
+ 325  0    ta_month ta_year ta_chang ta_ever ta_start ta_stop ta_unct2 ta_conf2
+ 326  0    ta_naus2 ta_othr2 ta_dosag ar_take ar_2mg ar_2t ar_5tab ar_5tbt ar_5cap
+ 327  0    ar_5cat ar_help ar_prob1 ar_unct1 ar_conf1 ar_naus1 ar_othr1 ar_amnt ar_week
+ 328  0    ar_month ar_year ar_chang ar_ever ar_start ar_stop ar_unct2 ar_conf2
+ 329  0    ar_naus2 ar_othr2 ar_dosag ak_take ak_5mg ak_5t ak_help ak_prob1 ak_unct1
+ 330  0    ak_conf1 ak_naus1 ak_othr1 ak_amnt ak_week ak_month ak_year ak_chang ak_ever
+ 331  0    ak_start ak_stop ak_unct2 ak_conf2 ak_naus2 ak_othr2 ak_dosag cg_take
+ 332  0    cg_5tab cg_5tbt cg_1tab cg_1t cg_2tab cg_2t cg_5mgt cg_5mt cg_help cg_prob1
+ 333  0    cg_unct1 cg_conf1 cg_naus1 cg_othr1 cg_amnt cg_week cg_month cg_year
+ 334  0    cg_chang cg_ever cg_start cg_stop cg_unct2 cg_conf2 cg_naus2 cg_othr2
+ 335  0    cg_dosag ke_take ke_2mg ke_2t ke_5mg ke_5t ke_help ke_prob1 ke_unct1
+ 336  0    ke_conf1 ke_naus1 ke_othr1 ke_amnt ke_week ke_month ke_year ke_chang ke_ever
+ 337  0    ke_start ke_stop ke_unct2 ke_conf2 ke_naus2 ke_othr2 ke_dosag do_take
+ 338  0    do_10mg do_10t do_20mg do_20t do_help do_prob1 do_unct1 do_conf1 do_naus1
+ 339  0    do_othr1 do_amnt do_week do_month do_year do_chang do_ever do_start do_stop
+ 340  0    do_unct2 do_conf2 do_naus2 do_othr2 do_dosag ai_take ai_5mg ai_5t ai_10mg
+ 341  0    ai_10t ai_help ai_prob1 ai_naus1 ai_othr1 ai_amnt ai_week ai_month ai_year
+ 342  0    ai_chang ai_ever ai_start ai_stop ai_naus2 ai_othr2 ai_dosag ex_take
+ 343  0    ex_yelow ex_yelot ex_orng ex_orngt ex_red ex_redt ex_ogred ex_ogret ex_oral
+ 344  0    ex_oralt ex_help ex_prob1 ex_naus1 ex_othr1 ex_amnt ex_week ex_month ex_year
+ 345  0    ex_chang ex_ever ex_start ex_stop ex_naus2 ex_othr2 ex_dosag rm_take
+ 346  0    rm_white rm_whitt rm_pink rm_pinkt rm_orbrn rm_orbrt rm_help rm_prob1
+ 347  0    rm_naus1 rm_othr1 rm_amnt rm_week rm_month rm_year rm_chang rm_ever rm_start
+ 348  0    rm_stop rm_naus2 rm_othr2 rm_dosag na_take na_5mg na_5t na_10mg na_10t
+ 349  0    na_help na_prob1 na_naus1 na_othr1 na_amnt na_week na_month na_year na_chang
+ 350  0    na_ever na_start na_stop na_naus2 na_othr2 na_dosag
+ 351  0    mf_inter mf_date mf_elct mf_elcty mf_elctn mf_eside mf_cancr mf_crela
+ 352  0    mf_hormn mf_hspec mf_pill mf_pspec cdr_dt cdr_mem cdr_ori cdr_jud cdr_com
+ 353  0    cdr_home cdr_care cdr_tot un_inter un_date un_restf un_actnf un_bradf
+ 354  0    un_stiff un_balnf un_gaitf un_swinf un_exprf un_volf un_dystf un_postf
+ 355  0    un_micrf un_frezf un_lossf un_haluf un_dpref un_numbf un_dragf un_othrf
+ 356  0    un_rests un_actns un_brads un_stifs un_balns un_gaits un_swins un_exprs
+ 357  0    un_vols un_dysts un_posts un_micrs un_frezs un_losss un_halus un_dpres
+ 358  0    un_numbs un_drags un_othrs un_1date un_intel un_thout un_depre un_motiv
+ 359  0    un_spech un_saliv un_swalo un_hwrit un_cut un_dress un_hygn un_turn un_fall
+ 360  0    un_frez un_walk un_tremr un_treml un_sens un_motor un_post1 un_post3 un_bp
+ 361  0    un_hallu un_prior un_fyear un_spch un_facil un_lips un_rarm un_larm un_rleg
+ 362  0    un_lleg un_rarmp un_larmp un_neck un_rarmr un_larmr un_rlegr un_llegr
+ 363  0    un_rhand un_lhand un_rhndm un_lhndm un_rhndr un_lhndr un_rlega un_llega
+ 364  0    un_chair un_postr un_gait un_stabl un_brady un_pheno un_evalu un_hoehn
+ 365  0    un_adl un_dura un_disab un_pain un_morn un_predi un_unpre un_sudde un_propo
+ 366  0    un_anox un_sleep un_ortho bk_inter bk_date bk_sad bk_pesim bk_fail bk_plsr
+ 367  0    bk_guilt bk_pnish bk_dlike bk_critc bk_sui bk_cry bk_agit bk_int bk_indec
+ 368  0    bk_worth bk_enrgy bk_sleep bk_irrit bk_appet bk_diffi bk_tire bk_sex
+ 369  0     di_date di_intvw di_conf di_cogn di_ad di_other di_cutof di_above di_below
+ 370  0    di_concu di_low di_noapp di_monly di_mmore di_singl di_multi di_meet
+ 371  0    di_reduc di_chang di_ment di_evid di_alco di_drug di_meds di_infec di_cond
+ 372  0    di_alz di_park di_mix di_conc di_unus di_deme di_strd di_focal di_secon
+ 373  0    di_creut di_front di_ence di_unkn di_crit di_brady di_rigid di_rest
+ 374  0    di_ldopa di_asym di_post di_neuro di_sever di_freez di_hallu di_hist
+ 375  0    di_supra di_pyram di_cereb di_aprax di_motor di_norm di_pd di_possi di_det
+ 376  0    di_proet di_poset di_proaz di_dempa di_demle di_othde di_mds di_ods di_panic
+ 377  0    di_oas di_bulim di_binge di_alcoh di_mini di_mild di_mode di_seve di_obbe
+ 378  0    di_othdi di_strok di_schiz di_cedt di_ce di_mrdt di_mr di_vtdt di_vt
+ 379  0    di_oth di_fhqdt di_fhq sc_intvw sc_date sc_worry sc_germ sc_order
+ 380  0    sc_thogh sc_impls sc_food sc_same sc_check sc_clean sc_collt sc_steal
+ 381  0    sc_count sc_dirty sc_rearr sc_sevrl sc_avoid sc_ritul sc_done sc_animl
+ 382  0    sc_throw sc_fail sc_peopl sc_fire sc_bed sc_money sc_strng sc_later sc_plagu
+ 383  0    sc_wash sc_break sc_rid sc_helth sc_silly sc_crazy sc_lock sc_wear sc_publc
+ 384  0    sc_back sc_junk sc_lettr sc_task sc_aprch sc_hands sc_exact sc_over sc_need
+ 385  0    sc_urge sc_items sc_arang sc_spoil sc_angry sc_call sc_car sc_image sc_mind
+ 386  0    sc_idea sc_repet vi_video vi_rest vi_sus_r vi_2irre vi_2osci vi_sus_l
+ 387  0    vi_3irre vi_3osci vi_late vi_ampl vi_fnfr vi_airre vi_aosci vi_arig vi_alate
+ 388  0    vi_alen vi_arep vi_fnfl vi_birre vi_bosci vi_brig vi_blate vi_blen vi_brep
+ 389  0    vi_pourr vi_cirre vi_cosci vi_crig vi_clate vi_clen vi_crep vi_pourl
+ 390  0    vi_dirre vi_dosci vi_drig vi_dlate vi_dlen vi_drep vi_spo_r vi_eirre
+ 391  0    vi_eosci vi_erig vi_elate vi_elen vi_erep vi_spo_l vi_firre vi_fosci vi_frig
+ 392  0    vi_flate vi_flen vi_frep vi_dri_r vi_girre vi_gosci vi_grig vi_glate vi_glen
+ 393  0    vi_grep vi_dri_l vi_hirre vi_hosci vi_hrig vi_hlate vi_hlen vi_hrep vi_ach_r
+ 394  0    vi_iirre vi_iosci vi_irig vi_ilate vi_ilen vi_irep vi_ach_l vi_jirre
+ 395  0    vi_josci vi_jrig vi_jlate vi_jlen vi_jrep vi_rrank vi_srank vi_krank vi_et
+ 396  0    vi_dysto vi_body vi_etdef vi_etpro vi_etpos vi_pd vi_dyst vi_myocl vi_norm
+ 397  0    vi_based
+ 398  0             si_inter si_date si_intel si_thout si_depre si_motiv si_spech si_saliv
+ 399  0    si_swalo si_hwrit si_cut si_dress si_hygn si_turn si_fall si_frez si_walk
+ 400  0    si_tremo si_sens si_spch si_facil si_lips si_rarm si_larm si_rleg si_lleg
+ 401  0    si_rarmp si_larmp si_neck si_rarmr si_larmr si_rlegr si_llegr si_rhand
+ 402  0    si_lhand si_rhndm si_lhndm si_rhndr si_lhndr si_rlega si_llega si_chair
+ 403  0    si_postr si_gait si_stabl si_brady si_dura si_disab si_pain si_morn si_predi
+ 404  0    si_sipre si_sudde si_propo si_anox si_sleep si_ortho si_bpse1 si_bpse2
+ 405  0    si_bpsu1 si_bpsu2 si_bpst1 si_bpst2 si_weigh si_pseat si_pstan si_hoehb
+ 406  0    si_hoehw si_adlpd si_adldy si_evalu
+ 407  0           fs_date fs_int pd_gmptr pd_gfptr pd_gmmtr pd_gfmtr pd_hlfsb
+ 408  0    pd_cosin pd_other livegm_p livegf_p livegm_m livegr_m livehsb livehsib
+ 409  0    livecou liveothr
+ 410  0  .
+ 411  0  get file= '\\Dccmaincsfs\Data2\PARK1\COREPD\SPSS\COREPD_PROBAND.SAV'.
+ 412  0  ***************************************************************************************************.
+ 413  0  * CREATE FILE WITH FAMILY MEMBER ONLY DATA, by subsetting the EVALUATED file
+ 414  0  * and merging in FHQ file*.
+ 415  0  **********************************************************************************************************.
+ 416  0  get file= '\\Dccmaincsfs\Data2\park1\corepd\SPSS\fhq.sav'.
+ 417  0  string site (a2) famid(a4) .
+ 418  0  compute site=substr(familyid,1,2).
+ 419  0  compute famid=substr(familyid,3,4).
+ 420  0  compute persn=subid.
+ 421  0  format persn (f8.0).
+ 422  0  sort cases by site famid persn.
+ 423  0  
+ 424  0  
+ 425  0  save outfile=  '\\Dccmaincsfs\Data2\park1\corepd\SPSS\fhq2.sav'.
+ 426  0  
+ 427  0  get file= '\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_evaluated.sav'.
+ 428  0  select if (person ne '01').
+ 429  0  compute persn=number(person,f8.0).
+ 430  0  format persn (f8.0).
+ 431  0  freq persn.
+ 432  0  
+ 433  0  
+
+
+Frequencies
+Notes
+|-----------------------------------------------------|----------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:38:02                                      |
+|-----------------------------------------------------|----------------------------------------------------------|
+|Comments                                             |                                                          |
+|----------------------|------------------------------|----------------------------------------------------------|
+|Input                 |Data                          |\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_evaluated.sav|
+|                      |------------------------------|----------------------------------------------------------|
+|                      |Filter                        |<none>                                                    |
+|                      |------------------------------|----------------------------------------------------------|
+|                      |Weight                        |<none>                                                    |
+|                      |------------------------------|----------------------------------------------------------|
+|                      |Split File                    |<none>                                                    |
+|                      |------------------------------|----------------------------------------------------------|
+|                      |N of Rows in Working Data File|565                                                       |
+|----------------------|------------------------------|----------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.       |
+|                      |------------------------------|----------------------------------------------------------|
+|                      |Cases Used                    |Statistics are based on all cases with valid data.        |
+|-----------------------------------------------------|----------------------------------------------------------|
+|Syntax                                               |freq persn.                                               |
+|----------------------|------------------------------|----------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.09                                               |
+|                      |------------------------------|----------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.08                                               |
+|----------------------------------------------------------------------------------------------------------------|
+
+Statistics
+persn 
+|-|-------|---|
+|N|Valid  |565|
+| |-------|---|
+| |Missing|0  |
+|-------------|
+
+persn
+|-----------|---------|-------|-------------|------------------|
+|           |Frequency|Percent|Valid Percent|Cumulative Percent|
+|-----|-----|---------|-------|-------------|------------------|
+|Valid|2    |38       |6.7    |6.7          |6.7               |
+|     |-----|---------|-------|-------------|------------------|
+|     |3    |66       |11.7   |11.7         |18.4              |
+|     |-----|---------|-------|-------------|------------------|
+|     |4    |88       |15.6   |15.6         |34.0              |
+|     |-----|---------|-------|-------------|------------------|
+|     |5    |72       |12.7   |12.7         |46.7              |
+|     |-----|---------|-------|-------------|------------------|
+|     |6    |62       |11.0   |11.0         |57.7              |
+|     |-----|---------|-------|-------------|------------------|
+|     |7    |59       |10.4   |10.4         |68.1              |
+|     |-----|---------|-------|-------------|------------------|
+|     |8    |42       |7.4    |7.4          |75.6              |
+|     |-----|---------|-------|-------------|------------------|
+|     |9    |33       |5.8    |5.8          |81.4              |
+|     |-----|---------|-------|-------------|------------------|
+|     |10   |28       |5.0    |5.0          |86.4              |
+|     |-----|---------|-------|-------------|------------------|
+|     |11   |16       |2.8    |2.8          |89.2              |
+|     |-----|---------|-------|-------------|------------------|
+|     |12   |10       |1.8    |1.8          |91.0              |
+|     |-----|---------|-------|-------------|------------------|
+|     |13   |9        |1.6    |1.6          |92.6              |
+|     |-----|---------|-------|-------------|------------------|
+|     |14   |9        |1.6    |1.6          |94.2              |
+|     |-----|---------|-------|-------------|------------------|
+|     |15   |4        |.7     |.7           |94.9              |
+|     |-----|---------|-------|-------------|------------------|
+|     |16   |4        |.7     |.7           |95.6              |
+|     |-----|---------|-------|-------------|------------------|
+|     |17   |4        |.7     |.7           |96.3              |
+|     |-----|---------|-------|-------------|------------------|
+|     |18   |5        |.9     |.9           |97.2              |
+|     |-----|---------|-------|-------------|------------------|
+|     |20   |3        |.5     |.5           |97.7              |
+|     |-----|---------|-------|-------------|------------------|
+|     |21   |3        |.5     |.5           |98.2              |
+|     |-----|---------|-------|-------------|------------------|
+|     |22   |1        |.2     |.2           |98.4              |
+|     |-----|---------|-------|-------------|------------------|
+|     |23   |1        |.2     |.2           |98.6              |
+|     |-----|---------|-------|-------------|------------------|
+|     |27   |1        |.2     |.2           |98.8              |
+|     |-----|---------|-------|-------------|------------------|
+|     |28   |1        |.2     |.2           |98.9              |
+|     |-----|---------|-------|-------------|------------------|
+|     |30   |1        |.2     |.2           |99.1              |
+|     |-----|---------|-------|-------------|------------------|
+|     |31   |2        |.4     |.4           |99.5              |
+|     |-----|---------|-------|-------------|------------------|
+|     |47   |1        |.2     |.2           |99.6              |
+|     |-----|---------|-------|-------------|------------------|
+|     |48   |1        |.2     |.2           |99.8              |
+|     |-----|---------|-------|-------------|------------------|
+|     |49   |1        |.2     |.2           |100.0             |
+|     |-----|---------|-------|-------------|------------------|
+|     |Total|565      |100.0  |100.0        |                  |
+|--------------------------------------------------------------|
+
+
+ 434  0  match files file='\\Dccmaincsfs\Data2\park1\corepd\SPSS\fhq2.sav'/in=fhq2/ file=*/in=evalx/by site famid persn.
+ 435  0  cross evalx by fhq2.
+ 436  0  
+File #2
+     KEY: 01      1238           4
+File #1
+     KEY: 14      1403           9
+
+
+Crosstabs
+Notes
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:38:03                                                                                                           |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Comments                                             |                                                                                                                               |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Input                 |Filter                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|1009                                                                                                                           |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                                                                            |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics for each table are based on all the cases with valid data in the specified range(s) for all variables in each table.|
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Syntax                                               |cross evalx by fhq2.                                                                                                           |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.08                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.08                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Dimensions Requested          |2                                                                                                                              |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cells Available               |524245                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+Warnings
+|-----------------------------------------------------------------------------------------------------------------------------------------|
+|Duplicate key in a file.  The BY variables do not uniquely identify each case on the indicated file.  Please check the results carefully.|
+|-----------------------------------------------------------------------------------------------------------------------------------------|
+|Duplicate key in a file.  The BY variables do not uniquely identify each case on the indicated file.  Please check the results carefully.|
+|-----------------------------------------------------------------------------------------------------------------------------------------|
+
+Case Processing Summary
+|------------|-------------------------------------------|
+|            |Cases                                      |
+|            |-------------|---------------|-------------|
+|            |Valid        |Missing        |Total        |
+|            |-----|-------|-------|-------|-----|-------|
+|            |N    |Percent|N      |Percent|N    |Percent|
+|------------|-----|-------|-------|-------|-----|-------|
+|evalx * fhq2|1009 |100.0% |0      |0.0%   |1009 |100.0% |
+|--------------------------------------------------------|
+
+evalx * fhq2 Crosstabulation
+Count 
+|-------|--------|-----|
+|       |fhq2    |Total|
+|       |----|---|     |
+|       |0   |1  |     |
+|-----|-|----|---|-----|
+|evalx|0|0   |444|444  |
+|     |-|----|---|-----|
+|     |1|100 |465|565  |
+|-------|----|---|-----|
+|Total  |100 |909|1009 |
+|----------------------|
+
+
+ 437  0  value labels site '01' 'Columbia' '02' 'Rush' '03' 'Penn' '04' 'Beth Is' '05' 'Parkinson Inst' '06' 'Marshfield'
+ 438  0   '07' 'Struthers' '08' 'Duke' '09' 'IND' '10' 'J Hopkins' '11' 'Glenbrook' '12' 'Neurohealth' '13' 'U Tenn' '14' 'Puerto Ri
+            co'.
+ 439  0  .
+ 440  0  
+ 441  0  save outfile= '\\Dccmaincsfs\Data2\park1\corepd\SPSS\COREPD_FAMILY_MEMBER.sav'
+ 442  0    /keep= familyid famid site persn fhq2 evalx  dem_sex dem_age dem_dob ethnic hispanic fh_inter to vi_based
+ 443  0   .
+ 444  0  get file= '\\Dccmaincsfs\Data2\park1\corepd\SPSS\COREPD_FAMILY_MEMBER.sav'.
+ 445  0  
+ 446  0  
+ 447  0  ****************************************************************************************************.
+ 448  0  **CREATE FILE WITH SCREEN & SPECIMEN TRACKING DATA **.
+ 449  0  * get FILE=  '\\Dccmaincsfs\Data1\corepd\swim\output\all.sav'.
+ 450  0  * string a (a2) b (a4) c (a2) f_pidx(a8).
+ 451  0  **eliminate dashes from F_PID***.
+ 452  0  * compute a=substr(f_pid,1,2).
+ 453  0  * compute b=substr(f_pid,4,7) .
+ 454  0  *compute c=substr(f_pid,9,10).
+ 455  0  *compute f_pidx=concat(a,b,c).
+ 456  0  **list f_PID a b c .
+ 457  0  **fix up an incorrectly entered id*.
+ 458  0  *if (f_pid='01109701') f_pidx='01109701'.
+ 459  0  *sort cases by f_pidx.
+ 460  0  *
+ 461  0  *
+ 462  0  *save outfile= '\\Dccmaincsfs\Data1\corepd\output\allx.sav'/drop=f_pid.
+ 463  0  *get file=  '\\Dccmaincsfs\Data1\corepd\output\allx.sav'/keep= f_pidx F_SiteID F_Dt F_Seq fcb F1_SC F1_1 F1_2 F1_3 F1_4 F1_
+            5 F1_6 F1_7 F1_8 pdgen1
+ 464  0  *  pdgen2 pdepi1 pdepi2 pdepi3 old_only F_Lock F2_SR F2_1 F2_2 F2_3 F2_4 F2_5
+ 465  0  *  F2_6 F2_7 F2_8 F2_9 F3_RS F3_1 F3_2 F3_3 F3_4 F3_5 F3_6 F3_7 F3_8 F3_9 F3_10
+ 466  0  *  F3_11 F3_12 DHPLC dhplc_dt DHPLCNUM PCR PCR_date PCR_N OLD_N/rename=(f_pidx =familyid).
+ 467  0  *
+ 468  0  *match files file=   '\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_screen.sav'/in=screen/file=*/in=specimen/by familyid.
+ 469  0  *cross screen by specimen.
+ 470  0  *
+ 471  0  *title 'COREPD subjects with screen but no SWIM specimen record'.
+ 472  0  *temporary.
+ 473  0  *select if (screen=1 and specimen=0).
+ 474  0  *list familyid.
+ 475  0  *
+ 476  0  *select if (screen=1).
+ 477  0  *save outfile= '\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_screen_plus_specimen.sav'.
+ 478  0  *
+ 479  0  ***Now match specimen data with Part II data***.
+ 480  0  *get file=  '\\Dccmaincsfs\Data1\corepd\output\allx.sav'/keep= f_pidx F_SiteID F_Dt F_Seq fcb F1_SC F1_1 F1_2 F1_3 F1_4 F1_
+            5 F1_6 F1_7 F1_8 pdgen1
+ 481  0  *  pdgen2 pdepi1 pdepi2 pdepi3 old_only F_Lock F2_SR F2_1 F2_2 F2_3 F2_4 F2_5
+ 482  0  *  F2_6 F2_7 F2_8 F2_9 F3_RS F3_1 F3_2 F3_3 F3_4 F3_5 F3_6 F3_7 F3_8 F3_9 F3_10
+ 483  0  *  F3_11 F3_12 DHPLC dhplc_dt DHPLCNUM PCR PCR_date PCR_N OLD_N/rename=(f_pidx =familyid).
+ 484  0  *match files file= '\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_evaluated.sav'/in=part2/file=*/in=specimen/by familyid.
+ 485  0  *cross part2 by specimen.
+ 486  0  *title 'COREPD subjects with part 2 but no SWIM specimen record'.
+ 487  0  *temporary.
+ 488  0  *select if (part2=1 and specimen=0).
+ 489  0  *list familyid.
+ 490  0  *select if (part2=1).
+ 491  0  *save outfile=  '\\Dccmaincsfs\Data2\park1\corepd\SPSS\corepd_evaluated_plus_specimen.sav'.
+ 492  0  **               /file=  '\\Dccmaincsfs\Data2\park1\corepd\SPSS\famhist1.sav'/in=famhist1.
+ 493  0  
+ 494  0  
+ 495  0  
+ 496  0  
+ 497  0  
+ 498  0  
+ 499  0  
+ 500  0  
+ 501  0  
+ 502  0  * End of INSERT and INCLUDE nesting level 01.
+

@@ -1,0 +1,16 @@
+﻿
+INSERT
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss8796\KOLLER_SPSS_to_SAS7610929118025554128.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  10  0  * Encoding: UTF-8.
+  11  0  _SET UNICODE=OFF.
+  12  0  
+  13  0  get file="\\Dccmaincsfs\Data1\KOLLER\SPSS\KOLLER.sav".
+  14  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\KOLLER\SAS\KOLLER.sas7bdat"
+  15  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  16  0  
+  17  0  
+  18  0  
+  19  0  * End of INSERT and INCLUDE nesting level 01.
+

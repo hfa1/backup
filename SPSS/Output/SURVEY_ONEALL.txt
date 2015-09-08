@@ -1,0 +1,1234 @@
+﻿
+INSERT
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss7812\SURVEY_ONEALL4361232290295350423.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  10  0  * Encoding: UTF-8.
+  11  0  _SET UNICODE=OFF.
+  12  0  
+  13  0  *PROGRAM:SURVEY.ONEALL.SPS*.
+  14  0  
+  15  0  *MODIFIED 27 DEC 2010 BY HOWARD TO MODIFY COHORT INDICATORS FOR 4TH FOLLOWUP
+  16  0  *AND NEW COHORT.
+  17  0  *ALSO ADD NEW STUDY INDICATOR (X) FOR 2009 COHORT AND ADD VALUE LABELS FOR ALL
+  18  0  *VALUES OF THE STUDY VARIABLE.
+  19  0  
+  20  0  **MODIFIED MAY 12 2009 BY HOWARD TO ADJUST FOR CONVERSION OF DATABASE
+  21  0  **TO MAKE ID_NUM THE CASEID*****.
+  22  0  **FOR ORIGINAL VERSION OF THIS PROGRAM SEE \\Dccmaincsfs\Data1\SURVEY\PROC\SURVEY PRE_CONVERSION FOLDER**.
+  23  0  
+  24  0  *BEGIN \\Dccmaincsfs\Data1\SURVEY\DAILY\ONEALL .
+  25  0  
+  26  0  *THIS PROGRAM MATCHES ONE-TIME INFO.
+  27  0  *FROM WHICAP AND SURVEY AND SORTS BY STUDYID.
+  28  0  
+  29  0  * A listing file '\\Dccmaincsfs\Data1\SURVEY\DAILY\ONEALL.LST' and the final SPSS data file
+  30  0  * '\\Dccmaincsfs\Data2\WHICAP1\ONE.SAV' will be generated after running
+  31  0  * \\Dccmaincsfs\Data1\BACKUP\PROC\PROC1.BAT (by HL 9/29/98).
+  32  0  
+  33  0  *Modified 20July2003 to match in death-related data.
+  34  0  *These files are created separately from the main retrieval and includes only
+  35  0  *those cases with valid data.
+  36  0  
+  37  0  *Modified 12Sept04 to clean up STATUS and DEAD *.
+  38  0  
+  39  0  *Modified 30 Sept 2012 to merge in education derived from neuropsych or med history forms
+  40  0  *for subjects missing b06 and missing education level from EDUCAT forms.
+  41  0  *-hfa.
+  42  0  
+  43  0  *Modified 30 Sept 2012 to put new family history data files into WHICAP1 on DATA2*.
+  44  0  *-hfa.
+  45  0  
+  46  0  *Modified 19 November 2012 to use CMS data for birth date, gender and race when BFORM1 data is not available*.
+  47  0  
+  48  0  ***************************************************************************************************************************
+            ************.
+  49  0  *BEGIN HERE*.
+  50  0  ***************************************************************************************************************************
+            ************.
+  51  0  GET FILE= '\\Dccmaincsfs\Data1\survey\OUTPUT\ONEWHIC.SAV'/rename (id_num=idx)/drop=dccwho .
+  52  0  string id_num (a6).
+  53  0  compute id_num=substr(idx,1,6).
+  54  0  sort cases by  id_num.
+
+Warning # 661 on line 54.  Command name: sort cases by
+The SUBSTR function is deprecated.  Consider using the CHAR.SUBSTR function.
+  55  0  SAVE OUTFILE=  '\\Dccmaincsfs\Data1\survey\OUTPUT\ONEWHIC2.SAV' /drop=idx.
+  56  0  get file=  '\\Dccmaincsfs\Data1\survey\OUTPUT\ONEWHIC2.SAV' .
+  57  0  
+  58  0  **3/8/2013--id_num reformatted from length 18 to 6 so that match will work (howard).
+  59  0  get file='\\Dccmaincsfs\Data1\survey\OUTPUT\ONESURV.SAV' /rename (id_num=idx)/drop=dccwho .
+  60  0  string id_num (a6).
+  61  0  compute id_num=substr(idx,1,6).
+  62  0  sort cases by  id_num.
+  63  0  save outfile=  '\\Dccmaincsfs\Data1\survey\OUTPUT\ONEsurv2.SAV' /drop=idx.
+  64  0  get file=  '\\Dccmaincsfs\Data1\survey\OUTPUT\ONEsurv2.SAV'.
+  65  0  
+  66  0  MATCH files FILE=  '\\Dccmaincsfs\Data1\survey\OUTPUT\ONEsurv2.SAV'
+  67  0            / FILE= '\\Dccmaincsfs\Data1\survey\OUTPUT\ONEWHIC2.SAV'
+  68  0             / BY id_num.
+  69  0  save outfile=  '\\Dccmaincsfs\Data1\survey\OUTPUT\ONEWHICSURV2.SAV'.
+  70  0  get file=   '\\Dccmaincsfs\Data1\survey\OUTPUT\ONEWHICSURV2.SAV'.
+  71  0  
+  72  0  ***match in info from death-related info in SURVEY database that may also have info
+  73  0  ***in the WHICAP database**.
+  74  0  ***3/8/2013: make sure ID_NUM is formatted a6 instead of a18--why is it being put out as a18?-Howard***.
+  75  0  get file=  '\\Dccmaincsfs\Data1\survey\output\zform_s.sav'/rename=id_num=idx.
+  76  0  string id_num (a6).
+  77  0  compute id_num=substr(idx,1,6).
+  78  0  sort cases by  id_num.
+  79  0  save outfile=   '\\Dccmaincsfs\Data1\survey\output\zform_sx.sav'drop=idx.
+  80  0  *.
+  81  0  get file=  '\\Dccmaincsfs\Data1\survey\output\neuropat_s.sav'/rename=id_num=idx.
+  82  0  string id_num (a6).
+  83  0  compute id_num=substr(idx,1,6).
+  84  0  sort cases by  id_num.
+  85  0  save outfile=   '\\Dccmaincsfs\Data1\survey\output\neuropat_sx.sav'drop=idx.
+  86  0  *.
+  87  0  get file=  '\\Dccmaincsfs\Data1\survey\output\perimort_s.sav'/rename=id_num=idx.
+  88  0  string id_num (a6).
+  89  0  compute id_num=substr(idx,1,6).
+  90  0  sort cases by  id_num.
+  91  0  save outfile=   '\\Dccmaincsfs\Data1\survey\output\perimort_sx.sav'drop=idx.
+  92  0  
+  93  0  
+  94  0  get file=   '\\Dccmaincsfs\Data1\survey\OUTPUT\ONEWHICSURV2.SAV'.
+  95  0  match files file= '\\Dccmaincsfs\Data1\survey\output\zform_sx.sav'/file=* /drop=z10 /by id_num.
+  96  0  match files file='\\Dccmaincsfs\Data1\survey\output\neuropat_sx.sav'/file=*/by id_num.
+  97  0  match files file='\\Dccmaincsfs\Data1\survey\output\perimort_sx.sav'/file=*/by id_num.
+  98  0  
+  99  0  save outfile='\\Dccmaincsfs\Data1\SURVEY\OUTPUT\junk.sav'.
+ 100  0  ********************************************************************************************.
+ 101  0  get file='\\Dccmaincsfs\Data1\SURVEY\OUTPUT\junk.sav'.
+ 102  0  
+ 103  0  *INTEGRATE APOE-A DATA FROM WHICAP AND SURVEY DATABASES*
+ 104  0  *THIS WAS ADDED 24JUNE2007 BY HFA*.
+ 105  0  *frequencies apoe_a apoe_b.
+ 106  0  if (missing (apoe_a)) apoe_a=apoe_a_w.
+ 107  0  if (missing (apoe_b)) apoe_b=apoe_b_w.
+ 108  0  frequencies apoe_a apoe_b.
+ 109  0  
+ 110  0  
+ 111  0  ***ESTABLISH LAST EVALUATION*****.
+ 112  0  *LOGIC: IF 'LAST' VARIABLES ARE MISSING, THERE WAS
+ 113  0   NO SURVEY
+ 114  0   EVALUATION.  IF LWHCDATE IS GREATER THAN LASTDATE, THIS WAS
+ 115  0   PROBABLY A PARKINSONS SUBJECT WHO IS ALSO A SURVEY SUBJECT AND
+ 116  0   THE LAST WHICAP EVALUATION MAY COME AFTER THE LAST SURVEY EVALUATION
+ 117  0   IF EITHER OF THESE CONDITIONS APPLIES, MAKE THE LASTCCD1 ETC EQUAL
+ 118  0   TO THE LASTWHCCD1 ETC.
+ 119  0  *PROBLEM is that LASTDATE variable is based on NEUROPSYCh date, so this code
+ 120  0  *was turning valid LASTCCD1-4 variables to missing for 99 and 2009 cohorrt subjects.
+ 121  0  *So, code below is modified to set NOSURV to 1 only if there is valid LWHCCCD1 data*.
+ 122  0  *The modification was implemented on 4/24/2011--hfa*.
+ 123  0  
+
+
+Frequencies
+
+\\Dccmaincsfs\Data1\SURVEY\OUTPUT\junk.sav
+
+
+Frequency Table
+
+ 124  0  IF (MISSING(LASTDATE) and LWHCCD1 ge 0) NOSURV=1.
+ 125  0  
+ 126  0  DO IF (NOSURV=1 OR (LWHCDATE GT LASTDATE)).
+ 127  1  COMPUTE LASTCCD1=LWHCCD1.
+ 128  1  COMPUTE LASTCCD2=LWHCCD2.
+ 129  1  COMPUTE LASTCCD3=LWHCCD3.
+ 130  1  COMPUTE LASTCCD4=LWHCCD4.
+ 131  1  COMPUTE LASTDATE=LWHCDATE.
+ 132  1  COMPUTE LAST_INT=LWHCINT.
+ 133  1  END IF.
+ 134  1  
+ 135  0  value labels last_int 99 'survey followup (1-3)'.
+ 136  0  
+ 137  0  * FIX UP DEMOGRAPHICS SO THAT NEW SURVEY SUBJECTS GET
+ 138  0    VALUES FOR demo-type DEMOGRAPHIC VARIABLES.
+ 139  0  
+ 140  0  if (missing(dembirth)) dembirth=b03.
+ 141  0  if (missing(dem01)) dem01=b03.
+ 142  0  if (missing(dem03)) dem03= b01.
+ 143  0  if (missing(dem05)) junk=1.
+ 144  0  IF (MISSING(DEM06)) DEM06=SCR03.
+ 145  0  IF (MISSING(DEM06)) DEM06=SURV06.
+ 146  0  IF (MISSING(DEM06)) DEM06=B06.
+ 147  0  if (junk=1 and b04 eq 1) dem05 eq 1.
+ 148  0  if (junk=1 and b04 eq 2) dem05 eq 2.
+ 149  0  IF (junk=1 and b04 ge 3) dem05 eq 4.
+ 150  0  if (junk=1 and (b05 ge 2 and b05 le 6)) dem05 eq 3.
+ 151  0  
+ 152  0  **Create new study value for 2009 cohort and add val labels for study variable*.
+ 153  0  if (study='') study='Z'.
+ 154  0  var labels study 'Study into which subject originally recruited'.
+ 155  0  value labels study 'N' 'North Manhattan Aging Project (began 1989)'
+ 156  0                               'P' 'Parkinsons & metabolism Study (began1989)'
+ 157  0                               'S' 'Stroke Project (began 1989)'
+ 158  0                               'Q' 'Additional Parkinsons project (began 1992?)'
+ 159  0                               'R' '1999 Cohort'
+ 160  0                               'X' '2009 Cohort (same as cohort=4, includes W and X id_num prefix)'.
+ 161  0  *freq study.
+ 162  0  
+ 163  0  *Calculate education variable for 1999 and 2009 cohort subjects*.
+ 164  0  *The total years of education question is no longer asked directly and must be derived from items on
+ 165  0  *Jennifer Manly's education questionnaire*.
+ 166  0  *NOTE:  THIS CODE WAS DISCONTINUED 5/3/2012 AND REPLACED WITH NEW CODE PROVIDED BY JENNIFER
+ 167  0  *(SEE BELOW)*.
+ 168  0  
+ 169  0  *do if (study='R' or study='X').
+ 170  0  *compute dem06=sum.1(edu3,edu10,edu18).
+ 171  0  *end if.
+ 172  0  
+ 173  0  **Update 1999 cohort data demographics using info extracted from the co1999 record type, which
+ 174  0    contains HCFA info prepared by Peter.
+ 175  0  *birth*.
+ 176  0  
+ 177  0  if (missing(dem01)) dem01=DOB.
+ 178  0  
+ 179  0  *gender*.
+ 180  0  do if (missing(dem03)).
+ 181  1  if (female=0) dem03=0.
+ 182  1  if (female=1) dem03=1.
+ 183  1  end if.
+ 184  1  
+ 185  1  *race*.
+ 186  0  do if (missing(dem05)).
+ 187  1  if (heth=1) dem05=1.
+ 188  1  if (heth=2) dem05=2.
+ 189  1  if (heth=5) dem05=3.
+ 190  1  if (heth=3 or heth=4) dem05=4.
+ 191  1  end if.
+ 192  1  
+ 193  1  *check demographics for 1999 cohort*.
+ 194  1  *temporary.
+ 195  1  *select if (study='X').
+ 196  1  *list id_num dem01 dem03 dem04 dem05 dem06 b01 b02 b03 b04 b05 b06.
+ 197  1  
+ 198  1  
+ 199  1  **NOTE: THIS CODING NOT USED CURRENTLY--WE TAKE ID_NUM WITH PREPENDED W
+ 200  1  **          DIRECTLY FROM PTRACK IN WHICAP AND SURVEY**.
+ 201  1  ***Create an alternative ID variable to identify survey subjects, combining survey & Peter's CO1999,
+ 202  1  ****which is the HCFA identifying number with 30,000 added to it.
+ 203  1  *first, pinch off last 4 digits of STUDYID and add 90,000, to create an id_num for non-survey subjects*.
+ 204  1  
+ 205  1  *string sub_id(a4).
+ 206  1  *do if (missing(co1999n) and missing(survey)).
+ 207  1  *compute sub_id=substr(studyid,6,5).
+ 208  1  *recode sub_id (convert) into sub_idn.
+ 209  1  *compute nonsrvid=sub_idn+9000.
+ 210  1  *end if.
+ 211  1  
+ 212  1  *recode co1999 (convert) into co1999n.
+ 213  1  *compute id_num=co1999n.
+ 214  1  *if (missing(id_num)) id_num=survey.
+ 215  1  *var label id_num '92 Survey20k,92 supplmnt 20-30k, 99 survey 30k-89k,non-survey 90K+'.
+ 216  1  
+ 217  1  *Add in ID numbers for non-survey WHICAP subjects*.
+ 218  1  *match files file='\\Dccmaincsfs\Data1\survey\output\nonsurveyids.sav'/file=*/by studyid.
+ 219  1  
+ 220  1  **ASSIGN COHORT DESIGNATION BASED ON ID_NUM**.
+ 221  1  *MODIFIED 10/9/2013 TO DISTINGUISH W FROM X (NEW RELEVATE COHORT).
+ 222  0  string id_prefix (a1).
+ 223  0  compute id_prefix=substr(id_num,1,1).
+ 224  0  string id_num5(a5).
+ 225  0  compute id_num5=substr(id_num,2,6).
+ 226  0  recode ID_NUM5 (convert) into ID_NUM_n.
+ 227  0  *descr id_num5.
+ 228  0  if (ID_NUM_n ge 1 and ID_NUM_n lt 20000) cohort=1.
+ 229  0  if (ID_NUM_n ge 20000 and ID_NUM_n lt 30000) cohort=2.
+ 230  0  if (ID_NUM_n ge 30000 and ID_NUM_n lt 50000) cohort=3.
+ 231  0  if (ID_NUM_n ge 50000 and ID_NUM_n lt 90000) cohort=4.
+ 232  0  if (ID_NUM_n ge 90000) cohort=5.
+ 233  0  if (id_prefix='X') cohort=4.
+ 234  0  value label cohort 1 '1992 cohort' 2 '92 cohort Proj3 (Albert)' 3 '1999 cohort' 4 '2009 cohort (CMS-W & Relevate-X)' 5 'non
+            -cohort'.
+ 235  0  format cohort (f1.0).
+ 236  0  *freq cohort id_prefix.
+ 237  0  var label id_prefix 'Prefix of ID_NUM'.
+ 238  0  val label id_prefix 'W' '1992,1999 and CMS 2009 cohort' 'X' 'Relevate 2009 cohort'.
+ 239  0  *freq id_prefix.
+ 240  0  *temporary.
+ 241  0  *select if (missing(cohort)).
+ 242  0  *list slname sfname studyid id_num cohort.
+ 243  0  
+ 244  0  ****INSERT DEMOGRAPHIC CODE FROM MING*****.
+ 245  0  recode b04(1=1)(2=2)(3 thru 5=4) into newrace.
+ 246  0  if any(b05,2,3,4,5,6) newrace=3.
+ 247  0  if missing(newrace) newrace=dem05.
+ 248  0  value label newrace 1 'White/Non-Hisp' 2 'Black/Non-Hisp'   3 'Hispanic' 4 'Other'.
+ 249  0  
+ 250  0  ****add labeling info for CCD variables*****.
+ 251  0  var labels lastccd1 'Subject Demented'.
+ 252  0  value labels lastccd1 0 'No dementia' 1 'dementia' 9 'untestable'.
+ 253  0  missing values lastccd1 (9).
+ 254  0  
+ 255  0  var labels lastccd2  'Cognitive difficulty'.
+ 256  0  Value labels lastccd2         0  'No cognitive difficulty'
+ 257  0                             1  'Stroke'
+ 258  0                             2  'Depression'
+ 259  0                             3  'Psychosis or Psychiatric Syndrome'
+ 260  0                             4  'Mental Retardation'
+ 261  0                             5  'Korsakoffs Syndrome'
+ 262  0                             6  'Post Encephalitic Amnesia'
+ 263  0                             7  'Post Traumatic Amnesia'
+ 264  0                             8  'Unclassified Amnestic State'
+ 265  0                             9  'Epilepsy'
+ 266  0                             10  'Parkinsons Disease'
+ 267  0                             11  'Alcohol'
+ 268  0                             12  'Drug Abuse'
+ 269  0                             13  'Combined Systems Disease'
+ 270  0                             14  'Tumor'
+ 271  0                             15  'Head Trauma'
+ 272  0                             16  'Other Change'
+ 273  0                             17  'Close to dementia'
+ 274  0                             18  'Poss cl. signif.'
+ 275  0                             19  'No cl. signif.'.
+ 276  0  var labels lastccd3    'Reason for Dementia'.
+ 277  0  value labels  lastccd3        1  'Probable Alzheimers Disease'
+ 278  0                             2  'Alzheimers with Stroke'
+ 279  0                             3  'Alzheimers with PD'
+ 280  0                             5  'Alzheimers w/ other concomitant disease'
+ 281  0                             6  'Alzheimers with unusual presentation'
+ 282  0                             7  'Stroke Related Dementia'
+ 283  0                             8  'Dementia by Focal Effects of Stroke'
+ 284  0                             9  'Secondary Dementia:  Metabolic'
+ 285  0                             10  'Secondary Dementia:  Toxic'
+ 286  0                             11  'Secondary Dementia:  Traumatic'
+ 287  0                             12  'Creutzfeldt-Jakob Disease'
+ 288  0                             13  'Picks Disease'
+ 289  0                             14  'Huntingtons Disease'
+ 290  0                             15  'Combined Systems Disease'
+ 291  0                             16  'Tumor'
+ 292  0                             17  'Depression/Affective Disorder'
+ 293  0                             18  'Normal Pressure Hydrocephalus'
+ 294  0                             19  'Chronic Encephalopathy'
+ 295  0                             20  'Other Dementia'
+ 296  0                             21  'Dementia, Cause Unknown'
+ 297  0                             22  'Lewy Body disease'
+ 298  0                             23  'Frontal Lobe Dementia'
+ 299  0                             24  'Corticobasal Ganglionic Degeneration'.
+ 300  0  var labels lastccd4 'Clinical dementia rating'.
+ 301  0  
+ 302  0  var labels lastdate 'Date of most recent evaluation, based on neuropsych (date07)'.
+ 303  0  format cohort (f1.0) lastccd1 (f1.0) lastccd2 (f2.0) lastccd3 (f2.0) lastccd4 (f2.0).
+ 304  0  freq lastccd1 dem03.
+
+
+Frequencies
+
+Frequency Table
+
+ 305  0  var label refdate 'Date subject entered study'.
+ 306  0  *save outfile=  '\\Dccmaincsfs\DATA1\dcc\delete\junjunk123.sav'.
+ 307  0  ***************************************************************************************************************************
+            *******.
+ 308  0  *SAVE OLD NON-COHORT DATA (1st funding period Stroke, Parkinsons and NMAP subjects who were not recruited
+ 309  0  *into 1992 or 1999 cohorts*.
+ 310  0  *These will then be eliminated from the standard ONE and MULT files.
+ 311  0  *This will be only run once, then commented out for documentation--this data is archival and should not change*.
+ 312  0  *NOTE: THIS NON-COHORT FILE WAS UPDATED 24 JUNE 2007 (HFA) TO INCLUDE APOE DATA*.
+ 313  0  ***************************************************************************************************************************
+            *******.
+ 314  0  *get file=  '\\Dccmaincsfs\DATA1\dcc\delete\junjunk123.sav'.
+ 315  0  *temporary.
+ 316  0  *select if (cohort=5).
+ 317  0  *SAVE OUTFILE= '\\Dccmaincsfs\DATA1\survey\NON_COHORT\ONE_noncohort.SAV'/keep=id_num cohort  study refdate  dem01 to dem06
+ 318  0    lastdate LASTCCD1 to lastccd4 ccd02r z1 to z9 apoe_a apoe_b.
+ 319  0  *get file=  '\\Dccmaincsfs\DATA1\survey\NON_COHORT\ONE_noncohort.SAV'.
+ 320  0  ***************************************************************************************************************************
+            *****.
+ 321  0  
+ 322  0  **Create a DEAD variable and an UNTOUCH variable and get rid of STATUS**.
+ 323  0  compute UNTOUCH=0.
+ 324  0  if (status=5) UNTOUCH=1.
+ 325  0  var label UNTOUCH 'Subject and contacts should not be contacted for any purpose'.
+ 326  0  val labels UNTOUCH 0 'o.k. to contact' 1 'DO NOT CONTACT'.
+ 327  0  *freq untouch.
+ 328  0  
+ 329  0  compute DEAD=0.
+ 330  0  if (z1 ge 1) DEAD=1.
+ 331  0  var labels DEAD 'Subject is DEAD (zform present)'.
+ 332  0  val labels dead 0 'No' 1 'Yes'.
+ 333  0  *freq dead.
+ 334  0  
+ 335  0  format dead untouch (f1.0).
+ 336  0  
+ 337  0  **Combine cpmcnum info from ptrack and ident forms**.
+ 338  0  string cpmc_nbr(a7).
+ 339  0  compute cpmc_nbr=cpmcunit.
+ 340  0  if (cpmc_nbr='') cpmc_nbr=cpmcnum.
+ 341  0  
+ 342  0  var labels cpmc_nbr 'CPMC Unit #, from either PTRACK or IDENT form'.
+ 343  0  
+ 344  0  **Pinch off file with w-prefix ID_NUMs for matching back to MULT file**.
+ 345  0  **select if (id_num ne '').
+ 346  0  **sort cases by studyid.
+ 347  0  *save outfile='\\Dccmaincsfs\Data1\survey\output\idnum_w.sav'/keep=studyid id_num cohort.
+ 348  0  
+ 349  0  ***************************************************************************************************************************
+            ************************
+ 350  0  * Eliminate non-cohort subjects but keep Steve Alberts carry-over subjects and save basic ONE file
+ 351  0  ***************************************************************************************************************************
+            ************************.
+ 352  0  select if (cohort ge 1 and cohort le 4).
+ 353  0  
+ 354  0  *SAVE IDENTIFYING INFO FILE (one-time run)*.
+ 355  0  *save outfile= '\\Dccmaincsfs\DATA2\whicap1\ONE_ID.SAV'
+ 356  0    /keep = id_num cohort study refdate
+ 357  0    slname sfname shphone clname cfname chphone cpmc_nbr.
+ 358  0  
+ 359  0  **Note: 7/2/07 (hfa)the following variables were removed in conjunction with the recent reorganization of blood draw data b
+            y Greg*.
+ 360  0  **drwdt0w2 rm_0w2 stat0w2 rx_2w2 drwdt2w2 fast2w2 stat2w2.
+ 361  0  
+ 362  0  ***May 3 2012: Add syntax provided by Jennifer to generate # of years of education (DEM06)
+ 363  0  ***for 4th cohort and for anyone for whom it is missing****.
+ 364  0  *NOTE: This replaces previous code (above) that has now been commented out.
+ 365  0  cross cohort by dem06.
+
+
+Crosstabs
+Notes
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:46:10                                                                                                           |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Comments                                             |                                                                                                                               |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Input                 |Data                          |\\Dccmaincsfs\Data1\SURVEY\OUTPUT\junk.sav                                                                                     |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Filter                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|6599                                                                                                                           |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                                                                            |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics for each table are based on all the cases with valid data in the specified range(s) for all variables in each table.|
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Syntax                                               |cross cohort by dem06.                                                                                                         |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.31                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.31                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Dimensions Requested          |2                                                                                                                              |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cells Available               |524245                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+Case Processing Summary
+|------------------|-------------------------------------------|
+|                  |Cases                                      |
+|                  |-------------|---------------|-------------|
+|                  |Valid        |Missing        |Total        |
+|                  |-----|-------|-------|-------|-----|-------|
+|                  |N    |Percent|N      |Percent|N    |Percent|
+|------------------|-----|-------|-------|-------|-----|-------|
+|cohort * Education|2328 |35.3%  |4271   |64.7%  |6599 |100.0% |
+|--------------------------------------------------------------|
+
+cohort * Education    Crosstabulation
+Count 
+|-------------------------------|----------------------------------------------------------------------------------|-----|
+|                               |Education                                                                         |Total|
+|                               |---------|--|--|---|---|---|---|---|---|---|---|--|---|--|--|--|---|--|--|--|--|--|     |
+|                               |0        |1 |2 |3  |4  |5  |6  |7  |8  |9  |10 |11|12 |13|14|15|16 |17|18|19|20|77|     |
+|------|------------------------|---------|--|--|---|---|---|---|---|---|---|---|--|---|--|--|--|---|--|--|--|--|--|-----|
+|cohort|1992 cohort             |146      |43|65|120|130|142|145|112|268|110|106|62|357|43|83|28|105|29|12|3 |14|1 |2124 |
+|      |------------------------|---------|--|--|---|---|---|---|---|---|---|---|--|---|--|--|--|---|--|--|--|--|--|-----|
+|      |92 cohort Proj3 (Albert)|23       |5 |13|11 |14 |11 |24 |11 |26 |11 |13 |2 |32 |2 |2 |0 |4  |0 |0 |0 |0 |0 |204  |
+|-------------------------------|---------|--|--|---|---|---|---|---|---|---|---|--|---|--|--|--|---|--|--|--|--|--|-----|
+|Total                          |169      |48|78|131|144|153|169|123|294|121|119|64|389|45|85|28|109|29|12|3 |14|1 |2328 |
+|------------------------------------------------------------------------------------------------------------------------|
+
+
+ 366  0  compute edu10_m = edu10.
+ 367  0  compute edu18_m = edu18.
+ 368  0  if edu3 le 8 and miss(edu10) edu10_m = 0.
+ 369  0  if edu3 le 8 and miss(edu18) edu18_m = 0.
+ 370  0  compute yeduc_calc = sum(edu3 + edu10_m + edu18_m).
+ 371  0  if (missing(dem06)) dem06 = yeduc_calc.
+ 372  0  temporary.
+ 373  0  select if (missing(dem06)).
+ 374  0  list id_num cohort.
+
+
+List
+Notes
+|---------------------------------------------|------------------------------------------|
+|Output Created                               |08-SEP-2015 00:46:10                      |
+|---------------------------------------------|------------------------------------------|
+|Comments                                     |                                          |
+|--------------|------------------------------|------------------------------------------|
+|Input         |Data                          |\\Dccmaincsfs\Data1\SURVEY\OUTPUT\junk.sav|
+|              |------------------------------|------------------------------------------|
+|              |Filter                        |<none>                                    |
+|              |------------------------------|------------------------------------------|
+|              |Weight                        |<none>                                    |
+|              |------------------------------|------------------------------------------|
+|              |Split File                    |<none>                                    |
+|              |------------------------------|------------------------------------------|
+|              |N of Rows in Working Data File|84                                        |
+|---------------------------------------------|------------------------------------------|
+|Syntax                                       |list id_num cohort.                       |
+|--------------|------------------------------|------------------------------------------|
+|Resources     |Processor Time                |00:00:00.52                               |
+|              |------------------------------|------------------------------------------|
+|              |Elapsed Time                  |00:00:00.51                               |
+|----------------------------------------------------------------------------------------|
+
+
+
+
+
+
+id_num cohort
+
+W06351    1
+W20020    2
+W20059    2
+W20065    2
+W20076    2
+W20110    2
+W20187    2
+W20193    2
+W30109    3
+W30350    3
+W30996    3
+W33750    3
+W38261    3
+W38463    3
+W39070    3
+W40297    3
+W40372    3
+W44680    3
+W51300    4
+W51486    4
+W52142    4
+W53834    4
+W54233    4
+W55540    4
+W56051    4
+W58492    4
+W59003    4
+W59123    4
+W59433    4
+W60499    4
+W60523    4
+W60729    4
+W61983    4
+W64031    4
+W65336    4
+W65500    4
+W65525    4
+W65632    4
+W66065    4
+W70034    4
+W72200    4
+W73241    4
+W74093    4
+W76003    4
+W76465    4
+W77930    4
+W79016    4
+W79312    4
+W79592    4
+W80700    4
+W81339    4
+W82060    4
+W82498    4
+W82818    4
+W83092    4
+W83350    4
+W83740    4
+W83870    4
+W85943    4
+W86244    4
+W87642    4
+W87757    4
+W87933    4
+W87969    4
+W88563    4
+W88655    4
+W88977    4
+X10555    4
+X11195    4
+X11519    4
+X12827    4
+X13001    4
+X14235    4
+X15631    4
+X18121    4
+X18425    4
+X19421    4
+X19601    4
+X19791    4
+X19804    4
+X19840    4
+X19841    4
+X19842    4
+X19843    4
+
+
+Number of cases read:  84    Number of cases listed:  84
+
+
+ 375  0  cross cohort by dem06.
+
+
+Crosstabs
+Notes
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:46:11                                                                                                           |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Comments                                             |                                                                                                                               |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Input                 |Data                          |\\Dccmaincsfs\Data1\SURVEY\OUTPUT\junk.sav                                                                                     |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Filter                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|6599                                                                                                                           |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                                                                            |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics for each table are based on all the cases with valid data in the specified range(s) for all variables in each table.|
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Syntax                                               |cross cohort by dem06.                                                                                                         |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.22                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.22                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Dimensions Requested          |2                                                                                                                              |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cells Available               |524245                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+Case Processing Summary
+|------------------|-------------------------------------------|
+|                  |Cases                                      |
+|                  |-------------|---------------|-------------|
+|                  |Valid        |Missing        |Total        |
+|                  |-----|-------|-------|-------|-----|-------|
+|                  |N    |Percent|N      |Percent|N    |Percent|
+|------------------|-----|-------|-------|-------|-----|-------|
+|cohort * Education|6515 |98.7%  |84     |1.3%   |6599 |100.0% |
+|--------------------------------------------------------------|
+
+cohort * Education    Crosstabulation
+Count 
+|---------------------------------------|------------------------------------------------------------------------------------------|-----|
+|                                       |Education                                                                                 |Total|
+|                                       |---------|--|---|---|---|---|---|---|---|---|---|---|----|---|---|---|---|--|---|--|---|--|     |
+|                                       |0        |1 |2  |3  |4  |5  |6  |7  |8  |9  |10 |11 |12  |13 |14 |15 |16 |17|18 |19|20 |77|     |
+|------|--------------------------------|---------|--|---|---|---|---|---|---|---|---|---|---|----|---|---|---|---|--|---|--|---|--|-----|
+|cohort|1992 cohort                     |146      |43|65 |120|130|142|145|112|268|110|106|62 |357 |43 |83 |28 |105|29|12 |3 |14 |1 |2124 |
+|      |--------------------------------|---------|--|---|---|---|---|---|---|---|---|---|---|----|---|---|---|---|--|---|--|---|--|-----|
+|      |92 cohort Proj3 (Albert)        |23       |5 |13 |11 |14 |11 |24 |11 |26 |11 |13 |2  |32  |2  |2  |0  |4  |0 |0  |0 |0  |0 |204  |
+|      |--------------------------------|---------|--|---|---|---|---|---|---|---|---|---|---|----|---|---|---|---|--|---|--|---|--|-----|
+|      |1999 cohort                     |77       |23|56 |105|72 |84 |102|66 |216|65 |118|79 |459 |80 |152|37 |207|22|112|22|19 |0 |2173 |
+|      |--------------------------------|---------|--|---|---|---|---|---|---|---|---|---|---|----|---|---|---|---|--|---|--|---|--|-----|
+|      |2009 cohort (CMS-W & Relevate-X)|48       |23|50 |127|83 |83 |99 |47 |199|61 |68 |67 |310 |82 |155|47 |177|39|143|23|83 |0 |2014 |
+|---------------------------------------|---------|--|---|---|---|---|---|---|---|---|---|---|----|---|---|---|---|--|---|--|---|--|-----|
+|Total                                  |294      |94|184|363|299|320|370|236|709|247|305|210|1158|207|392|112|493|90|267|48|116|1 |6515 |
+|----------------------------------------------------------------------------------------------------------------------------------------|
+
+
+ 376  0  sort cases by id_num.
+ 377  0  
+ 378  0  save outfile=  '\\Dccmaincsfs\DATA1\dcc\delete\BIGWHIC.sav'.
+ 379  0  
+ 380  0  
+ 381  0  *match in education data derived by clinical core staff from other sources
+ 382  0  *when b06 and EDUCAT data are unavailable*.
+ 383  0  get file=  '\\Dccmaincsfs\DATA1\dcc\delete\BIGWHIC.sav'.
+ 384  0  freq dem06.
+
+
+Frequencies
+Notes
+|-----------------------------------------------------|---------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:46:13                               |
+|-----------------------------------------------------|---------------------------------------------------|
+|Comments                                             |                                                   |
+|----------------------|------------------------------|---------------------------------------------------|
+|Input                 |Data                          |\\Dccmaincsfs\DATA1\dcc\delete\BIGWHIC.sav         |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Filter                        |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Weight                        |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Split File                    |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |N of Rows in Working Data File|6599                                               |
+|----------------------|------------------------------|---------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.|
+|                      |------------------------------|---------------------------------------------------|
+|                      |Cases Used                    |Statistics are based on all cases with valid data. |
+|-----------------------------------------------------|---------------------------------------------------|
+|Syntax                                               |freq dem06.                                        |
+|----------------------|------------------------------|---------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.25                                        |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.23                                        |
+|---------------------------------------------------------------------------------------------------------|
+
+
+\\Dccmaincsfs\DATA1\dcc\delete\BIGWHIC.sav
+
+Statistics
+Education 
+|-|-------|----|
+|N|Valid  |6515|
+| |-------|----|
+| |Missing|84  |
+|--------------|
+
+Education
+|--------------|---------|-------|-------------|------------------|
+|              |Frequency|Percent|Valid Percent|Cumulative Percent|
+|-------|------|---------|-------|-------------|------------------|
+|Valid  |0     |294      |4.5    |4.5          |4.5               |
+|       |------|---------|-------|-------------|------------------|
+|       |1     |94       |1.4    |1.4          |6.0               |
+|       |------|---------|-------|-------------|------------------|
+|       |2     |184      |2.8    |2.8          |8.8               |
+|       |------|---------|-------|-------------|------------------|
+|       |3     |363      |5.5    |5.6          |14.4              |
+|       |------|---------|-------|-------------|------------------|
+|       |4     |299      |4.5    |4.6          |18.9              |
+|       |------|---------|-------|-------------|------------------|
+|       |5     |320      |4.8    |4.9          |23.9              |
+|       |------|---------|-------|-------------|------------------|
+|       |6     |370      |5.6    |5.7          |29.5              |
+|       |------|---------|-------|-------------|------------------|
+|       |7     |236      |3.6    |3.6          |33.2              |
+|       |------|---------|-------|-------------|------------------|
+|       |8     |709      |10.7   |10.9         |44.0              |
+|       |------|---------|-------|-------------|------------------|
+|       |9     |247      |3.7    |3.8          |47.8              |
+|       |------|---------|-------|-------------|------------------|
+|       |10    |305      |4.6    |4.7          |52.5              |
+|       |------|---------|-------|-------------|------------------|
+|       |11    |210      |3.2    |3.2          |55.7              |
+|       |------|---------|-------|-------------|------------------|
+|       |12    |1158     |17.5   |17.8         |73.5              |
+|       |------|---------|-------|-------------|------------------|
+|       |13    |207      |3.1    |3.2          |76.7              |
+|       |------|---------|-------|-------------|------------------|
+|       |14    |392      |5.9    |6.0          |82.7              |
+|       |------|---------|-------|-------------|------------------|
+|       |15    |112      |1.7    |1.7          |84.4              |
+|       |------|---------|-------|-------------|------------------|
+|       |16    |493      |7.5    |7.6          |92.0              |
+|       |------|---------|-------|-------------|------------------|
+|       |17    |90       |1.4    |1.4          |93.4              |
+|       |------|---------|-------|-------------|------------------|
+|       |18    |267      |4.0    |4.1          |97.5              |
+|       |------|---------|-------|-------------|------------------|
+|       |19    |48       |.7     |.7           |98.2              |
+|       |------|---------|-------|-------------|------------------|
+|       |20    |116      |1.8    |1.8          |100.0             |
+|       |------|---------|-------|-------------|------------------|
+|       |77    |1        |.0     |.0           |100.0             |
+|       |------|---------|-------|-------------|------------------|
+|       |Total |6515     |98.7   |100.0        |                  |
+|-------|------|---------|-------|-------------|------------------|
+|Missing|System|84       |1.3    |             |                  |
+|--------------|---------|-------|-------------|------------------|
+|Total         |6599     |100.0  |             |                  |
+|-----------------------------------------------------------------|
+
+
+ 385  0  match files file=*/in=big
+ 386  0                    /file= '\\Dccmaincsfs\DATA1\SURVEY\Education\dem06_x.sav'/in=ed
+ 387  0                    /by id_num.
+ 388  0  cross big by ed.
+
+
+Crosstabs
+Notes
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:46:13                                                                                                           |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Comments                                             |                                                                                                                               |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Input                 |Filter                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|6599                                                                                                                           |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                                                                            |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics for each table are based on all the cases with valid data in the specified range(s) for all variables in each table.|
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Syntax                                               |cross big by ed.                                                                                                               |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.36                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.34                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Dimensions Requested          |2                                                                                                                              |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cells Available               |524245                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+Case Processing Summary
+|--------|-------------------------------------------|
+|        |Cases                                      |
+|        |-------------|---------------|-------------|
+|        |Valid        |Missing        |Total        |
+|        |-----|-------|-------|-------|-----|-------|
+|        |N    |Percent|N      |Percent|N    |Percent|
+|--------|-----|-------|-------|-------|-----|-------|
+|big * ed|6599 |100.0% |0      |0.0%   |6599 |100.0% |
+|----------------------------------------------------|
+
+big * ed Crosstabulation
+Count 
+|-------|-------|-----|
+|       |ed     |Total|
+|       |----|--|     |
+|       |0   |1 |     |
+|-----|-|----|--|-----|
+|big  |1|6554|45|6599 |
+|-------|----|--|-----|
+|Total  |6554|45|6599 |
+|---------------------|
+
+
+ 389  0  select if (big=1).
+ 390  0  if (missing(dem06)) dem06=dem06_x.
+ 391  0  freq dem06.
+ 392  0  
+
+
+Frequencies
+Notes
+|-----------------------------------------------------|---------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:46:14                               |
+|-----------------------------------------------------|---------------------------------------------------|
+|Comments                                             |                                                   |
+|----------------------|------------------------------|---------------------------------------------------|
+|Input                 |Filter                        |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Weight                        |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Split File                    |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |N of Rows in Working Data File|6599                                               |
+|----------------------|------------------------------|---------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.|
+|                      |------------------------------|---------------------------------------------------|
+|                      |Cases Used                    |Statistics are based on all cases with valid data. |
+|-----------------------------------------------------|---------------------------------------------------|
+|Syntax                                               |freq dem06.                                        |
+|----------------------|------------------------------|---------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.61                                        |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.61                                        |
+|---------------------------------------------------------------------------------------------------------|
+
+Statistics
+Education 
+|-|-------|----|
+|N|Valid  |6543|
+| |-------|----|
+| |Missing|56  |
+|--------------|
+
+Education
+|--------------|---------|-------|-------------|------------------|
+|              |Frequency|Percent|Valid Percent|Cumulative Percent|
+|-------|------|---------|-------|-------------|------------------|
+|Valid  |0     |294      |4.5    |4.5          |4.5               |
+|       |------|---------|-------|-------------|------------------|
+|       |1     |95       |1.4    |1.5          |5.9               |
+|       |------|---------|-------|-------------|------------------|
+|       |2     |186      |2.8    |2.8          |8.8               |
+|       |------|---------|-------|-------------|------------------|
+|       |3     |365      |5.5    |5.6          |14.4              |
+|       |------|---------|-------|-------------|------------------|
+|       |4     |301      |4.6    |4.6          |19.0              |
+|       |------|---------|-------|-------------|------------------|
+|       |5     |324      |4.9    |5.0          |23.9              |
+|       |------|---------|-------|-------------|------------------|
+|       |6     |375      |5.7    |5.7          |29.7              |
+|       |------|---------|-------|-------------|------------------|
+|       |7     |238      |3.6    |3.6          |33.3              |
+|       |------|---------|-------|-------------|------------------|
+|       |8     |711      |10.8   |10.9         |44.2              |
+|       |------|---------|-------|-------------|------------------|
+|       |9     |248      |3.8    |3.8          |47.9              |
+|       |------|---------|-------|-------------|------------------|
+|       |10    |306      |4.6    |4.7          |52.6              |
+|       |------|---------|-------|-------------|------------------|
+|       |11    |210      |3.2    |3.2          |55.8              |
+|       |------|---------|-------|-------------|------------------|
+|       |12    |1163     |17.6   |17.8         |73.6              |
+|       |------|---------|-------|-------------|------------------|
+|       |13    |207      |3.1    |3.2          |76.8              |
+|       |------|---------|-------|-------------|------------------|
+|       |14    |392      |5.9    |6.0          |82.8              |
+|       |------|---------|-------|-------------|------------------|
+|       |15    |112      |1.7    |1.7          |84.5              |
+|       |------|---------|-------|-------------|------------------|
+|       |16    |494      |7.5    |7.6          |92.0              |
+|       |------|---------|-------|-------------|------------------|
+|       |17    |90       |1.4    |1.4          |93.4              |
+|       |------|---------|-------|-------------|------------------|
+|       |18    |267      |4.0    |4.1          |97.5              |
+|       |------|---------|-------|-------------|------------------|
+|       |19    |48       |.7     |.7           |98.2              |
+|       |------|---------|-------|-------------|------------------|
+|       |20    |116      |1.8    |1.8          |100.0             |
+|       |------|---------|-------|-------------|------------------|
+|       |77    |1        |.0     |.0           |100.0             |
+|       |------|---------|-------|-------------|------------------|
+|       |Total |6543     |99.2   |100.0        |                  |
+|-------|------|---------|-------|-------------|------------------|
+|Missing|System|56       |.8     |             |                  |
+|--------------|---------|-------|-------------|------------------|
+|Total         |6599     |100.0  |             |                  |
+|-----------------------------------------------------------------|
+
+
+ 393  0  save outfile= '\\Dccmaincsfs\DATA1\dcc\delete\one_temporary.sav'.
+ 394  0  get file=  '\\Dccmaincsfs\DATA1\dcc\delete\one_temporary.sav'.
+ 395  0  
+ 396  0  *USE CMS DATA FOR DEMOGRAPHICS IF BFORM1 DATA IS NOT AVAILABLE*.
+ 397  0  *CREATE INDICATOR THAT CMS DATA HAS BEEN USED*.
+ 398  0  *another instance in which ID_NUM has become A18.
+ 399  0  *this spss file was around for a long time (since nov 15 2012)--could spss have changed it to A18?*.
+ 400  0  GET
+ 401  0    FILE= '\\Dccmaincsfs\DATA1\SURVEY\DAILY\cms_data_for_ONEALL\Deidentified Data 2013-03-14.sav'/keep=idnum DateOfBirth Sex 
+            Race.
+ 402  0  string id_num(a6).
+ 403  0  compute id_num=substr(idnum,1,6).
+ 404  0  
+ 405  0  match files file=*/in=cms/file= '\\Dccmaincsfs\DATA1\dcc\delete\one_temporary.sav'/in=onetemp/by id_num.
+ 406  0  cross onetemp by cms.
+
+
+Crosstabs
+Notes
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:46:15                                                                                                           |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Comments                                             |                                                                                                                               |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Input                 |Filter                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|14913                                                                                                                          |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                                                                            |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics for each table are based on all the cases with valid data in the specified range(s) for all variables in each table.|
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Syntax                                               |cross onetemp by cms.                                                                                                          |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:01.03                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:01.01                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Dimensions Requested          |2                                                                                                                              |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cells Available               |524245                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+Case Processing Summary
+|-------------|-------------------------------------------|
+|             |Cases                                      |
+|             |-------------|---------------|-------------|
+|             |Valid        |Missing        |Total        |
+|             |-----|-------|-------|-------|-----|-------|
+|             |N    |Percent|N      |Percent|N    |Percent|
+|-------------|-----|-------|-------|-------|-----|-------|
+|onetemp * cms|14913|100.0% |0      |0.0%   |14913|100.0% |
+|---------------------------------------------------------|
+
+onetemp * cms Crosstabulation
+Count 
+|---------|---------|-----|
+|         |cms      |Total|
+|         |----|----|     |
+|         |0   |1   |     |
+|-------|-|----|----|-----|
+|onetemp|0|0   |8314|8314 |
+|       |-|----|----|-----|
+|       |1|5134|1465|6599 |
+|---------|----|----|-----|
+|Total    |5134|9779|14913|
+|-------------------------|
+
+
+ 407  0  select if (onetemp=1).
+ 408  0  *descriptives dem01.
+ 409  0  *freq dem03 dem05.
+ 410  0  *cross dem05 by race.
+ 411  0  string race_1 (a1).
+ 412  0  compute race_1=substr(race,1,1).
+ 413  0  cross race_1 by race.
+ 414  0  
+
+
+Crosstabs
+Notes
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:46:16                                                                                                           |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Comments                                             |                                                                                                                               |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Input                 |Filter                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|6599                                                                                                                           |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                                                                            |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics for each table are based on all the cases with valid data in the specified range(s) for all variables in each table.|
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Syntax                                               |cross race_1 by race.                                                                                                          |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.53                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.53                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Dimensions Requested          |2                                                                                                                              |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cells Available               |524245                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+Case Processing Summary
+|-------------|-------------------------------------------|
+|             |Cases                                      |
+|             |-------------|---------------|-------------|
+|             |Valid        |Missing        |Total        |
+|             |-----|-------|-------|-------|-----|-------|
+|             |N    |Percent|N      |Percent|N    |Percent|
+|-------------|-----|-------|-------|-------|-----|-------|
+|race_1 * Race|6599 |100.0% |0      |0.0%   |6599 |100.0% |
+|---------------------------------------------------------|
+
+race_1 * Race Crosstabulation
+Count 
+|--------|-------------------------|-----|
+|        |Race                     |Total|
+|        |----|-----|--------|-----|     |
+|        |    |Black|Hispanic|White|     |
+|------|-|----|-----|--------|-----|-----|
+|race_1| |5134|0    |0       |0    |5134 |
+|      |-|----|-----|--------|-----|-----|
+|      |B|0   |328  |0       |0    |328  |
+|      |-|----|-----|--------|-----|-----|
+|      |H|0   |0    |852     |0    |852  |
+|      |-|----|-----|--------|-----|-----|
+|      |W|0   |0    |0       |285  |285  |
+|--------|----|-----|--------|-----|-----|
+|Total   |5134|328  |852     |285  |6599 |
+|----------------------------------------|
+
+
+ 415  0  if (missing(dem01)) dem01=DateofBirth.
+ 416  0  if (missing(dem03) and Sex='Female') dem03=1.
+ 417  0  if (missing(dem03) and Sex='Male') dem03=0.
+ 418  0  
+ 419  0  if (missing(dem05)) DEMO_CMS=1.
+ 420  0  if (missing(dem05) and race_1='W') dem05=1.
+ 421  0  if (missing(dem05) and race_1='B') dem05=2.
+ 422  0  if (missing(dem05) and race_1='H') dem05=3.
+ 423  0  
+ 424  0  var labels demo_cms 'DEM05 (race/ethnicity) derived from CMS'.
+ 425  0  value labels demo_cms 1 'Yes-derived'.
+ 426  0  format demo_cms(f1.0).
+ 427  0  
+ 428  0  *Make some corrections to obvious errors in the CMS file*.
+ 429  0  if (id_num eq 'W53082') dem03=1.
+ 430  0  if (id_num eq 'W53082') dem05=3.
+ 431  0  if (id_num eq 'W53082') dem01=date.mdy(12,08,1929).
+ 432  0  if (id_num eq 'W66065') dem03=1.
+ 433  0  if (id_num eq 'W66065') dem05=3.
+ 434  0  if (id_num eq 'W83092') dem03=1.
+ 435  0  if (id_num eq 'W83092') dem05=3.
+ 436  0  
+ 437  0  **correct a first name/last name reversal*.
+ 438  0  if (id_num= 'W68427') slname= 'ORTIZ'.
+ 439  0  if (id_num= 'W68427') sfname= 'RAFAEL'.
+ 440  0  
+ 441  0  *descriptives dem01.
+ 442  0  *freq dem03 dem05.
+ 443  0  *temporary.
+ 444  0  *select if (demo_cms=1).
+ 445  0  *list id_num slname sfname dem01 dem03 dem05.
+ 446  0  
+ 447  0  SAVE OUTFILE= '\\Dccmaincsfs\DATA2\WHICAP1\ONE.SAV'
+ 448  0    /keep = id_num cohort id_prefix study refdate dead untouch REPL dem01 to dem05 DEMO_CMS dem06
+ 449  0    lastdate LASTCCD1 to lastccd4 ccd02r z1 to z9 SEEN0 SEEN1  b04 b05 b05a1 to rater78
+ 450  0    date98 to np63 slname to vasc_dem source status cpmc_nbr
+ 451  0    lip01_b lip02_b lip03_b lip01_2 lip02_2 lip03_2 lip04_2 insl01_2
+ 452  0    insl02_2 insl03_2 hba1c_2 apoe_a apoe_b
+ 453  0    pses01 to PSES10A
+ 454  0   id whicint
+ 455  0    /drop = dembirth female heth hsur dem04 status interval frstccd1 to frstccd4 apoe_a_w apoe_b_w
+ 456  0       SLNAME to  CENSUSS SSTREET2 CSTREET2  cpmc_nbr ID .
+ 457  0  
+ 458  0  GET FILE = '\\Dccmaincsfs\DATA2\whicap1\one.sav'.
+ 459  0  
+ 460  0  *********************************************************************************************.
+ 461  0  *Save a copy of new family history data to DATA2*.
+ 462  0  *********************************************************************************************.
+ 463  0  GET FILE= '\\Dccmaincsfs\Data1\SURVEY\Database\SPSS\BIGFAM.sav'.
+ 464  0  save outfile= '\\Dccmaincsfs\DATA2\whicap1\family history\new family history\BIGFAM.sav'.
+ 465  0  GET FILE= '\\Dccmaincsfs\Data1\SURVEY\Database\SPSS\BIGFAMx.sav'/drop=fullname.
+ 466  0  save outfile= '\\Dccmaincsfs\DATA2\whicap1\family history\new family history\BIGFAMx.sav'.
+ 467  0  
+ 468  0  *ONE_RENEW2003 IS NOT PRODUCED AS OF 11/19/2012--NO ONE SEEMS TO USE IT*.
+ 469  0  *THE FOLLOWING CODE IS COMMENTED OUT*.
+ 470  0  
+ 471  0  **SELECT AND PUT OUT FILE WITH SUBJECTS IN THE WHICAP II COHORT--THESE ARE ALL 99 COHORT SUBJECTS
+ 472  0  **PLUS SUBJECTS SEEN IN THE 4TH FOLLOWUP OF THE 1992 COHORT**.
+ 473  0  **include only subjects who appear in the MULT SAV file, ie have actual evaluation data in the database*.
+ 474  0  **Evaluation data is defined as ccd, neuropsych or Gurland screen data*.
+ 475  0  **Subjects with only demographics, ptrack are not include in MULT files and are not included in ONE_RENEW.
+ 476  0  **The RENEW2003 file is an aggregation of the MULTRENEW file and takes place in MULTALL sps.
+ 477  0  
+ 478  0  *match files file=*/in=one/file='\\Dccmaincsfs\data1\survey\output\renew2003.sav'/in=rnw2003/by id_num/drop=count.
+ 479  0  *cross one by rnw2003.
+ 480  0  *select if (rnw2003=1).
+ 481  0  *sort cases by id_num.
+ 482  0  
+ 483  0  ***eliminate cohort 2 (Steve Albert carryovers from the old registry)*****.
+ 484  0  *select if (cohort=1 or cohort=3 or cohort=4).
+ 485  0  
+ 486  0  *NOTE: 7/2/07 (hfa) the following code was eliminated in conjunction with the recent reorganization of blood draw data*.
+ 487  0  ****substitute fourth followup date and RMNUM for baseline date/number if latter are missing****.
+ 488  0  *if (missing(drwdt0w2)) drwdt0w2=lab4f1.
+ 489  0  *if (rm_0w2='') rm_0w2 =lab4f2.
+ 490  0  *(if (missing(stat0w2)) stat0w2 = lab4f7.
+ 491  0  
+ 492  0  
+ 493  0  
+ 494  0  *save outfile='\\Dccmaincsfs\DATA2\whicap1\one_renew2003.sav'
+ 495  0    /drop=  lap2_01 lap2_02 lap2_03 lap2_04 lap2_05
+ 496  0    lap2_06 lap2_07 lap2_08 lap2_09 seen1x lap1_01 lap1_02 lap1_03 lap1_04
+ 497  0    lap1_05 lap1_06 lap1_07 lap1_08 lap1_09 seen0x lap0_01 lap0_02 lap0_03
+ 498  0    lap0_04 lap0_05 lap0_06 lap0_07 lap0_08 lap0_09 date94 fl01 fl02
+ 499  0       n01 n02 n03 n04 n05 n06 n07 n08 n09 n10 n11 n12 n13 n14 n15 n16 n17 n18
+ 500  0    n20 n21 n22 n23 n24 n25 n26 n27 n28 n29 n30 n31 n32 n33 n34 n35 n36 n37 n38
+ 501  0     n39 n40 n41 n42 n43 n44 n45 n46 n47 n48 n49 n50 n51 n52 n53 n54 n55 n56
+ 502  0     n57 n58 n59 n60 n61 n62 n63a n63b n63c n63d n63e n63f n63g n63h n64 n65 n66
+ 503  0      n67 n67a n68 n69 n70 n70a n71 n72 n73 n74 n75 n76 n77 n78 n79 n80 n81
+ 504  0     n82 n83 n84 n85 n86 n87 n88 n89 n90 n91 n92 n94 n95 n96 n97 n98a n98b n98c
+ 505  0     n98d n99 n100 n101 n102 n103 n104 n104a n104b n105 n105a n105b n105c n106
+ 506  0      n107 n108 n109 n110 n111 n112 n113 n114 n115 n116 n117 n118 n119 date18
+ 507  0      n73a n73b n111a n112a n113a n114a n115a n116a
+ 508  0    age_base r01 r02 r03 r04 r05 r06 r07 r08 r09 r10 r11 r12 r13 r14
+ 509  0    r15 r16 r17 r18 r19 r19a r19b r20 r20a r20b r21 r21a r22 r23 r24a1 r24b1 r25
+ 510  0    r26 r27 r28 r29 r30 r31 r32 r33 r34 r34a r35 r36 r37a r37a1 r37b r37b1 r37c
+ 511  0    r37c1 r38 r39 r40 r41 r42 r43 r44 r45 r46 r47 r48 r49a r49b r50 r51a r51b
+ 512  0    r51c r52 r53 r54 r55 r55a r56 r57 r58 r59 r60 r61 date28 r24a r24b screenid
+ 513  0    scr01 scr02 scr03 scr04 scr05 scr06 scr07 scr08 scr09 scr10 scr11 scr12
+ 514  0    scr13 surveyid surv01 surv02 surv03 surv04 surv05 surv06 surv07 surv08
+ 515  0    surv09 surv10 surv11 surv12 surv13 surv14 surv15
+ 516  0    i02 i03 i04 i05 i06 i07 i08 i05old i06old replicat date41 educ1001
+ 517  0    educ1002 educ1003 resd2001 resd2002 resd2003 resd2004 resd2005 resd2006
+ 518  0    resd2101 resd2102 resd2103 resd2104 resd2105 resd2106 resd2201 resd2202
+ 519  0    resd2203 resd2204 resd2205 resd2206 occp3001 occp3002 occp3003 occp3004
+ 520  0    occp3102 occp3103 occp3104 occp3105 occp3106 occp3107 occp3202 occp3203
+ 521  0    occp3204 occp3205 occp3206 occp3207 occp3302 occp3303 occp3304 occp3305
+ 522  0    occp3306 occp3307 occp3402 occp3403 occp3404 occp3405 occp3406 occp3407
+ 523  0    farm4001 farm4002 farm4003 farm4004 farm4101 farm4102 farm4103 farm4104
+ 524  0    farm4105 farm4106 farm4107 farm4108 farm4109 farm4110 farm4111 farm4112
+ 525  0    farm4113 farm4114 farm4115 farm4116 farm4201 farm4202 farm4203 farm4204
+ 526  0    farm4205 farm4206 farm4207 farm4208 farm4209 farm4210 farm4211 farm4212
+ 527  0    farm4301 farm4302 farm4303 farm4304 farm4305 farm4306 farm4307 farm4308
+ 528  0    farm4309 farm4310 farm4311 farm4312 farm4401 farm4402 farm4403 farm4404
+ 529  0    farm4405 farm4406 farm4407 farm4408 farm4409 farm4410 farm4411 date29
+ 530  0    t01 t01a t02 t02a t03 t03a t04 t04a t05 t05a t06 t06a t07 t07a t08 t08a t09 t09a
+ 531  0    t10 t10a t11 t11a t12 t12a t13 t13a t14 t14a t15 t15a t16 t16a t17 t17a t18
+ 532  0    t18a t19 t19a t20 t20a t21 t21a t22 t22a t23 t23a t24 t24a t25 t25a t26 t26a
+ 533  0    t27 t27a t28 t28a t29 t29a t30 t30a t31 t31a t32 t32a t33 t33a t34 t34a t35
+ 534  0    t35a t36 t36a t37 t37a t38 t38a t39 t39a t40 t40a t41 t41a t42 t42a t43 t43a
+ 535  0    t44 t44a t45 t45a t46 t46a t47 t47a t48 t48a t49 t49a t50 t50a t51 t51a t52
+ 536  0    t52a t53 t53a t54 t54a t55 t55a t56 t56a t57 t57a t58 t58a t59 t59a t60 t60a
+ 537  0    t61 t61a t62 t62a t63 t63a t64 t64a t65 t65a t66 t66a t67 t68 t69 t69a t69b
+ 538  0    t70 t70a t70b t70c t71 t71a t71b t71c t72 t72a t72b t72c t73 t73a t73b t73c
+ 539  0    date40 rx7000 rx7001 rx7002 rx7100 rx7101 rx7101t rx7102 rx7102t rx7103
+ 540  0    rx7103t rx7104 rx7104t rx7105 rx7105t rx7106 rx7107_w rx7107_m rx7107 rx7108
+ 541  0    rx7109 rx7110a rx7110b rx7110c rx7110d rx7111 rx7112 rx7113 rx7114 rx7115a
+ 542  0    rx7115b rx7115c rx7115d rx7200 rx7201 rx7201t rx7202 rx7202t rx7203 rx7203t
+ 543  0    rx7204 rx7205_w rx7205_m rx7205 rx7206 rx7207 rx7208a rx7208b rx7208c
+ 544  0    rx7208d rx7209 rx7210 rx7211 rx7212 rx7213a rx7213b rx7213c rx7213d rx7300
+ 545  0    rx7300t rx7301 rx7302_w rx7302_m rx7302 rx7303 rx7304 rx7305a rx7305b
+ 546  0    rx7305c rx7305d rx7306 rx7307 rx7308 rx7309 rx7310a rx7310b rx7310c rx7310d
+ 547  0    rx7400 rx7401 rx7401t rx7402 rx7402t rx7403 rx7405_w rx7405_m rx7405 rx7406
+ 548  0    rx7407 rx7408a rx7408b rx7408c rx7408d rx7409 rx7410 rx7411 rx7412 rx7413a
+ 549  0    rx7413b rx7413c rx7413d rx7500 rx7500t rx7501 rx7502_w rx7502_m rx7502
+ 550  0    rx7503 rx7504 rx7505a rx7505b rx7505c rx7505d rx7506 rx7507 rx7508 rx7509
+ 551  0    rx7510a rx7510b rx7510c rx7510d rx7600 rx7601 rx7601t rx7602 rx7602t rx7603
+ 552  0    rx7603t rx7604 rx7605_w rx7605_m rx7605 rx7606 rx7607 rx7608a rx7608b
+ 553  0    rx7608c rx7608d rx7609 rx7610 rx7611 rx7611t rx7612 rx7612t rx7613 rx7614_w
+ 554  0    rx7614_m rx7614 rx7615 rx7616 rx7617a rx7617b rx7617c rx7617d rx7618 rx7620
+ 555  0    rx7620t rx7621 rx7622_w rx7622_m rx7622 rx7623 rx7624 rx7625a rx7625b
+ 556  0    rx7625c rx7625d rx7626 rx7630 rx7631 rx7631t rx7632 rx7632t rx7633 rx7633t
+ 557  0    rx7634 rx7634t rx7635 rx7636_w rx7636_m rx7636 rx7637 rx7638 rx7639a rx7639b
+ 558  0    rx7639c rx7639d rx7640 rx7650 rx7651 rx7652 rx7653a rx7653b rx7653c rx7653d
+ 559  0    rx7660 rx7661 rx7662 rx7663a rx7663b rx7663c rx7663d rx7670 rx7671 rx7672
+ 560  0    rx7673a rx7673b rx7673c rx7673d rx7680 rx7681 rx7682 rx7683a rx7683b rx7683c
+ 561  0    rx7683d rx7700 rx7701 rx7701t rx7702 rx7702t rx7703 rx7703t rx7704 rx7704t
+ 562  0    rx7705 rx7706_w rx7706_m rx7706 rx7707 rx7708 rx7709a rx7709b rx7709c
+ 563  0    rx7709d rx7710 rx7800 rx7801 rx7801t rx7802 rx7802t rx7803 rx7804_w rx7804_m
+ 564  0    rx7804 rx7805 rx7806 rx7807a rx7807b rx7807c rx7807d rx7808 rx7900 rx7901
+ 565  0    rx7902a rx7902b rx7902c rx7902d rx7903 rx7904a rx7904b rx7904c rx7904d
+ 566  0    rx7905a rx7905b rx7905c rx7906 rx7907 rx7908 rx7909 rx8000 rx8001a rx8001b
+ 567  0    rx8001c rx8001d rx8002a rx8002b rx8002c rx8003 rx8004 rx8005 rx8006 rx8100
+ 568  0    rx8101 rx8101t rx8102 rx8102t rx8103 rx8104_w rx8104_m rx8104_y rx8105
+ 569  0    rx8106 rx8107a rx8107b rx8107c rx8107d rx8108 rx8200 rx8201 rx8201t rx8202
+ 570  0    rx8202t rx8203 rx8203t rx8204 rx8204t rx8205 rx8205t rx8206 rx8207_w
+ 571  0    rx8207_m rx8207_y rx8208 rx8209 rx8210a rx8210b rx8210c rx8210d rx8211
+ 572  0    rx8300 rx8301 rx8301t rx8302 rx8303_w rx8303_m rx8303_y rx8304 rx8305
+ 573  0    rx8306a rx8306b rx8306c rx8306d rx8307 rx8400 rx8500 rx8501 rx8502 rx8503
+ 574  0    rx8503a rx8504 rx8504a rx8505 rx8505a rx8506 rx8506b rx8507 rx8507a rx8508
+ 575  0    rx8508b rx8509 rx8510 rx8511 rx8512 rx8600 rx8600t rx8601 rx8602_w rx8602_m
+ 576  0    rx8602 rx8603 rx8604 rx8605a rx8605b rx8605c rx8605d rx8606 rx8607 rx8608
+ 577  0    rx8609 rx8610a rx8610b rx8610c rx8610d .
+ 578  0  
+ 579  0  *get file= '\\Dccmaincsfs\DATA2\whicap1\one_renew2003.sav'.
+ 580  0  
+ 581  0  
+ 582  0  
+ 583  0  *END \\Dccmaincsfs\Data1\SURVEY\DAILY\ONEALL .
+ 584  0  
+ 585  0  *NOTE: The early am 6/17/2015 daily backup failed in conjunction with the ONE file creation, and the following
+ 586  0  *MRITRK variables created the problem because they were not in the file produced by the pql retrieval.
+ 587  0  *They have been  removed, and they should probably not have been included in the first place because they
+ 588  0  *were the most recent values from a multi-record-per-subject record type,  but it is not clear why they were suddently
+ 589  0  *not created in the pql program--looks like something was removed.
+ 590  0  *group gado gado_rsn spect mri manly
+ 591  0    albert reitz npsyc_status rp_status mri_status scan_date blood_status smell_status reitz_status dq tics tics_dq
+ 592  0  
+ 593  0  
+ 594  0  
+ 595  0  
+ 596  0  
+ 597  0  
+ 598  0  * End of INSERT and INCLUDE nesting level 01.
+

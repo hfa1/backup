@@ -3,6 +3,7 @@ remark 'Start: Backup Routine -> ServerSpeed.pql'
 call SYSPROC.TOOLS.HTMLCODE
 program
 . integer * 2 REC# RECS#
+. integer * 4 STAT#
 . real * 8 START# END#
 . string * 100 SPEED TODAY$ NOW$ SERVER$
 . set REC# RECS# (0) SPEED ('<GDATA1>DCC\BackupRoutine\Benchmark\Server Speed\Speed.csv')
@@ -11,24 +12,27 @@ program
 . TODAY$ = datec(today(0),'MM/DD/YYYY')
 . SERVER$ = sbst(sglobal('APPLSERVER'),12,3)
 . open (REPORT) write append lrecl = 300
-c.  ifthen (now(0) >= ctime('01:00:00','HH:MM:SS') and now(0) < ctime('02:00:00','HH:MM:SS'))
-.   pql connect database 'BENCHMARK'
-                prefix   '<GDATA1>DCC\BackupRoutine\Benchmark\'
-.    execute dbms 'call SYSTEM.CXSPEED'
+.  pql connect database 'BENCHMARK'
+               prefix   '<GDATA1>DCC\BackupRoutine\Benchmark\'
+               iostat   STAT#
+.  ifthen (STAT# < 0)
+.   remark 'BENCHMARK database did not connect!'
+.  else
+.   execute dbms 'call SYSTEM.CXSPEED'
 .   pql disconnect database 'BENCHMARK'
-c.  endif
-.  END# = now(0)
-.  write (REPORT) '<tr>'
-.  write (REPORT) '    <td colspan="2" class="greenleft">03 Server Speed</td>'
-.  write (REPORT) '    <td colspan="2" class="greybutton"><a href="file://///Dccmaincsfs/Data1/DCC/BackupRoutine/Benchmark/Server Speed/Speed.csv" class="button">' [format(END# - START#)] '</a></td>'
-.  write (REPORT) '    <td></td>'
-.  write (REPORT) '    <td class="greencenter">404</td>'
-.  write (REPORT) '    <td class="greencenter">441</td>'
-.  write (REPORT) '    <td class="greencenter">540</td>'
-.  write (REPORT) '    <td colspan="2" class="orangecenter">In seconds</td>'
+.   END# = now(0)
+.   write (REPORT) '<tr>'
+.   write (REPORT) '    <td colspan="2" class="greenleft">03 Server Speed</td>'
+.   write (REPORT) '    <td colspan="2" class="greybutton"><a href="file://///Dccmaincsfs/Data1/DCC/BackupRoutine/Benchmark/Server Speed/Speed.csv" class="button">' [format(END# - START#)] '</a></td>'
+.   write (REPORT) '    <td></td>'
+.   write (REPORT) '    <td class="greencenter">404</td>'
+.   write (REPORT) '    <td class="greencenter">441</td>'
+.   write (REPORT) '    <td class="greencenter">540</td>'
+.   write (REPORT) '    <td colspan="2" class="orangecenter">In seconds</td>'
+.   open (SPEED) dsnvar=SPEED write append lrecl=200
+.    write (SPEED) TODAY$ ',' NOW$ ','[format(END# - START#)] ',' SERVER$
+.   close (SPEED)
+.  endif
 . close (REPORT)
-. open (SPEED) dsnvar=SPEED write append lrecl=200
-.   write (SPEED) TODAY$ ',' NOW$ ','[format(END# - START#)] ',' SERVER$
-. close (SPEED)
 end program
 remark 'Finished: Backup Routine -> ServerSpeed.pql'

@@ -1,0 +1,1104 @@
+﻿
+INSERT
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss7636\CEH_PAHCODE5585844473531353506.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  10  0  * Encoding: UTF-8.
+  11  0  _SET UNICODE=OFF.
+  12  0  
+  13  0  *PROGRAM:CEH.PAHCODE.SPS*.
+  14  0  *BEGIN \\Dccmaincsfs\DATA1\CEH\DAILY\PAHCODE**.
+  15  0  
+  16  0  ***Modified 2/6/2009 - LH -
+  17  0  ***Added standardized syntax for calculating TOTALPAH and LNTOTALPAH per RW/RG method.
+  18  0  ***Modified 9/27/2002 - LH
+  19  0  ***Added Robin Garfinkel's OPHN re-computes for selected SIDs
+  20  0  ***per Robin Whyatt's notice of error from CDC.
+  21  0  
+  22  0  
+  23  0  GET
+  24  0    FILE='\\Dccmaincsfs\DATA1\CEH\daily\pah.sav'.
+  25  0  
+  26  0  do if (sid=10 | sid=11 | sid=12 | sid=13 | sid=14 | sid=15 | sid=16 |sid=17 | sid=18 |
+  27  0    sid=19 | sid=20 |sid=21 |sid=22 |sid=23 |sid=24 |sid=25 |sid=26 |sid=27|sid=28 |
+  28  0    sid=29 |sid=30 |sid=31 |sid=32 |sid=33 |sid=352 |sid=358 |sid=390 |sid=402 |sid=420 |
+  29  0    sid=432 |sid=444 |sid=450 |sid=454 |sid=456 |sid=462 |sid=463 |sid=468 |sid=472 |
+  30  0    sid=474 |sid=475 |sid=478 |sid=480 |sid=484 |sid=488 |sid=489 |sid=492 |sid=494 |
+  31  0    sid=496 |sid=498 |sid=502 |sid=509 |sid=512 |sid=514 |sid=516 |sid=520 |sid=522 |
+  32  0    sid=524 |sid=528 |sid=530 |sid=532 |sid=534 |sid=536 |sid=538 |sid=541 |sid=546 |
+  33  0    sid=547 |sid=548 |sid=549 |sid=550 |sid=554 |sid=556 |sid=558 |sid=560 |sid=561 |
+  34  0    sid=563 |sid=564 |sid=565 |sid=566 |sid=568 |sid=569 |sid=571 |sid=574 |sid=576 |
+  35  0    sid=580 |sid=583 |sid=586 |sid=588 |sid=589 |sid=593 |sid=594 |sid=595 |sid=598 |
+  36  0    sid=600 |sid=601 |sid=602 |sid=603 |sid=604 |sid=606 |sid=608 |sid=609 |sid=610 |
+  37  0    sid=613 |sid=621 |sid=623 |sid=627 |sid=628 |sid=629 |sid=630 |sid=632 |sid=636 |
+  38  0    sid=640 |sid=641 |sid=647 |sid=658 |sid=663 |sid=673 |sid=683 |sid=687 |sid=701 ).
+  39  1  compute rophnext=ophnext*0.5509.
+  40  1  compute rophncon=rophnext/totvol.
+  41  1  end if.
+  42  0  do if (sid=10 | sid=11 | sid=12 | sid=13 | sid=14 | sid=15 | sid=16 |sid=17 | sid=18 |
+  43  0    sid=19 | sid=20 |sid=21 |sid=22 |sid=23 |sid=24 |sid=25 |sid=26 |sid=27|sid=28 |
+  44  0    sid=29 |sid=30 |sid=31 |sid=32 |sid=33 |sid=352 |sid=358 |sid=390 |sid=402 |sid=420 |
+  45  0    sid=432 |sid=444 |sid=450 |sid=454 |sid=456 |sid=462 |sid=463 |sid=468 |sid=472 |
+  46  0    sid=474 |sid=475 |sid=478 |sid=480 |sid=484 |sid=488 |sid=489 |sid=492 |sid=494 |
+  47  0    sid=496 |sid=498 |sid=502 |sid=509 |sid=512 |sid=514 |sid=516 |sid=520 |sid=522 |
+  48  0    sid=524 |sid=528 |sid=530 |sid=532 |sid=534 |sid=536 |sid=538 |sid=541 |sid=546 |
+  49  0    sid=547 |sid=548 |sid=549 |sid=550 |sid=554 |sid=556 |sid=558 |sid=560 |sid=561 |
+  50  0    sid=563 |sid=564 |sid=565 |sid=566 |sid=568 |sid=569 |sid=571 |sid=574 |sid=576 |
+  51  0    sid=580 |sid=583 |sid=586 |sid=588 |sid=589 |sid=593 |sid=594 |sid=595 |sid=598 |
+  52  0    sid=600 |sid=601 |sid=602 |sid=603 |sid=604 |sid=606 |sid=608 |sid=609 |sid=610 |
+  53  0    sid=613 |sid=621 |sid=623 |sid=627 |sid=628 |sid=629 |sid=630 |sid=632 |sid=636 |
+  54  0    sid=640 |sid=641 |sid=647 |sid=658 |sid=663 |sid=673 |sid=683 |sid=687 |sid=701 ).
+  55  1  compute ophncon2=rophncon.
+  56  1  else.
+  57  1  compute ophncon2=ophncon.
+  58  1  end if.
+  59  1  
+  60  0  Missing values pyrene  baa chrysene bbf bkf bap ip daha bghip chlrpcon
+  61  0   diazcon mthprcon dchlrcon mlacon prpocon carbcon pbutcon
+  62  0   cpercon tpercon cyflucon ppddtcon ppddecon
+  63  0   gchlrcon achlrcon trnoncon hptacon lndcon mthocon aldrncon dicfcon dieldcon
+  64  0   end1con end2con endrcon ophncon flptcon bndiocon
+  65  0   carbocon (-8, -9).
+  66  0  *#1 (recodes the G-flags, J-flags, GB-flags and JB-flags for PAHs and pesticides as no
+  67  0   comment as per agreement with DCamann).
+  68  0  STRING  flpyr flbaa flchryf flbbf flbkf flbap flip fldaha flbghip flaldrn flbndio
+  69  0    flcarb flcarbo flachlr flgchlr flchlrp flcyflu flppdde flppddt fldiaz
+  70  0    fldchlr fldicf fldield flend1 flend2 flendr flflpt flhpta fllnd flmla flmtho
+  71  0    flmthpr fltrnon flcper fltper flophn flpbut flprpo (A2) .
+  72  0  RECODE
+  73  0    flgpyr flgbaa flgchry flgbbf flgbkf flgbap flgip flgdaha flgbghip flgaldrn
+  74  0    flgbndio flgcarb flgcarbo flgachlr flggchlr flgchlrp flgcyflu flgppdde
+  75  0    flgppddt flgdiaz flgdchlr flgdicf flgdield flgend1 flgend2 flgendr flgflpt
+  76  0    flghpta flglnd flgmla flgmtho flgmthpr flgtrnon flgcper flgtper flgophn
+  77  0    flgpbut flgprpo
+  78  0    ('J'='Z')  ('G'='Z')  ('JB'='B')  ('GB'='ZB')  (ELSE=Copy)  INTO  flpyr
+  79  0    flbaa  flchryf  flbbf  flbkf  flbap  flip  fldaha  flbghip  flaldrn  flbndio
+  80  0     flcarb  flcarbo  flachlr  flgchlr  flchlrp  flcyflu  flppdde  flppddt
+  81  0    fldiaz  fldchlr  fldicf  fldield  flend1  flend2  flendr  flflpt  flhpta
+  82  0    fllnd  flmla  flmtho  flmthpr  fltrnon  flcper  fltper  flophn  flpbut
+  83  0    flprpo .
+  84  0  VARIABLE LABELS flpyr 'Flag on pyrene analysis' /flbaa 'Flag on'+
+  85  0   ' benz(a)anthracene' /flchryf 'Flag on chrysene' /flbbf 'Flag on'+
+  86  0   ' benzo(b)fluroanthene' /flbkf 'Flag on benzo(k)fluranthene' /flbap 'Flag on'+
+  87  0   ' benzo(a)pyrene' /flip 'Flag on indeno(1,2,3-cd)pyrene' /fldaha 'Flag on'+
+  88  0   ' disbenz(a,h)anthracene' /flbghip 'Flag on benzo(g,h,i)perylene' /flaldrn
+  89  0    'AldrinFlag' /flbndio 'BendiocarbFlag' /flcarb 'Carbaryl Flag' /flcarbo
+  90  0    'Carbofuran flag' /flachlr 'alpha-Chlordane flag' /flgchlr 'gamma-Chlordane'+
+  91  0   ' flag' /flchlrp 'Chlorpyrifos flag' /flcyflu 'Cyfluthrin flag' /flppdde 'p,p'+
+  92  0   '-DDE flag' /flppddt 'p,p-DDT flag' /fldiaz 'Diazinon flag' /fldchlr
+  93  0    'Dichlorvos flag' /fldicf 'Dicofol flag' /fldield 'Dieldrin flag' /flend1
+  94  0    'Endosulfan I flag' /flend2 'Endosulfan II flag' /flendr 'Endrin flag'
+  95  0   /flflpt 'Folpet flag' /flhpta 'Heptachlor flag' /fllnd 'Lindane flag' /flmla
+  96  0    'Malathion flag' /flmtho 'Methoxychlor flag' /flmthpr 'Methyl parathion'+
+  97  0   ' flag' /fltrnon 'trans-Nonachlor flag' /flcper 'cis-Permethrin flag' /fltper
+  98  0    'trans-Permethrin flag' /flophn 'o-Phenylphenol flag' /flpbut 'Piperonyl'+
+  99  0   ' butoxide flag' /flprpo 'Propoxur flag'.
+ 100  0  EXECUTE .
+ 101  0  *#2 (recodes  the B-flags as UB-flags if after the blank substraction the extract amount is below the limit of detection).
+ 102  0  *This adjustment is necessary since without it some of the air concentration are negative values.
+ 103  0  
+ 104  0  If (flpyr = 'B' and pyrext  0.5) pyrene = (0.5/totvol).
+ 105  0  If (flpyr = 'B' and pyrext  0.5) flpyr = 'UB'.
+ 106  0  recode flpyr ('B' = 'ZB').
+ 107  0  
+ 108  0  If (flbaa = 'B' and baaext  0.5) baa = (0.5/totvol).
+ 109  0  If (flbaa = 'B' and baaext  0.5) flbaa = 'UB'.
+ 110  0  recode flbaa ('B' = 'ZB').
+ 111  0  
+ 112  0  If (flchryf = 'B' and chryext  0.5) chrysene = (0.5/totvol).
+ 113  0  If (flchryf = 'B' and chryext  0.5) flchryf = 'UB'.
+ 114  0  recode flchryf ('B' = 'ZB').
+ 115  0  
+ 116  0  If (flbbf = 'B' and bbfext  0.5) bbf = (0.5/totvol).
+ 117  0  If (flbbf = 'B' and bbfext  0.5) flbbf = 'UB'.
+ 118  0  recode flbbf ('B' = 'ZB').
+ 119  0  
+ 120  0  If (flbkf = 'B' and bkfext  0.5) bkf = (0.5/totvol).
+ 121  0  If (flbkf = 'B' and bkfext  0.5) flbkf = 'UB'.
+ 122  0  recode flbkf ('B' = 'ZB').
+ 123  0  
+ 124  0  If (flbap = 'B' and bapext  0.5) bap = (0.5/totvol).
+ 125  0  If (flbap = 'B' and bapext  0.5) flbap = 'UB'.
+ 126  0  recode flbap ('B' = 'ZB').
+ 127  0  
+ 128  0  If (flip = 'B' and ipext  0.5) ip = (0.5/totvol).
+ 129  0  If (flip = 'B' and ipext  0.5) flip = 'UB'.
+ 130  0  recode flip ('B' = 'ZB').
+ 131  0  
+ 132  0  If (fldaha = 'B' and dahaext  0.5) daha = (0.5/totvol).
+ 133  0  If (fldaha = 'B' and dahaext  0.5) fldaha = 'UB'.
+ 134  0  recode fldaha ('B' = 'ZB').
+ 135  0  
+ 136  0  If (flbghip = 'B' and bghipext  0.5) bghip = (0.5/totvol).
+ 137  0  If (flbghip = 'B' and bghipext  0.5) flbghip = 'UB'.
+ 138  0  recode flbghip ('B' = 'ZB').
+ 139  0  
+ 140  0  If (flchlrp = 'B' and chlrpext  1.1) chlrpcon = (1.1/totvol).
+ 141  0  If (flchlrp = 'B' and chlrpext  1.1) flchlrp = 'UB'.
+ 142  0  recode flchlrp ('B' = 'ZB').
+ 143  0  
+ 144  0  If (fldiaz = 'B' and diazext  1.1) diazcon = (1.1/totvol).
+ 145  0  If (fldiaz = 'B' and diazext  1.1) fldiaz = 'UB'.
+ 146  0  recode fldiaz ('B' = 'ZB').
+ 147  0  
+ 148  0  If (flmthpr = 'B' and mthprext  2.1) mthprcon = (2.1/totvol).
+ 149  0  If (flmthpr = 'B' and mthprext  2.1) flmthpr = 'UB'.
+ 150  0  recode flmthpr ('B' = 'ZB').
+ 151  0  
+ 152  0  If (fldchlr = 'B' and dchlrext  2.1) dchlrcon = (2.1/totvol).
+ 153  0  If (fldchlr = 'B' and dchlrext  2.1) fldchlr = 'UB'.
+ 154  0  recode fldchlr ('B' = 'ZB').
+ 155  0  
+ 156  0  If (flmla = 'B' and mlaext  1.1) mlacon = (1.1/totvol).
+ 157  0  If (flmla = 'B' and mlaext  1.1) flmla = 'UB'.
+ 158  0  recode flmla ('B' = 'ZB').
+ 159  0  
+ 160  0  If (flprpo = 'B' and prpoext  1.1) prpocon = (1.1/totvol).
+ 161  0  If (flprpo = 'B' and prpoext  1.1) flprpo = 'UB'.
+ 162  0  recode flprpo ('B' = 'ZB').
+ 163  0  
+ 164  0  If (flcarb = 'B' and carbext  2.2) carbcon = (2.2/totvol).
+ 165  0  If (flcarb = 'B' and carbext  2.2) flcarb = 'UB'.
+ 166  0  recode flcarb ('B' = 'ZB').
+ 167  0  
+ 168  0  If (flpbut = 'B' and pbutext  2.3) pbutcon = (2.3/totvol).
+ 169  0  If (flpbut = 'B' and pbutext  2.3) flpbut = 'UB'.
+ 170  0  recode flpbut ('B' = 'ZB').
+ 171  0  
+ 172  0  If (flcper = 'B' and cperext  2.5) cpercon = (2.5/totvol).
+ 173  0  If (flcper = 'B' and cperext  2.5) flcper = 'UB'.
+ 174  0  recode flcper ('B' = 'ZB').
+ 175  0  
+ 176  0  If (fltper = 'B' and tperext  1.1) tpercon = (1.1/totvol).
+ 177  0  If (fltper = 'B' and tperext  1.1) fltper = 'UB'.
+ 178  0  recode fltper ('B' = 'ZB').
+ 179  0  
+ 180  0  If (flcyflu = 'B' and cyfluext  3.4) cyflucon = (3.4/totvol).
+ 181  0  If (flcyflu = 'B' and cyfluext  3.4) flcyflu = 'UB'.
+ 182  0  recode flcyflu ('B' = 'ZB').
+ 183  0  
+ 184  0  If (flppddt = 'B' and ppddtext  1.1) ppddtcon = (1.1/totvol).
+ 185  0  If (flppddt = 'B' and ppddtext  1.1) flppddt = 'UB'.
+ 186  0  recode flppddt ('B' = 'ZB').
+ 187  0  
+ 188  0  If (flppdde = 'B' and ppddeext  1.2) ppddecon = (1.2/totvol).
+ 189  0  If (flppdde = 'B' and ppddeext  1.2) flppdde = 'UB'.
+ 190  0  recode flppdde ('B' = 'ZB').
+ 191  0  
+ 192  0  If (flgchlr = 'B' and gchlrext  1.1) gchlrcon = (1.1/totvol).
+ 193  0  If (flgchlr = 'B' and gchlrext  1.1) flgchlr = 'UB'.
+ 194  0  recode flgchlr ('B' = 'ZB').
+ 195  0  
+ 196  0  If (flachlr = 'B' and achlrext  1.1) achlrcon = (1.1/totvol).
+ 197  0  If (flachlr = 'B' and achlrext  1.1) flachlr = 'UB'.
+ 198  0  recode flachlr ('B' = 'ZB').
+ 199  0  
+ 200  0  If (fltrnon = 'B' and trnonext  1.7) trnoncon = (1.7/totvol).
+ 201  0  If (fltrnon = 'B' and trnonext  1.7) fltrnon = 'UB'.
+ 202  0  recode fltrnon ('B' = 'ZB').
+ 203  0  
+ 204  0  If (flhpta = 'B' and hptaext  1.2) hptacon = (1.2/totvol).
+ 205  0  If (flhpta = 'B' and hptaext  1.2) flhpta = 'UB'.
+ 206  0  recode flhpta ('B' = 'ZB').
+ 207  0  
+ 208  0  
+ 209  0  If (fllnd = 'B' and lndext  2.3) lndcon = (2.3/totvol).
+ 210  0  If (fllnd = 'B' and lndext  2.3) fllnd = 'UB'.
+ 211  0  recode fllnd ('B' = 'ZB').
+ 212  0  
+ 213  0  If (flmtho = 'B' and mthoext  1.1) mthocon = (1.1/totvol).
+ 214  0  If (flmtho = 'B' and mthoext  1.1) flmtho = 'UB'.
+ 215  0  recode flmtho ('B' = 'ZB').
+ 216  0  
+ 217  0  If (flaldrn = 'B' and aldrnext  4.3) aldrncon = (4.3/totvol).
+ 218  0  If (flaldrn = 'B' and aldrnext  4.3) flaldrn = 'UB'.
+ 219  0  recode flaldrn ('B' = 'ZB').
+ 220  0  
+ 221  0  If (fldicf = 'B' and dicfext  3.4) dicfcon = (3.4/totvol).
+ 222  0  If (fldicf = 'B' and dicfext  3.4) fldicf = 'UB'.
+ 223  0  recode fldicf ('B' = 'ZB').
+ 224  0  
+ 225  0  If (fldield = 'B' and dieldext  5.0) dieldcon = (5.0/totvol).
+ 226  0  If (fldield = 'B' and dieldext  5.0) fldield = 'UB'.
+ 227  0  recode fldield ('B' = 'ZB').
+ 228  0  
+ 229  0  If (flend1 = 'B' and end1ext  2.2) end1con = (2.2/totvol).
+ 230  0  If (flend1 = 'B' and end1ext  2.2) flend1 = 'UB'.
+ 231  0  recode flend1 ('B' = 'ZB').
+ 232  0  
+ 233  0  If (flend2 = 'B' and end2ext  2.2) end2con = (2.2/totvol).
+ 234  0  If (flend2 = 'B' and end2ext  2.2) flend2 = 'UB'.
+ 235  0  recode flend2 ('B' = 'ZB').
+ 236  0  
+ 237  0  If (flendr = 'B' and endrext  4.5) endrcon = (4.5/totvol).
+ 238  0  If (flendr = 'B' and endrext  4.5) flendr = 'UB'.
+ 239  0  recode flendr ('B' = 'ZB').
+ 240  0  
+ 241  0  If (flophn = 'B' and ophnext  1.1) ophncon = (1.1/totvol).
+ 242  0  If (flophn = 'B' and ophnext  1.1) flophn = 'UB'.
+ 243  0  recode flophn ('B' = 'ZB').
+ 244  0  
+ 245  0  If (flflpt = 'B' and flptext  3.7) flptcon = (3.7/totvol).
+ 246  0  If (flflpt = 'B' and flptext  3.7) flflpt = 'UB'.
+ 247  0  recode flflpt ('B' = 'ZB').
+ 248  0  
+ 249  0  If (flbndio = 'B' and bndioext  3.4) bndiocon = (3.4/totvol).
+ 250  0  If (flbndio = 'B' and bndioext  3.4) flbndio = 'UB'.
+ 251  0  recode flbndio ('B' = 'ZB').
+ 252  0  
+ 253  0  If (flcarbo = 'B' and carboext  2.3) carbocon = (2.3/totvol).
+ 254  0  If (flcarbo = 'B' and carboext  2.3) flcarbo = 'UB'.
+ 255  0  recode flcarbo ('B' = 'ZB').
+ 256  0  
+ 257  0  
+ 258  0  COMMENT ADDITION 1.
+ 259  0  
+ 260  0  
+ 261  0  *#2a (recodes  the EB-flags as UB-flags if after the blank substraction the extract amount is below the limit of detection)
+            .
+ 262  0  *This adjustment is necessary since without it some of the air concentration are negative values.
+ 263  0  
+ 264  0  If (flpyr = 'EB' and pyrext  0.5) pyrene = (0.5/totvol).
+ 265  0  If (flpyr = 'EB' and pyrext  0.5) flpyr = 'UB'.
+ 266  0  
+ 267  0  
+ 268  0  If (flbaa = 'EB' and baaext  0.5) baa = (0.5/totvol).
+ 269  0  If (flbaa = 'EB' and baaext  0.5) flbaa = 'UB'.
+ 270  0  
+ 271  0  
+ 272  0  If (flchryf = 'EB' and chryext  0.5) chrysene = (0.5/totvol).
+ 273  0  If (flchryf = 'EB' and chryext  0.5) flchryf = 'UB'.
+ 274  0  
+ 275  0  
+ 276  0  If (flbbf = 'EB' and bbfext  0.5) bbf = (0.5/totvol).
+ 277  0  If (flbbf = 'EB' and bbfext  0.5) flbbf = 'UB'.
+ 278  0  
+ 279  0  If (flbkf = 'EB' and bkfext  0.5) bkf = (0.5/totvol).
+ 280  0  If (flbkf = 'EB' and bkfext  0.5) flbkf = 'UB'.
+ 281  0  
+ 282  0  
+ 283  0  If (flbap = 'EB' and bapext  0.5) bap = (0.5/totvol).
+ 284  0  If (flbap = 'EB' and bapext  0.5) flbap = 'UB'.
+ 285  0  
+ 286  0  
+ 287  0  If (flip = 'EB' and ipext  0.5) ip = (0.5/totvol).
+ 288  0  If (flip = 'EB' and ipext  0.5) flip = 'UB'.
+ 289  0  
+ 290  0  
+ 291  0  If (fldaha = 'EB' and dahaext  0.5) daha = (0.5/totvol).
+ 292  0  If (fldaha = 'EB' and dahaext  0.5) fldaha = 'UB'.
+ 293  0  
+ 294  0  If (flbghip = 'EB' and bghipext  0.5) bghip = (0.5/totvol).
+ 295  0  If (flbghip = 'EB' and bghipext  0.5) flbghip = 'UB'.
+ 296  0  
+ 297  0  If (flchlrp = 'EB' and chlrpext  1.1) chlrpcon = (1.1/totvol).
+ 298  0  If (flchlrp = 'EB' and chlrpext  1.1) flchlrp = 'UB'.
+ 299  0  
+ 300  0  If (fldiaz = 'EB' and diazext  1.1) diazcon = (1.1/totvol).
+ 301  0  If (fldiaz = 'EB' and diazext  1.1) fldiaz = 'UB'.
+ 302  0  
+ 303  0  If (flmthpr = 'EB' and mthprext  2.1) mthprcon = (2.1/totvol).
+ 304  0  If (flmthpr = 'EB' and mthprext  2.1) flmthpr = 'UB'.
+ 305  0  
+ 306  0  
+ 307  0  If (fldchlr = 'EB' and dchlrext  2.1) dchlrcon = (2.1/totvol).
+ 308  0  If (fldchlr = 'EB' and dchlrext  2.1) fldchlr = 'UB'.
+ 309  0  
+ 310  0  If (flmla = 'EB' and mlaext  1.1) mlacon = (1.1/totvol).
+ 311  0  If (flmla = 'EB' and mlaext  1.1) flmla = 'UB'.
+ 312  0  
+ 313  0  
+ 314  0  If (flprpo = 'EB' and prpoext  1.1) prpocon = (1.1/totvol).
+ 315  0  If (flprpo = 'EB' and prpoext  1.1) flprpo = 'UB'.
+ 316  0  
+ 317  0  
+ 318  0  If (flcarb = 'EB' and carbext  2.2) carbcon = (2.2/totvol).
+ 319  0  If (flcarb = 'EB' and carbext  2.2) flcarb = 'UB'.
+ 320  0  
+ 321  0  If (flpbut = 'EB' and pbutext  2.3) pbutcon = (2.3/totvol).
+ 322  0  If (flpbut = 'EB' and pbutext  2.3) flpbut = 'UB'.
+ 323  0  
+ 324  0  
+ 325  0  If (flcper = 'EB' and cperext  2.5) cpercon = (2.5/totvol).
+ 326  0  If (flcper = 'EB' and cperext  2.5) flcper = 'UB'.
+ 327  0  
+ 328  0  If (fltper = 'EB' and tperext  1.1) tpercon = (1.1/totvol).
+ 329  0  If (fltper = 'EB' and tperext  1.1) fltper = 'UB'.
+ 330  0  
+ 331  0  If (flcyflu = 'EB' and cyfluext  3.4) cyflucon = (3.4/totvol).
+ 332  0  If (flcyflu = 'EB' and cyfluext  3.4) flcyflu = 'UB'.
+ 333  0  
+ 334  0  
+ 335  0  If (flppddt = 'EB' and ppddtext  1.1) ppddtcon = (1.1/totvol).
+ 336  0  If (flppddt = 'EB' and ppddtext  1.1) flppddt = 'UB'.
+ 337  0  
+ 338  0  If (flppdde = 'EB' and ppddeext  1.2) ppddecon = (1.2/totvol).
+ 339  0  If (flppdde = 'EB' and ppddeext  1.2) flppdde = 'UB'.
+ 340  0  
+ 341  0  
+ 342  0  If (flgchlr = 'EB' and gchlrext  1.1) gchlrcon = (1.1/totvol).
+ 343  0  If (flgchlr = 'EB' and gchlrext  1.1) flgchlr = 'UB'.
+ 344  0  
+ 345  0  
+ 346  0  If (flachlr = 'EB' and achlrext  1.1) achlrcon = (1.1/totvol).
+ 347  0  If (flachlr = 'EB' and achlrext  1.1) flachlr = 'UB'.
+ 348  0  
+ 349  0  
+ 350  0  If (fltrnon = 'EB' and trnonext  1.7) trnoncon = (1.7/totvol).
+ 351  0  If (fltrnon = 'EB' and trnonext  1.7) fltrnon = 'UB'.
+ 352  0  
+ 353  0  
+ 354  0  If (flhpta = 'EB' and hptaext  1.2) hptacon = (1.2/totvol).
+ 355  0  If (flhpta = 'EB' and hptaext  1.2) flhpta = 'UB'.
+ 356  0  
+ 357  0  
+ 358  0  If (fllnd = 'EB' and lndext  2.3) lndcon = (2.3/totvol).
+ 359  0  If (fllnd = 'EB' and lndext  2.3) fllnd = 'UB'.
+ 360  0  
+ 361  0  If (flmtho = 'EB' and mthoext  1.1) mthocon = (1.1/totvol).
+ 362  0  If (flmtho = 'EB' and mthoext  1.1) flmtho = 'UB'.
+ 363  0  
+ 364  0  If (flaldrn = 'EB' and aldrnext  4.3) aldrncon = (4.3/totvol).
+ 365  0  If (flaldrn = 'EB' and aldrnext  4.3) flaldrn = 'UB'.
+ 366  0  
+ 367  0  
+ 368  0  If (fldicf = 'EB' and dicfext  3.4) dicfcon = (3.4/totvol).
+ 369  0  If (fldicf = 'EB' and dicfext  3.4) fldicf = 'UB'.
+ 370  0  
+ 371  0  
+ 372  0  If (fldield = 'EB' and dieldext  5.0) dieldcon = (5.0/totvol).
+ 373  0  If (fldield = 'EB' and dieldext  5.0) fldield = 'UB'.
+ 374  0  
+ 375  0  
+ 376  0  If (flend1 = 'EB' and end1ext  2.2) end1con = (2.2/totvol).
+ 377  0  If (flend1 = 'EB' and end1ext  2.2) flend1 = 'UB'.
+ 378  0  
+ 379  0  
+ 380  0  If (flend2 = 'EB' and end2ext  2.2) end2con = (2.2/totvol).
+ 381  0  If (flend2 = 'EB' and end2ext  2.2) flend2 = 'UB'.
+ 382  0  
+ 383  0  
+ 384  0  If (flendr = 'EB' and endrext  4.5) endrcon = (4.5/totvol).
+ 385  0  If (flendr = 'EB' and endrext  4.5) flendr = 'UB'.
+ 386  0  
+ 387  0  
+ 388  0  If (flophn = 'EB' and ophnext  1.1) ophncon = (1.1/totvol).
+ 389  0  If (flophn = 'EB' and ophnext  1.1) flophn = 'UB'.
+ 390  0  
+ 391  0  
+ 392  0  If (flflpt = 'EB' and flptext  3.7) flptcon = (3.7/totvol).
+ 393  0  If (flflpt = 'EB' and flptext  3.7) flflpt = 'UB'.
+ 394  0  
+ 395  0  
+ 396  0  If (flbndio = 'EB' and bndioext  3.4) bndiocon = (3.4/totvol).
+ 397  0  If (flbndio = 'EB' and bndioext  3.4) flbndio = 'UB'.
+ 398  0  
+ 399  0  
+ 400  0  If (flcarbo = 'EB' and carboext  2.3) carbocon = (2.3/totvol).
+ 401  0  If (flcarbo = 'EB' and carboext  2.3) flcarbo = 'UB'.
+ 402  0  
+ 403  0  
+ 404  0  
+ 405  0  COMMENT End of Addition 1.
+ 406  0  
+ 407  0  
+ 408  0  
+ 409  0  *#3 (codes air concentrations for all Q flags as missing).
+ 410  0  
+ 411  0  If (flpyr = 'Q' ) pyrene = (-9).
+ 412  0  If (flbaa = 'Q') baa = (-9).
+ 413  0  If (flchryf = 'Q') chrysene = (-9).
+ 414  0  If (flbbf = 'Q') bbf = (-9).
+ 415  0  If (flbkf = 'Q' ) bkf = (-9).
+ 416  0  If (flbap = 'Q' ) bap = (-9).
+ 417  0  If (flip = 'Q' ) ip = (-9).
+ 418  0  If (fldaha = 'Q') daha = (-9).
+ 419  0  If (flbghip = 'Q') bghip = (-9).
+ 420  0  If (flchlrp = 'Q') chlrpcon = (-9).
+ 421  0  If (fldiaz = 'Q' ) diazcon = (-9).
+ 422  0  If (flmthpr = 'Q' ) mthprcon = (-9).
+ 423  0  If (fldchlr = 'Q' ) dchlrcon = (-9).
+ 424  0  If (flmla = 'Q' ) mlacon = (-9).
+ 425  0  If (flprpo = 'Q') prpocon = (-9).
+ 426  0  If (flcarb = 'Q') carbcon = (-9).
+ 427  0  If (flpbut = 'Q' ) pbutcon = (-9).
+ 428  0  If (flcper = 'Q' ) cpercon = (-9).
+ 429  0  If (fltper = 'Q' ) tpercon = (-9).
+ 430  0  If (flcyflu = 'Q') cyflucon = (-9).
+ 431  0  If (flppddt = 'Q' ) ppddtcon = (-9).
+ 432  0  If (flppdde = 'Q' ) ppddecon = (-9).
+ 433  0  If (flgchlr = 'Q' ) gchlrcon = (-9).
+ 434  0  If (flachlr = 'Q' ) achlrcon = (-9).
+ 435  0  If (fltrnon = 'Q' ) trnoncon = (-9).
+ 436  0  If (flhpta = 'Q') hptacon = (-9).
+ 437  0  If (fllnd = 'Q' ) lndcon = (-9).
+ 438  0  If (flmtho = 'Q' ) mthocon = (-9).
+ 439  0  If (flaldrn = 'Q' ) aldrncon = (-9).
+ 440  0  If (fldicf = 'Q' ) dicfcon = (-9).
+ 441  0  If (fldield = 'Q' ) dieldcon = (-9).
+ 442  0  If (flend1 = 'Q' ) end1con = (-9).
+ 443  0  If (flend2 = 'Q' ) end2con = (-9).
+ 444  0  If (flendr = 'Q' ) endrcon = (-9).
+ 445  0  If (flophn = 'Q' ) ophncon = (-9).
+ 446  0  If (flflpt = 'Q' ) flptcon = (-9).
+ 447  0  If (flbndio = 'Q' ) bndiocon = (-9).
+ 448  0  If (flcarbo = 'Q' ) carbocon = (-9).
+ 449  0  
+ 450  0  execute.
+ 451  0  COMMENT ADDITION 2.
+ 452  0  * (codes extracts  for all Q flags as missing).
+ 453  0  
+ 454  0  If (flpyr = 'Q' )  pyrext= (-9).
+ 455  0  If (flbaa = 'Q') baaext = (-9).
+ 456  0  If (flchryf = 'Q') chryext = (-9).
+ 457  0  If (flbbf = 'Q') bbfext = (-9).
+ 458  0  If (flbkf = 'Q' ) bkfext = (-9).
+ 459  0  If (flbap = 'Q' ) bapext = (-9).
+ 460  0  If (flip = 'Q' ) ipext = (-9).
+ 461  0  If (fldaha = 'Q') dahaext = (-9).
+ 462  0  If (flbghip = 'Q') bghipext = (-9).
+ 463  0  If (flchlrp = 'Q') chlrpext = (-9).
+ 464  0  If (fldiaz = 'Q' ) diazext = (-9).
+ 465  0  If (flmthpr = 'Q' ) mthprext = (-9).
+ 466  0  If (fldchlr = 'Q' ) dchlrext = (-9).
+ 467  0  If (flmla = 'Q' ) mlaext = (-9).
+ 468  0  If (flprpo = 'Q') prpoext = (-9).
+ 469  0  If (flcarb = 'Q') carbext = (-9).
+ 470  0  If (flpbut = 'Q' ) pbutext = (-9).
+ 471  0  If (flcper = 'Q' ) cperext = (-9).
+ 472  0  If (fltper = 'Q' ) tperext = (-9).
+ 473  0  If (flcyflu = 'Q') cyfluext = (-9).
+ 474  0  If (flppddt = 'Q' ) ppddtext = (-9).
+ 475  0  If (flppdde = 'Q' ) ppddeext = (-9).
+ 476  0  If (flgchlr = 'Q' ) gchlrext = (-9).
+ 477  0  If (flachlr = 'Q' ) achlrext = (-9).
+ 478  0  If (fltrnon = 'Q' ) trnonext = (-9).
+ 479  0  If (flhpta = 'Q') hptaext = (-9).
+ 480  0  If (fllnd = 'Q' ) lndext = (-9).
+ 481  0  If (flmtho = 'Q' ) mthoext = (-9).
+ 482  0  If (flaldrn = 'Q' ) aldrnext = (-9).
+ 483  0  If (fldicf = 'Q' ) dicfext = (-9).
+ 484  0  If (fldield = 'Q' ) dieldext = (-9).
+ 485  0  If (flend1 = 'Q' ) end1ext = (-9).
+ 486  0  If (flend2 = 'Q' ) end2ext = (-9).
+ 487  0  If (flendr = 'Q' ) endrext = (-9).
+ 488  0  If (flophn = 'Q' ) ophnext = (-9).
+ 489  0  If (flflpt = 'Q' ) flptext = (-9).
+ 490  0  If (flbndio = 'Q' ) bndioext = (-9).
+ 491  0  If (flcarbo = 'Q' ) carboext = (-9).
+ 492  0  
+ 493  0  *#4 (readjusts the F flags such as they are treated a true non-detects only if
+ 494  0   the extract value on the F flagged samples is
+ 495  0   within 4 fold of the true detection limit).
+ 496  0  *Otherwise the F flag values are treated as missing.
+ 497  0  
+ 498  0  STRING flpyr1 flbaa1 flchryf1 flbbf1 flbkf1 flbap1 flip1 fldaha1 flbghip1
+ 499  0    flaldrn1 flbndi1 flcarb1 flcarbo1 flachlr1 flgchlr1 flchlrp1 flcyflu1
+ 500  0    flppdde1 flppddt1 fldiaz1 fldchlr1 fldicf1 fldield1 flend11 flend21 flendr1
+ 501  0    flflpt1 flhpta1 fllnd1 flmla1 flmtho1 flmthpr1 fltrnon1 flcper1 fltper1
+ 502  0    flophn1 flpbut1 flprpo1 (A2) .
+ 503  0  RECODE
+ 504  0    flpyr flbaa flchryf flbbf flbkf flbap flip fldaha flbghip flaldrn flbndio
+ 505  0    flcarb flcarbo flachlr flgchlr flchlrp flcyflu flppdde flppddt fldiaz
+ 506  0    fldchlr fldicf fldield flend1 flend2 flendr flflpt flhpta fllnd flmla flmtho
+ 507  0    flmthpr fltrnon flcper fltper flophn flpbut flprpo
+ 508  0    (ELSE=Copy)  INTO  flpyr1  flbaa1  flchryf1  flbbf1  flbkf1  flbap1  flip1
+ 509  0    fldaha1  flbghip1  flaldrn1  flbndi1  flcarb1  flcarbo1  flachlr1  flgchlr1
+ 510  0    flchlrp1  flcyflu1  flppdde1  flppddt1  fldiaz1  fldchlr1  fldicf1  fldield1
+ 511  0     flend11  flend21  flendr1  flflpt1  flhpta1  fllnd1  flmla1  flmtho1
+ 512  0    flmthpr1  fltrnon1  flcper1  fltper1  flophn1  flpbut1  flprpo1 .
+ 513  0  
+ 514  0  RECODE
+ 515  0    pyrene baa chrysene bbf bkf bap ip daha bghip chlrpcon diazcon mthprcon
+ 516  0    dchlrcon mlacon prpocon carbcon pbutcon cpercon tpercon cyflucon ppddtcon
+ 517  0    ppddecon gchlrcon achlrcon trnoncon hptacon lndcon mthocon aldrncon dicfcon
+ 518  0    dieldcon end1con end2con endrcon flptcon ophncon bndiocon carbocon
+ 519  0    (ELSE=Copy)  INTO  pyrene1  baa1  chrysen1  bbf1  bkf1  bap1  ip1  daha1
+ 520  0    bghip1  chlrpco1  diazcon1  mthprco1  dchlrco1  mlacon1  prpocon1  carbcon1
+ 521  0    pbutcon1  cpercon1  tpercon1  cyfluco1  ppddtco1  ppddeco1  gchlrco1
+ 522  0    achlrco1  trnonco1  hptacon1  lndcon1  mthocon1  aldrnco1  dicfcon1
+ 523  0    dieldco1  end1con1  end2con1  endrcon1  flptcon1  ophncon1  bndioco1
+ 524  0    carboco1 .
+ 525  0  EXECUTE .
+ 526  0  Missing values pyrene1  baa1 chrysen1 bbf1 bkf1 bap1 ip1 daha1 bghip1 chlrpco1
+ 527  0   diazcon1 mthprco1 dchlrco1 mlacon1 prpocon1 carbcon1 pbutcon1
+ 528  0   cpercon1 tpercon1 cyfluco1 ppddtco1 ppddeco1
+ 529  0   gchlrco1 achlrco1 trnonco1 hptacon1 lndcon1 mthocon1 aldrnco1 dicfcon1 dieldco1
+ 530  0   end1con1 end2con1 endrcon1 ophncon1 flptcon1 bndioco1
+ 531  0   carboco1 (-8, -9).
+ 532  0  
+ 533  0  string  flbndio1 (A2).
+ 534  0  recode flbndio (ELSE=Copy) INTO flbndio1.
+ 535  0  EXECUTE.
+ 536  0  recode pyrext baaext chryext bbfext bkfext bapext ipext dahaext bghipext aldrnext
+ 537  0   bndioext carbext carboext achlrext gchlrext chlrpext
+ 538  0   cyfluext ppddeext ppddtext diazext dchlrext dicfext dieldext end1ext end2ext
+ 539  0   endrext flptext hptaext  lndext mlaext mthoext mthprext
+ 540  0   trnonext cperext tperext ophnext pbutext prpoext (ELSE=Copy)
+ 541  0   INTO pyrext1 baaext1 chryext1 bbfext1 bkfext1 bapext1 ipext1 dahaext1 bghipex1
+ 542  0   aldrnex1 bndioex1 carbext1 carboex1 achlrex1 gchlrex1 chlrpex1
+ 543  0   cyfluex1 ppddeex1 ppddtex1 diazext1 dchlrex1 dicfext1 dieldex1 end1ext1 end2ext1
+ 544  0   endrext1 flptext1 hptaext1  lndext1 mlaext1 mthoext1 mthprex1
+ 545  0   trnonex1 cperext1 tperext1 ophnext1 pbutext1 prpoext1 .
+ 546  0  missing value pyrext1
+ 547  0   baaext1
+ 548  0   chryext1
+ 549  0   bbfext1
+ 550  0   bkfext1
+ 551  0   bapext1
+ 552  0   ipext1
+ 553  0   dahaext1
+ 554  0   bghipex1
+ 555  0   chlrpex1
+ 556  0   diazext1
+ 557  0   mthprex1
+ 558  0   dchlrex1
+ 559  0   mlaext1
+ 560  0   prpoext1
+ 561  0   carbext1
+ 562  0   pbutext1
+ 563  0   cperext1
+ 564  0   tperext1
+ 565  0   cyfluex1
+ 566  0   ppddtex1
+ 567  0   ppddeex1
+ 568  0   gchlrex1
+ 569  0   achlrex1
+ 570  0   trnonex1
+ 571  0   hptaext1
+ 572  0   lndext1
+ 573  0   mthoext1
+ 574  0   aldrnex1
+ 575  0   dicfext1
+ 576  0   dieldex1
+ 577  0   end1ext1
+ 578  0   end2ext1
+ 579  0   endrext1
+ 580  0   flptext1
+ 581  0   ophnext1
+ 582  0   bndioex1
+ 583  0   carboex1 (-8, -9).
+ 584  0  If (flpyr = 'F') pyrext1 = (pyrext/4).
+ 585  0  If (flpyr = 'F' and pyrext1 0.5 ) pyrene1 = (pyrext1/totvol).
+ 586  0  If (flpyr = 'F' and pyrext1 0.5 ) flpyr1 = 'U'.
+ 587  0  If (flpyr = 'F' and pyrext1 ge 0.5) pyrene1 = -9.
+ 588  0  
+ 589  0  If (flbaa = 'F') baaext1 = (baaext/4).
+ 590  0  If (flbaa = 'F' and baaext1  0.5 ) baa1 = (baaext1/totvol).
+ 591  0  If (flbaa = 'F' and baaext1  0.5 ) flbaa1 = 'U'.
+ 592  0  If (flbaa = 'F' and baaext1 ge 0.5) baa1 = -9.
+ 593  0  
+ 594  0  If (flchryf = 'F') chryext1 = (chryext/4).
+ 595  0  If (flchryf = 'F' and chryext1  0.5 ) chrysen1 = (chryext1/totvol).
+ 596  0  If (flchryf = 'F' and chryext1  0.5 ) flchryf1 = 'U'.
+ 597  0  If (flchryf = 'F' and chryext1 ge 0.5) chrysen1 = -9.
+ 598  0  
+ 599  0  If (flbbf = 'F') bbfext1 = (bbfext/4).
+ 600  0  If (flbbf = 'F' and bbfext1  0.5 ) bbf1 = (bbfext1/totvol).
+ 601  0  If (flbbf = 'F' and bbfext1  0.5 ) flbbf1 = 'U'.
+ 602  0  If (flbbf = 'F' and bbfext1 ge 0.5) bbf1 = -9.
+ 603  0  
+ 604  0  If (flbkf = 'F') bkfext1 = (bkfext/4).
+ 605  0  If (flbkf = 'F' and bkfext1  0.5 ) bkf1 = (bkfext1/totvol).
+ 606  0  If (flbkf = 'F' and bkfext1  0.5 ) flbkf1 = 'U'.
+ 607  0  If (flbkf = 'F' and bkfext1 ge 0.5) bkf1 = -9.
+ 608  0  
+ 609  0  If (flbap = 'F') bapext1 = (bapext/4).
+ 610  0  If (flbap = 'F' and bapext1  0.5 ) bap1 = (bapext1/totvol).
+ 611  0  If (flbap = 'F' and bapext1  0.5 ) flbap1 = 'U' .
+ 612  0  If (flbap = 'F' and bapext1 ge 0.5) bap1 = -9.
+ 613  0  
+ 614  0  If (flip = 'F') ipext1 = (ipext/4).
+ 615  0  If (flip = 'F' and ipext1  0.5 ) ip1 = (ipext1/totvol).
+ 616  0  If (flip = 'F' and ipext1  0.5 ) flip1 = 'U'.
+ 617  0  If (flip = 'F' and ipext1 ge 0.5) ip1 = -9.
+ 618  0  
+ 619  0  If (fldaha = 'F') dahaext1 = (dahaext/4).
+ 620  0  If (fldaha = 'F' and dahaext1  0.5 ) daha1 = (dahaext1/totvol).
+ 621  0  If (fldaha = 'F' and dahaext1  0.5 ) fldaha1 = 'U'.
+ 622  0  If (fldaha = 'F' and dahaext1 ge 0.5) daha1 = -9.
+ 623  0  
+ 624  0  If (flbghip  = 'F') bghipex1 = (bghipext/4).
+ 625  0  If (flbghip = 'F' and bghipex1  0.5 ) bghip1 = (bghipex1/totvol).
+ 626  0  If (flbghip = 'F' and bghipex1  0.5 ) flbghip1 = 'U'.
+ 627  0  If (flbghip = 'F' and bghipex1 ge 0.5) bghip1 = -9.
+ 628  0  
+ 629  0  If (flchlrp = 'F' ) chlrpex1 = (chlrpext/4).
+ 630  0  If (flchlrp = 'F' and chlrpex1  1.1) chlrpco1 = (chlrpex1/totvol).
+ 631  0  If (flchlrp = 'F' and chlrpex1  1.1) flchlrp1 = 'U'.
+ 632  0  If (flchlrp = 'F' and chlrpex1 ge 1.1) chlrpco1 = -9.
+ 633  0  
+ 634  0  If (fldiaz = 'F' ) diazext1 = (diazext/4).
+ 635  0  If (fldiaz = 'F' and diazext1  1.1) diazcon1 = (diazext1/totvol).
+ 636  0  If (fldiaz = 'F' and diazext1  1.1) fldiaz1 = 'U'.
+ 637  0  If (fldiaz = 'F' and diazext1 ge 1.1) diazcon1 = -9.
+ 638  0  
+ 639  0  If (flmthpr = 'F') mthprex1= (mthprext/4).
+ 640  0  If (flmthpr = 'F' and mthprex1  2.1 ) mthprco1 = (mthprex1/totvol).
+ 641  0  If (flmthpr = 'F' and mthprex1  2.1 ) flmthpr1 = 'U'.
+ 642  0  If (flmthpr = 'F' and mthprex1 ge 2.1 ) mthprco1 = -9.
+ 643  0  
+ 644  0  If (fldchlr = 'F') dchlrex1 = (dchlrext/4).
+ 645  0  If (fldchlr = 'F' and dchlrex1 2.1 ) dchlrco1 = (dchlrex1/totvol).
+ 646  0  If (fldchlr = 'F' and dchlrex1  2.1) fldchlr1 = 'U'.
+ 647  0  If (fldchlr = 'F' and dchlrex1 ge 2.1) dchlrco1 = -9.
+ 648  0  
+ 649  0  If (flmla = 'F') mlaext1 = (mlaext/4).
+ 650  0  If (flmla = 'F' and mlaext1  1.1 ) mlacon1 = (mlaext1/totvol).
+ 651  0  If (flmla = 'F' and mlaext1  1.1 ) flmla1 = 'U'.
+ 652  0  If (flmla = 'F' and mlaext1 ge 1.1 ) mlacon1 = -9.
+ 653  0  
+ 654  0  If (flprpo = 'F') prpoext1 = (prpoext/4).
+ 655  0  If (flprpo = 'F' and prpoext1  1.1 ) prpocon1 = (prpoext1/totvol).
+ 656  0  If (flprpo = 'F' and prpoext1  1.1 ) flprpo1 = 'U'.
+ 657  0  If (flprpo = 'F' and prpoext1 ge 1.1 ) prpocon1 = -9.
+ 658  0  
+ 659  0  If (flcarb = 'F') carbext1 = (carbext/4).
+ 660  0  If (flcarb = 'F' and carbext1  2.2 ) carbcon1 = (carbext1/totvol).
+ 661  0  If (flcarb = 'F' and carbext1  2.2 ) flcarb1 = 'U'.
+ 662  0  If (flcarb = 'F' and carbext1 ge 2.2 ) carbcon1 = -9.
+ 663  0  
+ 664  0  If (flpbut = 'F') pbutext1 = (pbutext/4).
+ 665  0  If (flpbut = 'F' and pbutext1  2.3 ) pbutcon1 = (pbutext1/totvol).
+ 666  0  If (flpbut = 'F' and pbutext1  2.3 ) flpbut1 = 'U'.
+ 667  0  If (flpbut = 'F' and pbutext1 ge 2.3 ) pbutcon1 = -9.
+ 668  0  
+ 669  0  If (flcper = 'F') cperext1 = (cperext/4).
+ 670  0  If (flcper = 'F' and cperext1  2.5 ) cpercon1 = (cperext1/totvol).
+ 671  0  If (flcper = 'F' and cperext1  2.5 ) flcper1 = 'U'.
+ 672  0  If (flcper = 'F' and cperext1 ge 2.5 ) cpercon1 = -9.
+ 673  0  
+ 674  0  If (fltper = 'F') tperext1 = (tperext/4).
+ 675  0  If (fltper = 'F' and tperext1  1.1 ) tpercon1 = (tperext1/totvol).
+ 676  0  If (fltper = 'F' and tperext1  1.1 ) fltper1 = 'U'.
+ 677  0  If (fltper = 'F' and tperext1 ge 1.1 ) tpercon1 = -9.
+ 678  0  
+ 679  0  If (flcyflu = 'F') cyfluex1 = (cyfluext/4).
+ 680  0  If (flcyflu = 'F' and cyfluex1 3.4 ) cyfluco1 = (cyfluex1/totvol).
+ 681  0  If (flcyflu = 'F' and cyfluex1  3.4 ) flcyflu1 = 'U'.
+ 682  0  If (flcyflu = 'F' and cyfluex1 ge 3.4 ) cyfluco1 = -9.
+ 683  0  
+ 684  0  If (flppddt = 'F') ppddtex1 = (ppddtext/4).
+ 685  0  If (flppddt = 'F' and ppddtex1  1.2 ) ppddtco1 = (ppddtex1/totvol).
+ 686  0  If (flppddt = 'F' and ppddtex1  1.2 ) flppddt1 = 'U'.
+ 687  0  If (flppddt = 'F' and ppddtex1 ge 1.2 ) ppddtco1 = -9.
+ 688  0  
+ 689  0  If (flppdde = 'F') ppddeex1 = (ppddeext/4).
+ 690  0  If (flppdde = 'F' and ppddeex1  1.2 ) ppddeco1 = (ppddeex1/totvol).
+ 691  0  If (flppdde = 'F' and ppddeex1  1.2 ) flppdde1 = 'U'.
+ 692  0  If (flppdde = 'F' and ppddeex1 ge 1.2 ) ppddeco1 = -9.
+ 693  0  
+ 694  0  If (flgchlr = 'F') gchlrex1 = (gchlrext/4).
+ 695  0  If (flgchlr = 'F' and gchlrex1  1.1) gchlrco1 = (gchlrex1/totvol).
+ 696  0  If (flgchlr = 'F' and gchlrex1  1.1) flgchlr1 = 'U'.
+ 697  0  If (flgchlr = 'F' and gchlrex1 ge 1.1) gchlrco1 = -9.
+ 698  0  
+ 699  0  If (flachlr = 'F') achlrex1 = (achlrext/4).
+ 700  0  If (flachlr = 'F' and achlrex1  1.1) achlrco1 = (achlrex1/totvol).
+ 701  0  If (flachlr = 'F' and achlrex1  1.1) flachlr1 = 'U'.
+ 702  0  If (flachlr = 'F' and achlrex1 ge 1.1) achlrco1 = -9.
+ 703  0  
+ 704  0  If (fltrnon = 'F') trnonex1 = (trnonext/4).
+ 705  0  If (fltrnon = 'F' and trnonex1  1.7) trnonco1 = (trnonex1/totvol).
+ 706  0  If (fltrnon = 'F' and trnonex1  1.7) fltrnon1 = 'U'.
+ 707  0  If (fltrnon = 'F' and trnonex1 ge 1.7) trnonco1 = -9.
+ 708  0  
+ 709  0  If (flhpta = 'F') hptaext1 = (hptaext/4).
+ 710  0  If (flhpta = 'F' and hptaext1  1.1) hptacon1 = (hptaext1/totvol).
+ 711  0  If (flhpta = 'F' and hptaext1  1.1) flhpta1 = 'U'.
+ 712  0  If (flhpta = 'F' and hptaext1 ge 1.1) hptacon1 = -9.
+ 713  0  
+ 714  0  If (fllnd = 'F') lndext1 = (lndext/4).
+ 715  0  If (fllnd = 'F' and lndext1  2.3 ) lndcon1 = (lndext1/totvol).
+ 716  0  If (fllnd = 'F' and lndext1  2.3 ) fllnd1 = 'U'.
+ 717  0  If (fllnd = 'F' and lndext1 ge 2.3 ) lndcon1 = -9.
+ 718  0  
+ 719  0  If (flmtho = 'F') mthoext1 = (mthoext/4).
+ 720  0  If (flmtho = 'F' and mthoext1  1.1 ) mthocon1 = (mthoext1/totvol).
+ 721  0  If (flmtho = 'F' and mthoext1  1.1 ) flmtho1 = 'U'.
+ 722  0  If (flmtho = 'F' and mthoext1 ge 1.1 ) mthocon1 = -9.
+ 723  0  
+ 724  0  If (flaldrn = 'F') aldrnex1 = (aldrnext/4).
+ 725  0  If (flaldrn = 'F' and aldrnex1  4.3 ) aldrnco1 = (aldrnex1/totvol).
+ 726  0  If (flaldrn = 'F' and aldrnex1  4.3 ) flaldrn1 = 'U'.
+ 727  0  If (flaldrn = 'F' and aldrnex1 ge 4.3 ) aldrnco1 = -9.
+ 728  0  
+ 729  0  If (fldicf = 'F') dicfext1 = (dicfext/4).
+ 730  0  If (fldicf = 'F' and dicfext1  3.4 ) dicfcon1 = (dicfext1/totvol).
+ 731  0  If (fldicf = 'F' and dicfext1  3.4 ) fldicf1 = 'U'.
+ 732  0  If (fldicf = 'F' and dicfext1 ge 3.4 ) dicfcon1 = -9.
+ 733  0  
+ 734  0  If (fldield = 'F') dieldex1 = (dieldext/4).
+ 735  0  If (fldield = 'F' and dieldex1  5 ) dieldco1 = (dieldex1/totvol).
+ 736  0  If (fldield = 'F' and dieldex1  5 ) fldield1 = 'U'.
+ 737  0  If (fldield = 'F' and dieldex1 ge 5 ) dieldco1 = -9.
+ 738  0  
+ 739  0  If (flend1 = 'F') end1ext1 = (end1ext/4).
+ 740  0  If (flend1 = 'F' and end1ext1  2.2 ) end1con1 = (end1ext1/totvol).
+ 741  0  If (flend1 = 'F' and end1ext1  2.2 ) flend11 = 'U'.
+ 742  0  If (flend1 = 'F' and end1ext1 ge 2.2 ) end1con1 = -9.
+ 743  0  
+ 744  0  If (flend2 = 'F') end2ext1 = (end2ext/4).
+ 745  0  If (flend2 = 'F' and end2ext1  2.2 ) end2con1 = (end2ext1/totvol).
+ 746  0  If (flend2 = 'F' and end2ext1  2.2 ) flend21 = 'U'.
+ 747  0  If (flend2 = 'F' and end2ext1 ge 2.2 ) end2con1 = -9.
+ 748  0  
+ 749  0  If (flendr = 'F') endrext1 = (endrext/4).
+ 750  0  If (flendr = 'F' and endrext1  4.5 ) endrcon1 = (endrext1/totvol).
+ 751  0  If (flendr = 'F' and endrext1  4.5 ) flendr1 = 'U'.
+ 752  0  If (flendr = 'F' and endrext1 ge 4.5 ) endrcon1 = -9.
+ 753  0  
+ 754  0  If (flflpt = 'F') flptext1 = (flptext/4).
+ 755  0  If (flflpt = 'F' and flptext1  3.7 ) flptcon1 = (flptext1/totvol).
+ 756  0  If (flflpt = 'F' and flptext1  3.7 ) flflpt1 = 'U'.
+ 757  0  If (flflpt = 'F' and flptext1 ge 3.7 ) flptcon1 = -9.
+ 758  0  
+ 759  0  If (flophn = 'F') ophnext1 = (ophnext/4).
+ 760  0  If (flophn = 'F' and ophnext1  1.1 ) ophncon1 = (ophnext1/totvol).
+ 761  0  If (flophn = 'F' and ophnext1  1.1 ) flophn1 = 'U'.
+ 762  0  If (flophn = 'F' and ophnext1 ge 1.1 ) ophncon1 = -9.
+ 763  0  
+ 764  0  If (flbndio = 'F') bndioex1 = (bndioext/4).
+ 765  0  If (flbndio = 'F' and bndioex1  3.4 ) bndioco1 = (bndioex1/totvol).
+ 766  0  If (flbndio = 'F' and bndioex1  3.4) flbndio1 = 'U'.
+ 767  0  If (flbndio = 'F' and bndioex1 ge 3.4) bndioco1 = -9.
+ 768  0  
+ 769  0  If (flcarbo = 'F') carboex1 = (carboext/4).
+ 770  0  If (flcarbo = 'F' and carboex1  2.3 ) carboco1 = (carboex1/totvol).
+ 771  0  If (flcarbo = 'F' and carboex1  2.3 ) flcarbo1 = 'U'.
+ 772  0  If (flcarbo = 'F' and carboex1 ge 2.3 ) carboco1 = -9.
+ 773  0  
+ 774  0  *#5 (below readjusts the E flags by dividing by 2).
+ 775  0  STRING  flpyr2 flbaa2 flchryf2 flbbf2 flbkf2 flbap2 flip2 fldaha2 flbghip2 flaldrn2 flbndio2
+ 776  0    flcarb2 flcarbo2 flachlr2 flgchlr2 flchlrp2 flcyflu2 flppdde2 flppddt2 fldiaz2
+ 777  0    fldchlr2 fldicf2 fldield2 flend12 flend22 flendr2 flflpt2 flhpta2 fllnd2 flmla2 flmtho2
+ 778  0    flmthpr2 fltrnon2 flcper2 fltper2 flophn2 flpbut2 flprpo2 (A2) .
+ 779  0  
+ 780  0  
+ 781  0  COMMENT - NOTE THAT HAVE INCLUDED EB IN RECODES HERE.
+ 782  0  
+ 783  0  
+ 784  0  RECODE
+ 785  0    flpyr1 flbaa1 flchryf1 flbbf1 flbkf1 flbap1 flip1 fldaha1 flbghip1 flaldrn1
+ 786  0    flbndio1 flcarb1 flcarbo1 flachlr1 flgchlr1 flchlrp1 flcyflu1 flppdde1
+ 787  0    flppddt1 fldiaz1 fldchlr1 fldicf1 fldield1 flend11 flend21 flendr1 flflpt1
+ 788  0    flhpta1 fllnd1 flmla1 flmtho1 flmthpr1 fltrnon1 flcper1 fltper1 flophn1
+ 789  0    flpbut1 flprpo1
+ 790  0    ('JE', 'GE' 'EB' ='E')   (ELSE=Copy)  INTO  flpyr2
+ 791  0    flbaa2  flchryf2  flbbf2  flbkf2  flbap2  flip2  fldaha2  flbghip2  flaldrn2  flbndio2
+ 792  0     flcarb2  flcarbo2  flachlr2  flgchlr2  flchlrp2  flcyflu2  flppdde2  flppddt2
+ 793  0    fldiaz2  fldchlr2  fldicf2  fldield2  flend12  flend22  flendr2  flflpt2  flhpta2
+ 794  0    fllnd2  flmla2  flmtho2  flmthpr2  fltrnon2  flcper2  fltper2  flophn2  flpbut2
+ 795  0    flprpo2 .
+ 796  0  VARIABLE LABELS flpyr2 'Flag on pyrene analysis' /flbaa2 'Flag on'+
+ 797  0   ' benz(a)anthracene' /flchryf2 'Flag on chrysene' /flbbf2 'Flag on'+
+ 798  0   ' benzo(b)fluroanthene' /flbkf2 'Flag on benzo(k)fluranthene' /flbap2 'Flag on'+
+ 799  0   ' benzo(a)pyrene' /flip2 'Flag on indeno(1,2,3-cd)pyrene' /fldaha2 'Flag on'+
+ 800  0   ' disbenz(a,h)anthracene' /flbghip2 'Flag on benzo(g,h,i)perylene' /flaldrn2
+ 801  0    'AldrinFlag' /flbndio2 'BendiocarbFlag' /flcarb2 'Carbaryl Flag' /flcarbo2
+ 802  0    'Carbofuran flag' /flachlr2 'alpha-Chlordane flag' /flgchlr2 'gamma-Chlordane'+
+ 803  0   ' flag' /flchlrp2 'Chlorpyrifos flag' /flcyflu2 'Cyfluthrin flag' /flppdde2 'p,p'+
+ 804  0   '-DDE flag' /flppddt2 'p,p-DDT flag' /fldiaz2 'Diazinon flag' /fldchlr2
+ 805  0    'Dichlorvos flag' /fldicf2 'Dicofol flag' /fldield2 'Dieldrin flag' /flend12
+ 806  0    'Endosulfan I flag' /flend22 'Endosulfan II flag' /flendr2 'Endrin flag'
+ 807  0   /flflpt2 'Folpet flag' /flhpta2 'Heptachlor flag' /fllnd2 'Lindane flag' /flmla
+ 808  0    'Malathion flag' /flmtho2 'Methoxychlor flag' /flmthpr2 'Methyl parathion'+
+ 809  0   ' flag' /fltrnon2 'trans-Nonachlor flag' /flcper2 'cis-Permethrin flag' /fltper2
+ 810  0    'trans-Permethrin flag' /flophn2 'o-Phenylphenol flag' /flpbut2 'Piperonyl'+
+ 811  0   ' butoxide flag' /flprpo2 'Propoxur flag'.
+ 812  0  EXECUTE .
+ 813  0  
+ 814  0  RECODE
+ 815  0    pyrene1 baa1 chrysen1 bbf1 bkf1 bap1 ip1 daha1 bghip1 chlrpco1 diazcon1 mthprco1
+ 816  0    dchlrco1 mlacon1 prpocon1 carbcon1 pbutcon1 cpercon1 tpercon1 cyfluco1 ppddtco1
+ 817  0    ppddeco1 gchlrco1 achlrco1 trnonco1 hptacon1 lndcon1 mthocon1 aldrnco1 dicfcon1
+ 818  0    dieldco1 end1con1 end2con1 endrcon1 flptcon1 ophncon1 bndioco1 carboco1
+ 819  0    (ELSE=Copy)  INTO  pyrene2  baa2  chrysen2  bbf2  bkf2  bap2  ip2  daha2
+ 820  0    bghip2  chlrpco2  diazcon2  mthprco2  dchlrco2  mlacon2  prpocon2  carbcon2
+ 821  0    pbutcon2  cpercon2  tpercon2  cyfluco2  ppddtco2  ppddeco2  gchlrco2
+ 822  0    achlrco2  trnonco2  hptacon2  lndcon2  mthocon2  aldrnco2  dicfcon2
+ 823  0    dieldco2  end1con2  end2con2  endrcon2  flptcon2  ophncon2  bndioco2
+ 824  0    carboco2 .
+ 825  0  Missing value pyrene2  baa2 chrysen2 bbf2 bkf2 bap2 ip2 daha2 bghip2 chlrpco2
+ 826  0   diazcon2 mthprco2 dchlrco2 mlacon2 prpocon2 carbcon2 pbutcon2
+ 827  0   cpercon2 tpercon2 cyfluco2 ppddtco2 ppddeco2
+ 828  0   gchlrco2 achlrco2 trnonco2 hptacon2 lndcon2 mthocon2 aldrnco2 dicfcon2 dieldco2
+ 829  0   end1con2 end2con2 endrcon2 ophncon2 flptcon2 bndioco2
+ 830  0   carboco2 (-8, -9).
+ 831  0  
+ 832  0  
+ 833  0  If (flpyr2 = 'E') pyrene2 = (pyrene1/2).
+ 834  0  If (flbaa2 = 'E') baa2 = (baa1/2).
+ 835  0  If (flchryf2 = 'E') chrysen2 = (chrysen1/2).
+ 836  0  If (flbbf2 = 'E') bbf2 = (bbf1/2).
+ 837  0  If (flbkf2 = 'E') bkf2 = (bkf1/2).
+ 838  0  If (flbap2 = 'E') bap2 = (bap1/2).
+ 839  0  If (flip2 = 'E') ip2 = (ip1/2).
+ 840  0  If (fldaha2 = 'E') daha2 = (daha1/2).
+ 841  0  If (flbghip2 = 'E') bghip2 = (bghip1/2).
+ 842  0  If (flchlrp2 = 'E') chlrpco2 = (chlrpco1/2).
+ 843  0  If (fldiaz2 = 'E' ) diazcon2 = (diazcon1/2).
+ 844  0  If (flmthpr2 = 'E' ) mthprco2 = (mthprco1/2).
+ 845  0  If (fldchlr2 = 'E' ) dchlrco2 = (dchlrco1/2).
+ 846  0  If (flmla2 = 'E' ) mlacon2 = (mlacon1/2).
+ 847  0  If (flprpo2 = 'E') prpocon2 = (prpocon1/2).
+ 848  0  If (flcarb2 = 'E') carbcon2 = (carbcon1/2).
+ 849  0  If (flpbut2 = 'E' ) pbutcon2 = (pbutcon1/2).
+ 850  0  If (flcper2 = 'E' ) cpercon2 = (cpercon1/2).
+ 851  0  If (fltper2 = 'E' ) tpercon2 = (tpercon1/2).
+ 852  0  If (flcyflu2 = 'E') cyfluco2 = (cyfluco1/2).
+ 853  0  If (flppddt2 = 'E' ) ppddtco2 = (ppddtco1/2).
+ 854  0  If (flppdde2 = 'E' ) ppddeco2 = (ppddeco1/2).
+ 855  0  If (flgchlr2 = 'E' ) gchlrco2 = (gchlrco1/2).
+ 856  0  If (flachlr2 = 'E' ) achlrco2 = (achlrco1/2).
+ 857  0  If (fltrnon2 = 'E' ) trnonco2 = (trnonco1/2).
+ 858  0  If (flhpta2 = 'E') hptacon2 = (hptacon1/2).
+ 859  0  If (fllnd2 = 'E' ) lndcon2 = (lndcon1/2).
+ 860  0  If (flmtho2 = 'E' ) mthocon2 = (mthocon1/2).
+ 861  0  If (flaldrn2 = 'E' ) aldrnco2 = (aldrnco1/2).
+ 862  0  If (fldicf2 = 'E' ) dicfcon2 = (dicfcon1/2).
+ 863  0  If (fldield2 = 'E' ) dieldco2 = (dieldco1/2).
+ 864  0  If (flend12 = 'E' ) end1con2 = (end1con1/2).
+ 865  0  If (flend22 = 'E' ) end2con2 = (end2con1/2).
+ 866  0  If (flendr2 = 'E' ) endrcon2 = (endrcon1/2).
+ 867  0  If (flophn2 = 'E' ) ophncon2 = (ophncon1/2).
+ 868  0  
+ 869  0  If (flflpt2 = 'E' ) flptcon2 = (flptcon1/2).
+ 870  0  If (flbndio2 = 'E' ) bndioco2 = (bndioco1/2).
+ 871  0  If (flcarbo2 = 'E' ) carboco2 = (carboco1/2).
+ 872  0  
+ 873  0  execute.
+ 874  0  missing values  flachlr flachlr1 flachlr2 flaldrn flaldrn1 flaldrn2 flbaa flbaa1 flbaa2 flbap
+ 875  0    flbap1 flbap2 flbbf flbbf1 flbbf2 flbghip flbghip1 flbghip2 flbkf flbkf1
+ 876  0    flbkf2 flbndi1 flbndio flbndio1 flbndio2 flcarb flcarb1 flcarb2 flcarbo
+ 877  0    flcarbo1 flcarbo2 flchlrp flchlrp1 flchlrp2 flchryf flchryf1 flchryf2 flcper
+ 878  0    flcper1 flcper2 flcyflu flcyflu1 flcyflu2 fldaha fldaha1 fldaha2 fldchlr
+ 879  0    fldchlr1 fldchlr2 fldiaz fldiaz1 fldiaz2 fldicf fldicf1 fldicf2 fldield
+ 880  0    fldield1 fldield2 flend1 flend11 flend12 flend2 flend21 flend22 flendr
+ 881  0    flendr1 flendr2 flflpt flflpt1 flflpt2 flgachlr flgaldrn flgbaa flgbap
+ 882  0    flgbbf flgbghip flgbkf flgbndio flgcarb flgcarbo flgchlr flgchlr1 flgchlr2
+ 883  0    flgchlrp flgchry flgcper flgcyflu flgdaha flgdchlr flgdiaz flgdicf flgdield
+ 884  0    flgend1 flgend2 flgendr flgflpt flggchlr flghpta flgip flglnd flgmla flgmtho
+ 885  0    flgmthpr flgophn flgpbut flgppdde flgppddt flgprpo flgpyr flgtper flgtrnon
+ 886  0    flhpta flhpta1 flhpta2 flip flip1 flip2 fllnd fllnd1 fllnd2 flmla flmla1
+ 887  0    flmla2 flmtho flmtho1 flmtho2 flmthpr flmthpr1 flmthpr2 flophn flophn1
+ 888  0    flophn2 flpbut flpbut1 flpbut2 flppdde flppdde1 flppdde2 flppddt flppddt1
+ 889  0    flppddt2 flprpo flprpo1 flprpo2 flachlr flachlr1 flachlr2 flaldrn flaldrn1 flaldrn2 flbaa flbaa1 flbaa2 flbap
+ 890  0    flbap1 flbap2 flbbf flbbf1 flbbf2 flbghip flbghip1 flbghip2 flbkf flbkf1
+ 891  0    flbkf2 flbndi1 flbndio flbndio1 flbndio2 flcarb flcarb1 flcarb2 flcarbo
+ 892  0    flcarbo1 flcarbo2 flchlrp flchlrp1 flchlrp2 flchryf flchryf1 flchryf2 flcper
+ 893  0    flcper1 flcper2 flcyflu flcyflu1 flcyflu2 fldaha fldaha1 fldaha2 fldchlr
+ 894  0    fldchlr1 fldchlr2 fldiaz fldiaz1 fldiaz2 fldicf fldicf1 fldicf2 fldield
+ 895  0    fldield1 fldield2 flend1 flend11 flend12 flend2 flend21 flend22 flendr
+ 896  0    flendr1 flendr2 flflpt flflpt1 flflpt2 flgachlr flgaldrn flgbaa flgbap
+ 897  0    flgbbf flgbghip flgbkf flgbndio flgcarb flgcarbo flgchlr flgchlr1 flgchlr2
+ 898  0    flgchlrp flgchry flgcper flgcyflu flgdaha flgdchlr flgdiaz flgdicf flgdield
+ 899  0    flgend1 flgend2 flgendr flgflpt flggchlr flghpta flgip flglnd flgmla flgmtho
+ 900  0    flgmthpr flgophn flgpbut flgppdde flgppddt flgprpo flgpyr flgtper flgtrnon
+ 901  0    flhpta flhpta1 flhpta2 flip flip1 flip2 fllnd fllnd1 fllnd2 flmla flmla1
+ 902  0    flmla2 flmtho flmtho1 flmtho2 flmthpr flmthpr1 flmthpr2 flophn flophn1
+ 903  0    flophn2 flpbut flpbut1 flpbut2 flppdde flppdde1 flppdde2 flppddt flppddt1
+ 904  0    flppddt2 flprpo flprpo1 flprpo2 fltper fltper1 fltper2 fltrnon fltrnon1 fltrnon2 (' ').
+ 905  0  
+ 906  0  VARIABLE LABELS flpyr2 'Flag on pyrene analysis' /flbaa2 'Flag on'+
+ 907  0   ' benz(a)anthracene' /flchryf2 'Flag on chrysene' /flbbf2 'Flag on'+
+ 908  0   ' benzo(b)fluroanthene' /flbkf2 'Flag on benzo(k)fluranthene' /flbap2 'Flag on'+
+ 909  0   ' benzo(a)pyrene' /flip2 'Flag on indeno(1,2,3-cd)pyrene' /fldaha2 'Flag on'+
+ 910  0   ' disbenz(a,h)anthracene' /flbghip2 'Flag on benzo(g,h,i)perylene' /flaldrn2
+ 911  0    'AldrinFlag' /flbndio2 'BendiocarbFlag' /flcarb2 'Carbaryl Flag' /flcarbo2
+ 912  0    'Carbofuran flag' /flachlr2 'alpha-Chlordane flag' /flgchlr2 'gamma-Chlordane'+
+ 913  0   ' flag' /flchlrp2 'Chlorpyrifos flag' /flcyflu2 'Cyfluthrin flag' /flppdde2 'p,p'+
+ 914  0   '-DDE flag' /flppddt2 'p,p-DDT flag' /fldiaz2 'Diazinon flag' /fldchlr2  'Dichlorvos flag' /fldicf 'Dicofol flag'
+ 915  0    /fldield2 'Dieldrin flag' /flend1
+ 916  0    'Endosulfan I flag' /flend12 'Endosulfan I flag' /flendr2 'Endrin flag'
+ 917  0   /flflpt2 'Folpet flag' /flhpta2 'Heptachlor flag' /fllnd2 'Lindane flag' /flmla2
+ 918  0    'Malathion flag' /flmtho2 'Methoxychlor flag' /flmthpr2 'Methyl parathion'+
+ 919  0   ' flag' /fltrnon2 'trans-Nonachlor flag' /flcper2'cis-Permethrin flag' /fltper2
+ 920  0    'trans-Permethrin flag' /flophn2 'o-Phenylphenol flag' /flpbut2 'Piperonyl'+
+ 921  0   ' butoxide flag' /flprpo2 'Propoxur flag'.
+ 922  0  
+ 923  0  
+ 924  0  variable labels pyrene2 'Pyrene (ng/m3)' /
+ 925  0   baa2 'Benz(a)anthracene (ng/m3)' /
+ 926  0   chrysen2 'Chrysene (ng/m3)' /
+ 927  0   bbf2 'Benzo(b)fluroanthene (ng/m3)' /
+ 928  0   bkf2 'Benzo(k)fluroanthene (ng/m3)' /
+ 929  0   bap2 'Benzo(a)pyrene (ng/m3)' /
+ 930  0   ip2 'Indeno(1,2,3-cd)pyrene (ng/m3)' /
+ 931  0   daha2 'Disbenz(a,h)anthracene (ng/m3)' /
+ 932  0   bghip2 'Benzo(g,h,i)perylene (ng/m3)' /
+ 933  0   pyrext1 'Pyrene ng/extract' /
+ 934  0   baaext1 'Benz(a)anthracene (ng/extract)' /
+ 935  0   chryext1 'Chrysene ng/extract' /
+ 936  0   bbfext1 'benzo(b)fluroanthene ng/extract' /
+ 937  0   bkfext1 'benzo(k)fluroanthene ng/extract' /
+ 938  0   bapext1 'benzo(a)pyrene ng/extract' /
+ 939  0   ipext1 'indeno(1,2,3-cd)pyrene ng/extract' /
+ 940  0   dahaext1 'dibenz(a,h,)anthracene ng/extract' /
+ 941  0   bghipex1 'benzo(g,h,i)perylene ng/extract' /
+ 942  0   aldrnex1 'Aldrin ng/extract' /
+ 943  0   aldrnco2 'Aldrin (ng/m3)' /
+ 944  0   bndioex1 'Bendiocarb ng/extract' /
+ 945  0   bndioco2 'Bendiocarb(ng/m3)' /
+ 946  0   carbext1 'Carbaryl ng/extract' /
+ 947  0   carbcon2 'Carbaryl(ng/m3)' /
+ 948  0   carboex1 'Carbofuran ng/extract' /
+ 949  0   carboco2 'Carbofuran(ng/m3)' /
+ 950  0   achlrex1 'alpha-Chlordane ng/extract' /
+ 951  0   achlrco2 'alpha-Chlordane(ng/m3)' /
+ 952  0   gchlrex1 'gamma-Chlordane ng/extract' /
+ 953  0   gchlrco2 'gamma-Chlordane(ng/m3)' /
+ 954  0   chlrpex1 'Chlorpyrifos ng/extract' /
+ 955  0   chlrpco2 'Chlorpyrifos (ng/m3)' /
+ 956  0   cyfluex1 'Cyfluthrin total ng/extract' /
+ 957  0   cyfluco2 'Cyfluthrin total (ng/m3)' /
+ 958  0   ppddeex1 'p,p-DDE ng/extract' /
+ 959  0   ppddeco2 'p,p-DDE(ng/m3)' /
+ 960  0   ppddtex1 'p,p-DDT ng/extract' /
+ 961  0   ppddtco2 'p,p-DDT(ng/m3)' /
+ 962  0   diazext1 'Diazinon ng/extract' /
+ 963  0   diazcon2 'Diazinon(ng/m3)' /
+ 964  0   dchlrex1 'Dichlorvos ng/extract' /
+ 965  0   dchlrco2 'Dichlorvos(ng/m3)' /
+ 966  0   dicfext1 'Dicofol - TOTAL ng/extract' /
+ 967  0   dicfcon2 'Dicofol - TOTAL(ng/m3)' /
+ 968  0   dieldex1 'Dieldrin ng/extract' /
+ 969  0   dieldco2 'Dieldrin(ng/m3)' /
+ 970  0   end1ext1 'Endosulfan I ng/extract' /
+ 971  0   end1con2 'Endosulfan I (ng/m3)' /
+ 972  0   end2ext1 'Endosulfan II ng/extract' /
+ 973  0   end2con2 'Endosulfan II (ng/m3)' /
+ 974  0   endrext1 'Endrin ng/extract' /
+ 975  0   endrcon2 'Endrin (ng/m3)' /
+ 976  0   flptext1 'Folpet ng/extract' /
+ 977  0   flptcon2 'Folpet (ng/m3)' /
+ 978  0   hptaext1 'Heptachlor ng/extract' /
+ 979  0   hptacon2 'Heptachlor (ng/m3)' /
+ 980  0   lndext1 'Lindane ng/extract' /
+ 981  0   lndcon2 'Lindane(ng/m3)' /
+ 982  0   mlaext1 'Malathion ng/extract' /
+ 983  0   mlacon2 'Malathion (ng/m3)' /
+ 984  0   mthoext1 'Methoxychlor ng/extract' /
+ 985  0   mthocon2 'Methoxychlor (ng/m3)' /
+ 986  0   mthprex1 'Methyl parathion ng/extract' /
+ 987  0   mthprco2 'Methyl parathion (ng/m3)' /
+ 988  0   trnonex1 'trans-Nonachlor ng/extract' /
+ 989  0   trnonco2 'trans-Nonachlor (ng/m3)' /
+ 990  0   cperext1 'cis-Permethrin ng/extract' /
+ 991  0   cpercon2 'cis-Permethrin (ng/m3)' /
+ 992  0   tperext1 'trans-Permethrin ng/extract' /
+ 993  0   tpercon2 'trans-Permethrin (ng/m3)' /
+ 994  0   ophnext1 'o-Phenylphenol ng/extract' /
+ 995  0   ophncon2 'o-Phenylphenol (ng/m3)' /
+ 996  0   pbutext1 'Piperonyl butoxide ng/extract' /
+ 997  0   pbutcon2 'Piperonyl butoxide(ng/m3)' /
+ 998  0   prpoext1 'Propoxur ng/extract' /
+ 999  0   prpocon2 'Propoxur(ng/m3)' .
+1000  0  
+1001  0  
+1002  0  COMMENT NOTE ADDITIONAL VALUE LABEL (APRIL 2006 - Lori Hoepner added JG value label).
+1003  0  
+1004  0  Add value labels flpyr2 flbaa2 flchryf2 flbbf2 flbkf2 flbap2 flip2 fldaha2 flbghip2
+1005  0   flaldrn2 flbndio2 flcarb2 flcarbo2 flachlr2
+1006  0   flgchlr2 flchlrp2 flcyflu2 flppdde2 flppddt2 fldiaz2 fldchlr2 fldicf2 fldield2
+1007  0   flend12 flend22 flendr2 flflpt2 flhpta2 fllnd2
+1008  0   flmla2 flmtho2 flmthpr2 fltrnon2 flcper2 fltper2 flophn2 flpbut2 flprpo2
+1009  0   'B' 'CPD detected in blank'  'C' 'Confirmed by GC/MS full scan'
+1010  0   'E' 'Elevated by interference peak'  'F' 'False interfering peak'
+1011  0   'G' 'Imprescise; calibration drift >40%' 'J' 'Imprecise;  lowest calibration std'
+1012  0   'JB' 'Imprecise;  lcs; cpd is blank' 'JE' 'Imprecise;  lcs; interference'
+1013  0   'Q' 'Questionable' 'U' ' detect lim., set at 0.5 x det. lim.' 'Z' 'No comment'
+1014  0   'UB' 'Analyte detected in the blank,  LOD after adjustment'
+1015  0   'ZB' 'Analyte detected in the blank, > LOD after adjustment'
+1016  0   'EB' 'Elevation by interference peak blank substracted'
+1017  0   'JG' 'imprecise;  lcs; calibration drift >40%'.
+1018  0  
+1019  0  
+1020  0  save ouTFILE="\\Dccmaincsfs\DATA1\CEH\daily\pahrecod.sav" /keep achlrco2 achlrex1 aldrnco2 aldrnex1
+1021  0   analdate baa2 baaext1 bap2 bapext1
+1022  0   batt1# bbf2 bbfext1 bghip2 bghipex1 bkf2 bkfext1 bndioco2 bndioex1 carbcon2 carbext1
+1023  0   carboco2 carboex1 chlrpco2 chlrpex1 chryext1 chrysen2 cpercon2
+1024  0   cperext1 cyfluco2 cyfluex1 daha2 dahaext1 datstop dchlrco2 dchlrex1 diazcon2 diazext1
+1025  0   dicfcon2 dicfext1 dieldco2 dieldex1 docmiss elapstim end1con2
+1026  0   end1ext1 end2con2 end2ext1 endrcon2 endrext1 eqipprob expsusp extdate flachlr2 flaldrn2
+1027  0   flbaa2 flbap2 flbbf2 flbghip2 flbkf2 flbndio2 flcarb2 flcarbo2 flchlrp2
+1028  0   flchryf2 flcper2 flcyflu2 fldaha2 fldchlr2 fldiaz2 fldicf2 fldield2 flend12 flend22
+1029  0   flendr2 flflpt2 flhpta2 flip2 fllnd2 flmla2 flmtho2 flmthpr2 flophn2 flpbut2 flppdde2 flppddt2
+1030  0   flprpo2 flptcon2 flptext1 flpyr2 fltper2 fltrnon2 flwsuspt gchlrco2 gchlrex1 hour48pc
+1031  0   hptacon2 hptaext1 ip2 ipext1 kinchck lndcon2 lndext1 lpm4pc mlacon2 mlaext1
+1032  0   mthocon2 mthoext1 mthprco2  mthprex1 ophncon2 ophnext1 pbutcon2 pbutext1 percent
+1033  0   ppddeco2 ppddeex1 ppddtco2 ppddtex1 prpocon2 prpoext1
+1034  0   pstbirth pump# pyrene2 pyrext1 sid timesusp totalqa totvol tpercon2 tperext1 trnonco2 trnonex1
+1035  0    /COMPRESSED.
+1036  0  *** Changed 2/6/2003 per Robin Whyatt to impute values for bbf2 and bfk2.
+1037  0  GET  FILE='\\Dccmaincsfs\DATA1\CEH\DAILY\pahrecod.sav'.
+1038  0  ****Impute bbf2.
+1039  0  COMPUTE bkfval = NVALID(bkf2) .
+1040  0  EXECUTE .
+1041  0  COMPUTE lnbaa = LN(baa2) .
+1042  0  VARIABLE LABELS lnbaa 'Natural log of baa2' .
+1043  0  COMPUTE lnbap = LN(bap2) .
+1044  0  VARIABLE LABELS lnbap 'Natural log of bap2' .
+1045  0  COMPUTE lnbghip = LN(bghip2) .
+1046  0  VARIABLE LABELS lnbghip 'Natural log of bghip2' .
+1047  0  COMPUTE lnchrys= LN(chrysen2) .
+1048  0  VARIABLE LABELS lnchrys 'Natural log of chrysen2' .
+1049  0  COMPUTE lndaha = LN(daha2) .
+1050  0  VARIABLE LABELS lndaha 'Natural log of daha2' .
+1051  0  COMPUTE lnip= LN(ip2) .
+1052  0  VARIABLE LABELS lnip 'Natural log of ip2' .
+1053  0  COMPUTE lnbkf = LN(bkf2) .
+1054  0  VARIABLE LABELS lnbkf 'Natural log of bkf2' .
+1055  0  COMPUTE lnbbf = LN(bbf2) .
+1056  0  VARIABLE LABELS lnbbf 'Natural log of bbf2' .
+1057  0  execute.
+1058  0  
+1059  0  do if (bkfval eq 1 & flbbf2='F').
+1060  1  COMPUTE lnbbf2 = lnbaa*0.205 +lnbkf*0.290+lnbap*(-0.260) + lnbghip*(0.468)
+1061  1   +lnchrys*0.176+lndaha*(0.201) + lnip*0.03723 +.867 .
+1062  1  end if.
+1063  0  COMPUTE bbf2i = 2.718 ** lnbbf2 .
+1064  0  EXECUTE .
+1065  0  var labels bbf2i 'Imputed bbf from ln concentrations'.
+1066  0  do if (bkfval=1 & flbbf2='F').
+1067  1  compute bbf2=bbf2i.
+1068  1  compute flbbf2='I'.
+1069  1  add val label flbbf2 'I'  'Imputed from natural log regression'.
+1070  1  end if.
+1071  1  
+1072  1  
+1073  1  ***impute bkf2.
+1074  0  compute bbfval=NVALID(bbf2).
+1075  0  execute.
+1076  0  
+1077  0  do if (bbfval=1 & flbkf2='F').
+1078  1  COMPUTE lnbkf2 = lnbaa*0.02562 +lnbbf*0.276+lnbap*(0.299) + lnbghip*(0.0923)
+1079  1   +lnchrys*0.201+lndaha*(0.05466) + lnip*0.06812 -1.184 .
+1080  1  var labels lnbkf2 'Imputed ln of bkf using ln of concentrations'.
+1081  1  COMPUTE bkf2i = 2.718 ** lnbkf2 .
+1082  1  end if.
+1083  0  COMPUTE bkf2i = 2.718 ** lnbkf2 .
+1084  0  EXECUTE .
+1085  0  var labels bkf2i 'Imputed bkf from ln concentrations'.
+1086  0  do if (bbfval=1 & flbkf2='F').
+1087  1  compute bkf2=bkf2i.
+1088  1  compute flbkf2='I'.
+1089  1  add val label flbkf2 'I'  'Imputed from natural log regression'.
+1090  1  end if.
+1091  1  
+1092  0  COMPUTE totalpah = baa2+bap2+bbf2+bghip2+bkf2+chrysen2+daha2+ip2 .
+1093  0  variable label totalpah 'total PAH: baa2 bap2 bbf2 bghip2 bkf2 chrysen2 daha2 ip2'.
+1094  0  compute lntotpah=ln(totalpah).
+1095  0  variable label lntotpah 'ln of total PAH: baa2 bap2 bbf2 bghip2 bkf2 chrysen2 daha2 ip2'.
+1096  0  
+1097  0  SAVE OUTFILE='\\Dccmaincsfs\DATA1\CEH\daily\PAHrecode2.sav'
+1098  0    /COMPRESSED.
+1099  0  
+1100  0  
+1101  0  *END \\Dccmaincsfs\DATA1\CEH\DAILY\PAHCODE**.
+1102  0  
+1103  0  
+1104  0  
+1105  0  
+1106  0  * End of INSERT and INCLUDE nesting level 01.
+

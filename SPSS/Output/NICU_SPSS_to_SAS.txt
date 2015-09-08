@@ -1,0 +1,154 @@
+﻿
+INSERT
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss8288\NICU_SPSS_to_SAS1210677645572972516.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  10  0  * Encoding: UTF-8.
+  11  0  _SET UNICODE=OFF.
+  12  0  
+  13  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\INCLUS.sav".
+  14  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\INCLUS.sas7bdat"
+  15  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  16  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\DEMOG.sav".
+  17  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\DEMOG.sas7bdat"
+  18  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  19  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\SUBGRP.sav".
+  20  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\SUBGRP.sas7bdat"
+  21  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  22  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\PDSS.sav".
+  23  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\PDSS.sas7bdat"
+  24  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  25  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\BISBAS.sav".
+  26  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\BISBAS.sas7bdat"
+  27  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  28  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\CESD.sav".
+  29  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\CESD.sas7bdat"
+  30  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  31  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\STAIY1.sav".
+  32  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\STAIY1.sas7bdat"
+  33  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  34  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\EEG.sav".
+  35  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\EEG.sas7bdat"
+  36  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  37  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\YIPTAB1.sav".
+  38  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\YIPTAB1.sas7bdat"
+  39  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  40  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\DEQ.sav".
+  41  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\DEQ.sas7bdat"
+  42  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  43  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\HANE.sav".
+  44  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\HANE.sas7bdat"
+  45  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  46  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\ATQ.sav".
+  47  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\ATQ.sas7bdat"
+  48  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  49  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\BITSEA.sav".
+  50  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\BITSEA.sas7bdat"
+  51  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  52  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\PSI.sav".
+  53  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\PSI.sas7bdat"
+  54  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  55  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\BAYLEY.sav".
+  56  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\BAYLEY.sas7bdat"
+  57  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  58  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\SUPCIR1.sav".
+  59  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\SUPCIR1.sas7bdat"
+  60  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  61  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\AS6MTH.sav".
+  62  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\AS6MTH.sas7bdat"
+  63  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  64  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\AS4MTH.sav".
+  65  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\AS4MTH.sas7bdat"
+  66  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  67  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\AS12MTH.sav".
+  68  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\AS12MTH.sas7bdat"
+  69  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  70  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\AS18MTH.sav".
+  71  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\AS18MTH.sas7bdat"
+  72  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  73  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\AS24MTH.sav".
+  74  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\AS24MTH.sas7bdat"
+  75  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  76  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\INTERLOG.sav".
+  77  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\INTERLOG.sas7bdat"
+  78  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  79  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\CTRLLOG.sav".
+  80  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\CTRLLOG.sas7bdat"
+  81  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  82  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\VISITREC.sav".
+  83  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\VISITREC.sas7bdat"
+  84  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  85  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\INFTBVR.sav".
+  86  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\INFTBVR.sas7bdat"
+  87  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  88  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\MATSE.sav".
+  89  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\MATSE.sas7bdat"
+  90  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  91  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\EIT.sav".
+  92  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\EIT.sas7bdat"
+  93  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  94  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\NURREC.sav".
+  95  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\NURREC.sas7bdat"
+  96  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  97  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\HOMENUR.sav".
+  98  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\HOMENUR.sas7bdat"
+  99  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 100  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\NSSQ.sav".
+ 101  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\NSSQ.sas7bdat"
+ 102  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 103  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\SLPHBTS.sav".
+ 104  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\SLPHBTS.sas7bdat"
+ 105  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 106  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\NURSCORE.sav".
+ 107  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\NURSCORE.sas7bdat"
+ 108  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 109  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\MCHAT.sav".
+ 110  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\MCHAT.sas7bdat"
+ 111  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 112  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\CBCL.sav".
+ 113  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\CBCL.sas7bdat"
+ 114  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 115  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\CBCL2.sav".
+ 116  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\CBCL2.sas7bdat"
+ 117  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 118  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\AS9MTH.sav".
+ 119  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\AS9MTH.sas7bdat"
+ 120  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 121  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\NNNS.sav".
+ 122  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\NNNS.sas7bdat"
+ 123  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 124  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\GIQ.sav".
+ 125  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\GIQ.sas7bdat"
+ 126  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 127  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\AS36MTH.sav".
+ 128  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\AS36MTH.sas7bdat"
+ 129  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 130  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\AS48MTH.sav".
+ 131  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\AS48MTH.sas7bdat"
+ 132  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 133  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\AS60MTH.sav".
+ 134  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\AS60MTH.sas7bdat"
+ 135  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 136  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\PLS_5.sav".
+ 137  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\PLS_5.sas7bdat"
+ 138  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 139  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\INCLUSION.sav".
+ 140  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\INCLUSION.sas7bdat"
+ 141  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 142  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\IPQ.sav".
+ 143  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\IPQ.sas7bdat"
+ 144  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 145  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\SAT.sav".
+ 146  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\SAT.sas7bdat"
+ 147  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 148  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\AS48MTH_G.sav".
+ 149  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\AS48MTH_G.sas7bdat"
+ 150  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 151  0  get file="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SPSS\LATERALITY.sav".
+ 152  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\NICU\Database\Users\JAUSTIN\SAS\LATERALITY.sas7bdat"
+ 153  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 154  0  
+ 155  0  
+ 156  0  
+ 157  0  * End of INSERT and INCLUDE nesting level 01.
+

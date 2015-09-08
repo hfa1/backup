@@ -1,0 +1,165 @@
+﻿
+INSERT
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss5128\RAINE_RAINE_SAS7393657689346424728.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  10  0  * Encoding: UTF-8.
+  11  0  _SET UNICODE=OFF.
+  12  0  
+  13  0  *Create SAS version of RAINE file to go MONTHLY to Caleb Ing and Hsin-wen Chang:
+  14  0  *     ci2119@columbia.edu
+  15  0  *     hc2496@columbia.edu
+  16  0  .
+  17  0  
+  18  0  get file= '\\Dccmaincsfs\data1\raine\spss\raine.sav'.
+  19  0  SAVE TRANSLATE OUTFILE= '\\Dccmaincsfs\data1\RAINE\SPSS\RAINE.sas7bdat'
+  20  0    /TYPE=SAS
+  21  0    /VERSION=7
+  22  0    /PLATFORM=WINDOWS
+  23  0    /MAP
+  24  0    /REPLACE
+  25  0    /VALFILE= '\\Dccmaincsfs\data1\RAINE\SPSS\RAINE.sas'.
+  26  0  
+  27  0  
+  28  0  
+  29  0  * End of INSERT and INCLUDE nesting level 01.
+
+Data written to \\Dccmaincsfs\data1\RAINE\SPSS\RAINE.sas7bdat.
+133 variables and 512 cases written.
+Variable: PID                Type: Number   Width:   8   Dec: 0
+Variable: P_NUM_P            Type: Number   Width:   8   Dec: 0
+Variable: REDATE             Type: Number   Width:  11   Dec: 0
+Variable: REBY               Type: String   Width:   2
+Variable: SITE               Type: Number   Width:   8   Dec: 0
+Variable: SITEX              Type: String   Width:  60
+Variable: DOB_P              Type: Number   Width:  11   Dec: 0
+Variable: DOS_P              Type: Number   Width:  11   Dec: 0
+Variable: SEX                Type: Number   Width:   8   Dec: 0
+Variable: ASA                Type: Number   Width:   8   Dec: 0
+Variable: ICD9C1             Type: Number   Width:   8   Dec: 0
+Variable: ICD9C2             Type: Number   Width:   8   Dec: 0
+Variable: ICD9C3             Type: Number   Width:   8   Dec: 0
+Variable: ICD9C4             Type: Number   Width:   8   Dec: 0
+Variable: ICD9C5             Type: Number   Width:   8   Dec: 0
+Variable: ICD9C6             Type: Number   Width:   8   Dec: 0
+Variable: ICD9C7             Type: Number   Width:   8   Dec: 0
+Variable: WT_P               Type: Number   Width:  10   Dec: 2
+Variable: STIME              Type: Number   Width:   8   Dec: 0
+Variable: ETIME              Type: Number   Width:   8   Dec: 0
+Variable: SAT_P              Type: Number   Width:   8   Dec: 0
+Variable: SBP_P              Type: Number   Width:   8   Dec: 0
+Variable: DBP_P              Type: Number   Width:   8   Dec: 0
+Variable: MAP_P              Type: Number   Width:   8   Dec: 0
+Variable: HCT_P              Type: Number   Width:   8   Dec: 0
+Variable: B_CASE             Type: Number   Width:   8   Dec: 0
+Variable: D_CASE             Type: Number   Width:   8   Dec: 0
+Variable: E_CASE             Type: Number   Width:   8   Dec: 0
+Variable: SEV                Type: Number   Width:   8   Dec: 0
+Variable: HAL                Type: Number   Width:   8   Dec: 0
+Variable: ISO                Type: Number   Width:   8   Dec: 0
+Variable: DES                Type: Number   Width:   8   Dec: 0
+Variable: ENF                Type: Number   Width:   8   Dec: 0
+Variable: NIT                Type: Number   Width:   8   Dec: 0
+Variable: SEV_S              Type: Number   Width:   8   Dec: 0
+Variable: SEV_E              Type: Number   Width:   8   Dec: 0
+Variable: HAL_S              Type: Number   Width:   8   Dec: 0
+Variable: HAL_E              Type: Number   Width:   8   Dec: 0
+Variable: ISO_S              Type: Number   Width:   8   Dec: 0
+Variable: ISO_E              Type: Number   Width:   8   Dec: 0
+Variable: DES_S              Type: Number   Width:   8   Dec: 0
+Variable: DES_E              Type: Number   Width:   8   Dec: 0
+Variable: ENF_S              Type: Number   Width:   8   Dec: 0
+Variable: ENF_E              Type: Number   Width:   8   Dec: 0
+Variable: NIT_S              Type: Number   Width:   8   Dec: 0
+Variable: NIT_E              Type: Number   Width:   8   Dec: 0
+Variable: SEV_AV_P           Type: Number   Width:  10   Dec: 2
+Variable: HAL_AV_P           Type: Number   Width:  10   Dec: 2
+Variable: ISO_AV_P           Type: Number   Width:  10   Dec: 2
+Variable: DES_AV_P           Type: Number   Width:  10   Dec: 2
+Variable: ENF_AV_P           Type: Number   Width:  10   Dec: 2
+Variable: NIT_AV_P           Type: Number   Width:   8   Dec: 0
+Variable: SEV_U              Type: Number   Width:   8   Dec: 0
+Variable: HAL_U              Type: Number   Width:   8   Dec: 0
+Variable: ISO_U              Type: Number   Width:   8   Dec: 0
+Variable: DES_U              Type: Number   Width:   8   Dec: 0
+Variable: ENF_U              Type: Number   Width:   8   Dec: 0
+Variable: NIT_U              Type: Number   Width:   8   Dec: 0
+Variable: PRO                Type: Number   Width:   8   Dec: 0
+Variable: KET                Type: Number   Width:   8   Dec: 0
+Variable: ETO                Type: Number   Width:   8   Dec: 0
+Variable: THI                Type: Number   Width:   8   Dec: 0
+Variable: IMID               Type: Number   Width:   8   Dec: 0
+Variable: PMID               Type: Number   Width:   8   Dec: 0
+Variable: DIA                Type: Number   Width:   8   Dec: 0
+Variable: FENT               Type: Number   Width:   8   Dec: 0
+Variable: REMI               Type: Number   Width:   8   Dec: 0
+Variable: MORP               Type: Number   Width:   8   Dec: 0
+Variable: HYD                Type: Number   Width:   8   Dec: 0
+Variable: PETH               Type: Number   Width:   8   Dec: 0
+Variable: TET                Type: Number   Width:   8   Dec: 0
+Variable: BUPI               Type: Number   Width:   8   Dec: 0
+Variable: LIDO               Type: Number   Width:   8   Dec: 0
+Variable: ROPI               Type: Number   Width:   8   Dec: 0
+Variable: DEX                Type: Number   Width:   8   Dec: 0
+Variable: ATRO               Type: Number   Width:   8   Dec: 0
+Variable: EPI                Type: Number   Width:   8   Dec: 0
+Variable: TERB               Type: Number   Width:   8   Dec: 0
+Variable: PRO_T_P            Type: Number   Width:   8   Dec: 0
+Variable: KET_T_P            Type: Number   Width:   8   Dec: 0
+Variable: ETO_T_P            Type: Number   Width:  10   Dec: 2
+Variable: THI_T_P            Type: Number   Width:  10   Dec: 2
+Variable: IMID_T_P           Type: Number   Width:  10   Dec: 2
+Variable: PMID_T_P           Type: Number   Width:  10   Dec: 2
+Variable: DIA_T_P            Type: Number   Width:   8   Dec: 0
+Variable: FENT_T_P           Type: Number   Width:   8   Dec: 0
+Variable: REMI_T_P           Type: Number   Width:   8   Dec: 0
+Variable: MORP_T_P           Type: Number   Width:  10   Dec: 2
+Variable: HYD_T_P            Type: Number   Width:  10   Dec: 2
+Variable: PETH_T_P           Type: Number   Width:  10   Dec: 2
+Variable: TET_T_P            Type: Number   Width:  10   Dec: 2
+Variable: BUPI_T_P           Type: Number   Width:  10   Dec: 2
+Variable: LIDO_T_P           Type: Number   Width:  10   Dec: 2
+Variable: ROPI_T_P           Type: Number   Width:  10   Dec: 2
+Variable: DEX_T_P            Type: Number   Width:   8   Dec: 0
+Variable: ATRO_T_P           Type: Number   Width:   8   Dec: 0
+Variable: EPI_T_P            Type: Number   Width:   8   Dec: 0
+Variable: TERB_T_P           Type: Number   Width:   8   Dec: 0
+Variable: PRO_U              Type: Number   Width:   8   Dec: 0
+Variable: KET_U              Type: Number   Width:   8   Dec: 0
+Variable: IMID_U             Type: Number   Width:   8   Dec: 0
+Variable: FENT_U             Type: Number   Width:   8   Dec: 0
+Variable: REMI_U             Type: Number   Width:   8   Dec: 0
+Variable: MORP_U             Type: Number   Width:   8   Dec: 0
+Variable: HYD_U              Type: Number   Width:   8   Dec: 0
+Variable: TET_U              Type: Number   Width:   8   Dec: 0
+Variable: BUPI_U             Type: Number   Width:   8   Dec: 0
+Variable: LIDO_U             Type: Number   Width:   8   Dec: 0
+Variable: ROPI_U             Type: Number   Width:   8   Dec: 0
+Variable: DEX_U              Type: Number   Width:   8   Dec: 0
+Variable: EPI_U              Type: Number   Width:   8   Dec: 0
+Variable: TERB_U             Type: Number   Width:   8   Dec: 0
+Variable: TET_D              Type: Number   Width:   8   Dec: 0
+Variable: TET_A              Type: Number   Width:   8   Dec: 0
+Variable: BUPI_D             Type: Number   Width:   8   Dec: 0
+Variable: BUPI_A             Type: Number   Width:   8   Dec: 0
+Variable: LIDO_D             Type: Number   Width:   8   Dec: 0
+Variable: LIDO_A             Type: Number   Width:   8   Dec: 0
+Variable: ROPI_D             Type: Number   Width:   8   Dec: 0
+Variable: ROPI_A             Type: Number   Width:   8   Dec: 0
+Variable: INLAB              Type: Number   Width:   8   Dec: 0
+Variable: SER_PH_P           Type: Number   Width:  10   Dec: 2
+Variable: EVENT              Type: Number   Width:   8   Dec: 0
+Variable: EVENTX             Type: String   Width:  60
+Variable: E_INT              Type: Number   Width:   8   Dec: 0
+Variable: E_REM              Type: Number   Width:   8   Dec: 0
+Variable: E_BLO              Type: Number   Width:   8   Dec: 0
+Variable: DWHO               Type: String   Width:  20
+Variable: DSTAMP             Type: Number   Width:  11   Dec: 0
+Variable: DCCWHO             Type: String   Width:  20
+Variable: DCCDATE            Type: Number   Width:  11   Dec: 0
+Variable: DCCTIME            Type: Number   Width:   8   Dec: 0
+Variable: DCCEDITS           Type: Number   Width:   8   Dec: 0
+
+Value labels written to \\Dccmaincsfs\data1\RAINE\SPSS\RAINE.sas .
+
+

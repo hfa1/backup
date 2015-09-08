@@ -1,0 +1,120 @@
+﻿
+INSERT
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss6216\CEHMRI_SRS_Recode785990832864346652.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  10  0  * Encoding: UTF-8.
+  11  0  _SET UNICODE=OFF.
+  12  0  
+  13  0  *PROGRAM:CEHMRI.SRS_RECODE.SPS*.
+  14  0  * MF 5/3/2012 Recode SRS values.
+  15  0  * LH 5/22/2012 Added subscale scores computed using reverse-coded SRS values.
+  16  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\SRS.SAV'.
+  17  0  select if SID ne 1204.
+  18  0  execute.
+  19  0  recode SRS1 SRS2 SRS4 SRS5 SRS6 SRS8 SRS9 SRS10 SRS13 SRS14 SRS16 SRS18 SRS19 SRS20 SRS23 SRS24 SRS25 SRS27
+  20  0              SRS28 SRS29 SRS30 SRS31 SRS33 SRS34 SRS35 SRS36 SRS37 SRS39 SRS41 SRS42 SRS44 SRS46 SRS47 SRS49 SRS50
+  21  0              SRS51 SRS53 SRS54 SRS56 SRS57 SRS58 SRS59 SRS60 SRS61 SRS62 SRS63 SRS64 SRS65 (1=0) (2=1) (3=2) (4=3).
+  22  0  recode SRS3 SRS7 SRS11 SRS12 SRS15 SRS17 SRS21 SRS22 SRS26 SRS32 SRS38 SRS40 SRS43 SRS45 SRS48 SRS52 SRS55 (1=3) (2=2) (3=1
+            ) (4=0).
+  23  0  execute.
+  24  0  compute srs_1 = sum.1(srs2,srs7,srs25,srs32,srs45,srs52,srs54,srs56).
+  25  0  compute srs_2 = sum.1(srs5,srs10,srs15,srs17,srs30,srs40,srs42,srs44,srs48,srs58,srs59,srs62).
+  26  0  compute srs_3 = sum.1(srs12,srs13,srs16,srs18,srs19,srs21,srs22,srs26,srs33,srs35,srs36,srs37,srs38,srs41,srs46,srs47,srs51
+            ,srs53,srs55,srs57,srs60,srs61).
+  27  0  compute srs_4 = sum.1(srs1,srs3,srs6,srs9,srs11,srs23,srs27,srs34,srs43,srs64,srs65).
+  28  0  compute srs_5 = sum.1(srs4,srs8,srs14,srs20,srs24,srs28,srs29,srs31,srs39,srs49,srs50,srs63).
+  29  0  execute.
+  30  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\output\SRS_Recoded.SAV'.
+  31  0  
+  32  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\ADHD.SAV'.
+  33  0  select if SID ne 1204.
+  34  0  execute.
+  35  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\ADHD.SAV'.
+  36  0  
+  37  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\CDRS.SAV'.
+  38  0  select if SID ne 1204.
+  39  0  execute.
+  40  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\CDRS.SAV'.
+  41  0  
+  42  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\CLOCK.SAV'.
+  43  0  select if SID ne 1204.
+  44  0  execute.
+  45  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\CLOCK.SAV'.
+  46  0  
+  47  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\CMS.SAV'.
+  48  0  select if SID ne 1204.
+  49  0  execute.
+  50  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\CMS.SAV'.
+  51  0  
+  52  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\CPT.SAV'.
+  53  0  select if SID ne 1204.
+  54  0  execute.
+  55  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\CPT.SAV'.
+  56  0  
+  57  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\EDIN.SAV'.
+  58  0  select if SID ne 1204.
+  59  0  execute.
+  60  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\EDIN.SAV'.
+  61  0  
+  62  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\HOME.SAV'.
+  63  0  select if SID ne 1204.
+  64  0  execute.
+  65  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\HOME.SAV'.
+  66  0  
+  67  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\KSADS.SAV'.
+  68  0  select if SID ne 1204.
+  69  0  execute.
+  70  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\KSADS.SAV'.
+  71  0  
+  72  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\NEPSY2.SAV'.
+  73  0  select if SID ne 1204.
+  74  0  execute.
+  75  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\NEPSY2.SAV'.
+  76  0  
+  77  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\PURDUE.SAV'.
+  78  0  select if SID ne 1204.
+  79  0  execute.
+  80  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\PURDUE.SAV'.
+  81  0  
+  82  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\RCMAS.SAV'.
+  83  0  select if SID ne 1204.
+  84  0  execute.
+  85  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\RCMAS.SAV'.
+  86  0  
+  87  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\SCQ.SAV'.
+  88  0  select if SID ne 1204.
+  89  0  execute.
+  90  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\SCQ.SAV'.
+  91  0  
+  92  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\SPIRAL.SAV'.
+  93  0  select if SID ne 1204.
+  94  0  execute.
+  95  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\SPIRAL.SAV'.
+  96  0  
+  97  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\SRS.SAV'.
+  98  0  select if SID ne 1204.
+  99  0  execute.
+ 100  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\SRS.SAV'.
+ 101  0  
+ 102  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\TANNER.SAV'.
+ 103  0  select if SID ne 1204.
+ 104  0  execute.
+ 105  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\TANNER.SAV'.
+ 106  0  
+ 107  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\WATER.SAV'.
+ 108  0  select if SID ne 1204.
+ 109  0  execute.
+ 110  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\WATER.SAV'.
+ 111  0  
+ 112  0  get file= '\\Dccmaincsfs\DATA1\CEHMRI\spss\WEATHER.SAV'.
+ 113  0  select if SID ne 1204.
+ 114  0  execute.
+ 115  0  save outfile= '\\Dccmaincsfs\DATA1\CEHMRI\spss\WEATHER.SAV'.
+ 116  0  
+ 117  0  
+ 118  0  
+ 119  0  
+ 120  0  
+ 121  0  * End of INSERT and INCLUDE nesting level 01.
+

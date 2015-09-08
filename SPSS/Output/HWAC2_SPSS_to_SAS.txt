@@ -1,0 +1,118 @@
+﻿
+INSERT
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss3980\HWAC2_SPSS_to_SAS2567064682198367768.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  10  0  * Encoding: UTF-8.
+  11  0  _SET UNICODE=OFF.
+  12  0  
+  13  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\TRACK.sav".
+  14  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\TRACK.sas7bdat"
+  15  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  16  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\MRA.sav".
+  17  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\MRA.sas7bdat"
+  18  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  19  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\MRA2.sav".
+  20  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\MRA2.sas7bdat"
+  21  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  22  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\COMORB.sav".
+  23  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\COMORB.sas7bdat"
+  24  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  25  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\SS.sav".
+  26  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\SS.sas7bdat"
+  27  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  28  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\DEMOG.sav".
+  29  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\DEMOG.sas7bdat"
+  30  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  31  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\FDX.sav".
+  32  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\FDX.sas7bdat"
+  33  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  34  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\DIISAD.sav".
+  35  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\DIISAD.sas7bdat"
+  36  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  37  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\DIISB.sav".
+  38  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\DIISB.sas7bdat"
+  39  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  40  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\DIISC.sav".
+  41  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\DIISC.sas7bdat"
+  42  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  43  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\DX.sav".
+  44  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\DX.sas7bdat"
+  45  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  46  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\NIHSZ.sav".
+  47  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\NIHSZ.sas7bdat"
+  48  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  49  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\NIHETI.sav".
+  50  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\NIHETI.sas7bdat"
+  51  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  52  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\NIHSYN.sav".
+  53  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\NIHSYN.sas7bdat"
+  54  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  55  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\NE.sav".
+  56  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\NE.sas7bdat"
+  57  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  58  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\MAQ.sav".
+  59  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\MAQ.sas7bdat"
+  60  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  61  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\GHQ.sav".
+  62  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\GHQ.sas7bdat"
+  63  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  64  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\AMH.sav".
+  65  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\AMH.sas7bdat"
+  66  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  67  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\SHI.sav".
+  68  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\SHI.sas7bdat"
+  69  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  70  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\PW.sav".
+  71  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\PW.sas7bdat"
+  72  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  73  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\FDXDEP.sav".
+  74  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\FDXDEP.sas7bdat"
+  75  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  76  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\MEDMRA.sav".
+  77  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\MEDMRA.sas7bdat"
+  78  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  79  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\AAD.sav".
+  80  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\AAD.sas7bdat"
+  81  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  82  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\SLEA.sav".
+  83  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\SLEA.sas7bdat"
+  84  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  85  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\SLEC.sav".
+  86  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\SLEC.sas7bdat"
+  87  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  88  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\CE.sav".
+  89  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\CE.sas7bdat"
+  90  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  91  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\CMQ.sav".
+  92  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\CMQ.sas7bdat"
+  93  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  94  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\COAT.sav".
+  95  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\COAT.sas7bdat"
+  96  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  97  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\PSI.sav".
+  98  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\PSI.sas7bdat"
+  99  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 100  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\DXDEP.sav".
+ 101  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\DXDEP.sas7bdat"
+ 102  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 103  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\SCIDDISC2.sav".
+ 104  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\SCIDDISC2.sas7bdat"
+ 105  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 106  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\SCIDSYMPTOMS.sav".
+ 107  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\SCIDSYMPTOMS.sas7bdat"
+ 108  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 109  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\TEL1.sav".
+ 110  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\TEL1.sas7bdat"
+ 111  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 112  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\TEL2.sav".
+ 113  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\TEL2.sas7bdat"
+ 114  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 115  0  get file="\\Dccmaincsfs\Data1\HWAC2\Database\SPSS\CHECK.sav".
+ 116  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data2\HWAC1\SAS\CHECK.sas7bdat"
+ 117  0                   /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 118  0  
+ 119  0  
+ 120  0  
+ 121  0  * End of INSERT and INCLUDE nesting level 01.
+

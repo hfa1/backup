@@ -1,0 +1,629 @@
+﻿
+INSERT
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss4176\MIND_Merge_All4360024867150543240.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  10  0  * Encoding: UTF-8.
+  11  0  _SET UNICODE=OFF.
+  12  0  
+  13  0  * Encoding: windows-1252.
+  14  0  *PROGRAM:MIND.MERGE ALL.SPS*.
+  15  0  
+  16  0  **ABUSE**.
+  17  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\ABUSE.sav'.
+  18  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  19  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\ABUSE_TEMP.sav'
+  20  0       /rename = (FORMDATE RATER_INIT = ABUSEDATE ABUSEINIT).
+  21  0  **ACEQ**.
+  22  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\ACEQ.sav'.
+  23  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  24  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\ACEQ_TEMP.sav'
+  25  0       /rename = (FORMDATE RATER_INIT = ACEQDATE ACEQINIT).
+  26  0  **APSSI**.
+  27  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\APSSI.sav'.
+  28  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  29  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\APSSI_TEMP.sav'
+  30  0       /rename = (FORMDATE RATER_INIT = APSSIDATE APSSIINIT).
+  31  0  **ATTACH**.
+  32  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\ATTACH.sav'.
+  33  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  34  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\ATTACH_TEMP.sav'
+  35  0       /rename = (FORMDATE RATER_INIT = ATTACHDATE ATTACHINIT).
+  36  0  **BDEMO1**.
+  37  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO1.sav'.
+  38  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  39  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO1_TEMP.sav'
+  40  0       /rename = (FORMDATE RATER_INIT = BDEMO1DATE BDEMO1INIT).
+  41  0  **BDEMO2**.
+  42  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO2.sav'.
+  43  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  44  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO2_TEMP.sav'.
+  45  0  **BDEMO3**.
+  46  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO3.sav'.
+  47  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  48  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO3_TEMP.sav'.
+  49  0  **BDEMO4**.
+  50  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO4.sav'.
+  51  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  52  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO4_TEMP.sav'.
+  53  0  **BDEMO5**.
+  54  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO5.sav'.
+  55  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  56  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO5_TEMP.sav'.
+  57  0  **BDEMO6**.
+  58  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO6.sav'.
+  59  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  60  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO6_TEMP.sav'.
+  61  0  **BECKDEP**.
+  62  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BECKDEP.sav'.
+  63  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  64  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BECKDEP_TEMP.sav'
+  65  0       /rename = (FORMDATE RATER_INIT = BECKDATE BECKINIT).
+  66  0  **BIS**.
+  67  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BIS.sav'.
+  68  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  69  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BIS_TEMP.sav'
+  70  0       /rename = (FORMDATE RATER_INIT = BISDATE BISINIT).
+  71  0  **BOND**.
+  72  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BOND.sav'.
+  73  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  74  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BOND_TEMP.sav'
+  75  0       /rename = (FORMDATE RATER_INIT = BONDDATE BONDINIT).
+  76  0  **BPRS**.
+  77  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BPRS.sav'.
+  78  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  79  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BPRS_TEMP.sav'
+  80  0       /rename = (FORMDATE RATER_INIT = BPRSDATE BPRSINIT).
+  81  0  **BUSDK**.
+  82  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BUSDK.sav'.
+  83  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  84  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BUSDK_TEMP.sav'
+  85  0       /rename = (FORMDATE RATER_INIT = BUSSDATE BUSSINIT).
+  86  0  **CONSENSUS**.
+  87  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\CONSENSUS.sav'.
+  88  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  89  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\CONSENSUS_TEMP.sav'
+  90  0       /rename = (FORMDATE = CONSDATE).
+  91  0  **CTQ**.
+  92  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\CTQ.sav'.
+  93  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  94  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\CTQ_TEMP.sav'
+  95  0       /rename = (FORMDATE RATER_INIT = CTQDATE CTQINIT).
+  96  0  **FAWCETT**.
+  97  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\FAWCETT.sav'.
+  98  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+  99  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\FAWCETT_TEMP.sav'
+ 100  0       /rename = (FORMDATE RATER_INIT = FAWCETTDATE FAWCETTINIT).
+ 101  0  ** FDEMO **.
+ 102  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\FDEMO.sav'.
+ 103  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 104  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\FDEMO_TEMP.sav'
+ 105  0       /rename = (FORMDATE RATER_INIT = FDEMODATE FDEMOINIT).
+ 106  0  **GAS**.
+ 107  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\GAS.sav'.
+ 108  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 109  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\GAS_TEMP.sav'
+ 110  0       /rename = (FORMDATE RATER_INIT = GASDATE GASINIT).
+ 111  0  **HAM**.
+ 112  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\HAM.sav'.
+ 113  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 114  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\HAM_TEMP.sav'
+ 115  0       /rename = (FORMDATE RATER_INIT = HAMDATE HAMINIT).
+ 116  0  **HOPE**.
+ 117  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\HOPE.sav'.
+ 118  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 119  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\HOPE_TEMP.sav'
+ 120  0       /rename = (FORMDATE RATER_INIT = HOPEDATE HOPEINIT).
+ 121  0  **MSPSS**.
+ 122  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\MSPSS.sav'.
+ 123  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 124  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\MSPSS_TEMP.sav'
+ 125  0       /rename = (FORMDATE RATER_INIT = MSPSSDATE MSPSSINIT).
+ 126  0  **BGOODWIN**.
+ 127  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\BGOODWIN.sav'.
+ 128  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 129  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\BGOODWIN_TEMP.sav'
+ 130  0       /rename = (FORMDATE RATER_INIT = BGOODWINDATE BGOODWININIT).
+ 131  0  **RAMSEY**.
+ 132  0  get file='\\Dccmaincsfs\Data1\MIND\SPSS\RAMSEY.sav'.
+ 133  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 134  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\RAMSEY_TEMP.sav'
+ 135  0       /rename = (FORMDATE RATER_INIT = RAMSEYDATE RAMSEYINIT).
+ 136  0  **RFL**.
+ 137  0  get file='\\Dccmaincsfs\Data1\MIND\SPSS\RFL.sav'.
+ 138  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 139  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\RFL_TEMP.sav'
+ 140  0       /rename = (FORMDATE = RFLDATE).
+ 141  0  **RLC**.
+ 142  0  get file='\\Dccmaincsfs\Data1\MIND\SPSS\RLC.sav'.
+ 143  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 144  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\RLC_TEMP.sav'
+ 145  0       /rename = (FORMDATE RATER_INIT = RLCDATE RLCINIT).
+ 146  0  **SANS**.
+ 147  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\SANS.sav'.
+ 148  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 149  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\SANS_TEMP.sav'
+ 150  0       /rename = (FORMDATE RATER_INIT = SANSDATE SANSINIT).
+ 151  0  **SAPS**.
+ 152  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\SAPS.sav'.
+ 153  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 154  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\SAPS_TEMP.sav'
+ 155  0       /rename = (FORMDATE RATER_INIT = SAPSDATE SAPSINIT).
+ 156  0  **SASSR**.
+ 157  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\SASSR.sav'.
+ 158  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 159  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\SASSR_TEMP.sav'
+ 160  0       /rename = (FORMDATE RATER_INIT = SASSRDATE SASSRINIT).
+ 161  0  **SCID1**.
+ 162  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\SCID1.sav'.
+ 163  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 164  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\SCID1_TEMP.sav'
+ 165  0       /rename = (FORMDATE = SCID1DATE).
+ 166  0  **SCID2**.
+ 167  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\SCID2.sav'.
+ 168  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 169  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\SCID2_TEMP.sav'
+ 170  0       /rename = (FORMDATE = SCID2_DATE).
+ 171  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\SCIDON.sav'.
+ 172  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 173  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\SCIDON_TEMP.sav'
+ 174  0       /rename = (FORMDATE = SCIDONDATE).
+ 175  0  **SIS**.
+ 176  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\SIS.sav'.
+ 177  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 178  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\SIS_TEMP.sav'
+ 179  0       /rename = (FORMDATE = SISDATE).
+ 180  0  **SSI**.
+ 181  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\SSI.sav'.
+ 182  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 183  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\SSI_TEMP.sav'
+ 184  0       /rename = (FORMDATE RATER_INIT = SSIDATE SSIINIT).
+ 185  0  **SUICIDE**.
+ 186  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\SUICIDE.sav'.
+ 187  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 188  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\SUICIDE_TEMP.sav'
+ 189  0       /rename = (FORMDATE = SUICIDEDATE).
+ 190  0  **SUIC_CON**.
+ 191  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\SUIC_CON.sav'.
+ 192  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 193  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\SCON_TEMP.sav'
+ 194  0       /rename = (FORMDATE RATER_INIT = SUICCONDATE SUICCONINIT).
+ 195  0  **YMS**.
+ 196  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\YMS.sav'.
+ 197  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 198  0  save outfile = '\\Dccmaincsfs\Data1\DCC\Delete\YMS_TEMP.sav'
+ 199  0       /rename = (FORMDATE RATER_INIT = YMSDATE YMSINIT).
+ 200  0  
+ 201  0  ** Create indicator variables**.
+ 202  0  compute ABUSE1   = 0.
+ 203  0  compute ACEQ     = 0.
+ 204  0  compute APSSI    = 0.
+ 205  0  compute ATTACH   = 0.
+ 206  0  compute BDEMO1   = 0.
+ 207  0  compute BDEMO2   = 0.
+ 208  0  compute BDEMO3   = 0.
+ 209  0  compute BDEMO4   = 0.
+ 210  0  compute BDEMO5   = 0.
+ 211  0  compute BDEMO6   = 0.
+ 212  0  compute BECK     = 0.
+ 213  0  compute BIS      = 0.
+ 214  0  compute BOND     = 0.
+ 215  0  compute BPRS     = 0.
+ 216  0  compute BUSS     = 0.
+ 217  0  compute CONS     = 0.
+ 218  0  compute CTQ      = 0.
+ 219  0  compute FAWCETT  = 0.
+ 220  0  compute FDEMO    = 0.
+ 221  0  compute HAM      = 0.
+ 222  0  compute HOPE     = 0.
+ 223  0  compute GAS      = 0.
+ 224  0  compute MSPSS    = 0.
+ 225  0  compute BGOODWIN = 0.
+ 226  0  compute RAMSEY   = 0.
+ 227  0  compute RFL      = 0.
+ 228  0  compute RLC      = 0.
+ 229  0  compute SANS     = 0.
+ 230  0  compute SAPS     = 0.
+ 231  0  compute SASSR    = 0.
+ 232  0  compute SCID1    = 0.
+ 233  0  compute SCID2    = 0.
+ 234  0  compute SCIDON   = 0.
+ 235  0  compute SIS      = 0.
+ 236  0  compute SSI      = 0.
+ 237  0  compute SUIC     = 0.
+ 238  0  compute SCON     = 0.
+ 239  0  compute YMS      = 0.
+ 240  0  variable labels ABUSE1   'Abuse Record'.
+ 241  0  variable labels ACEQ     'ACEQ Record'.
+ 242  0  variable labels APSSI    'APSSI Record'.
+ 243  0  variable labels ATTACH   'Attach Record'.
+ 244  0  variable labels BDEMO1   'BDEMO1 Record'.
+ 245  0  variable labels BDEMO2   'BDEMO2 Record'.
+ 246  0  variable labels BDEMO3   'BDEMO3 Record'.
+ 247  0  variable labels BDEMO4   'BDEMO4 Record'.
+ 248  0  variable labels BDEMO5   'BDEMO5 Record'.
+ 249  0  variable labels BDEMO6   'BDEMO6 Record'.
+ 250  0  variable labels BECK     'Beck Depression Record'.
+ 251  0  variable labels BIS      'BIS Record'.
+ 252  0  variable labels BOND     'Bond Record'.
+ 253  0  variable labels BPRS     'BPRS Record'.
+ 254  0  variable labels BUSS     'BUSDK Record'.
+ 255  0  variable labels CONS     'Consensus Record'.
+ 256  0  variable labels CTQ      'CTQ Record'.
+ 257  0  variable labels FAWCETT  'FAWCETT Record'.
+ 258  0  variable labels FDEMO    'FDEMO Record'.
+ 259  0  variable labels GAS      'GAS Record'.
+ 260  0  variable labels HAM      'Hamilton D Record'.
+ 261  0  variable labels HOPE     'Hope Record'.
+ 262  0  variable labels MSPSS    'MSPSS Record'.
+ 263  0  variable labels BGOODWIN 'BGOODWIN Record'.
+ 264  0  variable labels RAMSEY   'Ramsey Record'.
+ 265  0  variable labels RFL      'RFL Record'.
+ 266  0  variable labels RLC      'RLC Record'.
+ 267  0  variable labels SANS     'SANS Record'.
+ 268  0  variable labels SAPS     'SAPS Record'.
+ 269  0  variable labels SASSR    'SASSR Record'.
+ 270  0  variable labels SCID1    'SCID1 Record'.
+ 271  0  variable labels SCID2    'SCID2 Record'.
+ 272  0  variable labels SCIDON   'SCIDON Record'.
+ 273  0  variable labels SIS      'SIS Record'.
+ 274  0  variable labels SSI      'SSI Record'.
+ 275  0  variable labels SUIC     'Suicide Record'.
+ 276  0  variable labels SCON     'Consensus of Suicide Attempts'.
+ 277  0  variable labels YMS      'YMS Record'.
+ 278  0  value labels ABUSE1  (0)'No'(1)'Yes'.
+ 279  0  value labels ACEQ    (0)'No'(1)'Yes'.
+ 280  0  value labels APSSI   (0)'No'(1)'Yes'.
+ 281  0  value labels ATTACH  (0)'No'(1)'Yes'.
+ 282  0  value labels BECK    (0)'No'(1)'Yes'.
+ 283  0  value labels BDEMO1  (0)'No'(1)'Yes'.
+ 284  0  value labels BDEMO2  (0)'No'(1)'Yes'.
+ 285  0  value labels BDEMO3  (0)'No'(1)'Yes'.
+ 286  0  value labels BDEMO4  (0)'No'(1)'Yes'.
+ 287  0  value labels BDEMO5  (0)'No'(1)'Yes'.
+ 288  0  value labels BDEMO6  (0)'No'(1)'Yes'.
+ 289  0  value labels BIS     (0)'No'(1)'Yes'.
+ 290  0  value labels BOND    (0)'No'(1)'Yes'.
+ 291  0  value labels BPRS    (0)'No'(1)'Yes'.
+ 292  0  value labels BUSS    (0)'No'(1)'Yes'.
+ 293  0  value labels CONS    (0)'No'(1)'Yes'.
+ 294  0  value labels CTQ     (0)'No'(1)'Yes'.
+ 295  0  value labels FAWCETT (0)'No'(1)'Yes'.
+ 296  0  value labels FDEMO   (0)'No'(1)'Yes'.
+ 297  0  value labels HAM     (0)'No'(1)'Yes'.
+ 298  0  value labels HOPE    (0)'No'(1)'Yes'.
+ 299  0  value labels GAS     (0)'No'(1)'Yes'.
+ 300  0  value labels MSPSS   (0)'No'(1)'Yes'.
+ 301  0  value labels BGOODWIN   (0)'No'(1)'Yes'.
+ 302  0  value labels RAMSEY  (0)'No'(1)'Yes'.
+ 303  0  value labels RFL     (0)'No'(1)'Yes'.
+ 304  0  value labels RLC     (0)'No'(1)'Yes'.
+ 305  0  value labels SANS    (0)'No'(1)'Yes'.
+ 306  0  value labels SAPS    (0)'No'(1)'Yes'.
+ 307  0  value labels SASSR   (0)'No'(1)'Yes'.
+ 308  0  value labels SCID1   (0)'No'(1)'Yes'.
+ 309  0  value labels SCID2   (0)'No'(1)'Yes'.
+ 310  0  value labels SCIDON  (0)'No'(1)'Yes'.
+ 311  0  value labels SIS     (0)'No'(1)'Yes'.
+ 312  0  value labels SSI     (0)'No'(1)'Yes'.
+ 313  0  value labels SUIC    (0)'No'(1)'Yes'.
+ 314  0  value labels SCON    (0)'No'(1)'Yes'.
+ 315  0  value labels YMS     (0)'No'(1)'Yes'.
+ 316  0  
+ 317  0  **6) Match files**.
+ 318  0  match files  file = '\\Dccmaincsfs\Data1\DCC\Delete\ABUSE_TEMP.sav'    in=ABUSE1
+ 319  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\ACEQ_TEMP.sav'     in=ACEQ
+ 320  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\APSSI_TEMP.sav'    in=APSSI
+ 321  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\ATTACH_TEMP.sav'   in=ATTACH
+ 322  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BECKDEP_TEMP.sav'  in=BECK
+ 323  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BIS_TEMP.sav'      in=BIS
+ 324  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BOND_TEMP.sav'     in=BOND
+ 325  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BPRS_TEMP.sav'     in=BPRS
+ 326  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BUSDK_TEMP.sav'    in=BUSS
+ 327  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\CONSENSUS_TEMP.sav'in=CONS
+ 328  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\CTQ_TEMP.sav'      in=CTQ
+ 329  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\FAWCETT_TEMP.sav'  in=FAWCETT
+ 330  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\GAS_TEMP.sav'      in=GAS
+ 331  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\HAM_TEMP.sav'      in=HAM
+ 332  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\HOPE_TEMP.sav'     in=HOPE
+ 333  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\MSPSS_TEMP.sav'    in=MSPSS
+ 334  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BGOODWIN_TEMP.sav' in=BGOODWIN
+ 335  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\RAMSEY_TEMP.sav'   in=RAMSEY
+ 336  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\RFL_TEMP.sav'      in=RFL
+ 337  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\RLC_TEMP.sav'      in=RLC
+ 338  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\SANS_TEMP.sav'     in=SANS
+ 339  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\SAPS_TEMP.sav'     in=SAPS
+ 340  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\SASSR_TEMP.sav'    in=SASSR
+ 341  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\SCID1_TEMP.sav'    in=SCID1
+ 342  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\SCID2_TEMP.sav'    in=SCID2
+ 343  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\SCIDON_TEMP.sav'   in=SCIDON
+ 344  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\SIS_TEMP.sav'      in=SIS
+ 345  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\SSI_TEMP.sav'      in=SSI
+ 346  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\SUICIDE_TEMP.sav'  in=SUIC
+ 347  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\SCON_TEMP.sav'     in=SCON
+ 348  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\YMS_TEMP.sav'      in=YMS
+ 349  0               by STUDYID ASSESS_PT NOWEEKS.
+ 350  0  save outfile = '\\Dccmaincsfs\Data1\MIND\SPSS\All.sav'.
+ 351  0  
+File #8
+     KEY: 17001                                  2        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #14
+     KEY: 17001                                  2        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #21
+     KEY: 17001                                  2        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #22
+     KEY: 17001                                  2        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #5
+     KEY: 17022                                  2        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #15
+     KEY: 17022                                  2        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #28
+     KEY: 17022                                  2        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #13
+     KEY: 17060                                  2        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #6
+     KEY: 4188                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #9
+     KEY: 4188                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #12
+     KEY: 4188                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #17
+     KEY: 4188                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #18
+     KEY: 4188                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #19
+     KEY: 4188                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #20
+     KEY: 4188                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #23
+     KEY: 4188                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #29
+     KEY: 4188                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #31
+     KEY: 4188                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #2
+     KEY: 4238                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #4
+     KEY: 4238                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #10
+     KEY: 4238                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #24
+     KEY: 4238                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #26
+     KEY: 4238                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #25
+     KEY: 4431095                                1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #11
+     KEY: 4434037                                1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #3
+     KEY: 4697                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #7
+     KEY: 4697                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #16
+     KEY: 4697                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #27
+     KEY: 4770                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #30
+     KEY: 4770                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+ 352  0  match files  file = '\\Dccmaincsfs\Data1\MIND\SPSS\All.sav'            in=ALLDATA
+ 353  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO1_TEMP.sav'   in=BDEMO1
+ 354  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO2_TEMP.sav'   in=BDEMO2
+ 355  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO3_TEMP.sav'   in=BDEMO3
+ 356  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO4_TEMP.sav'   in=BDEMO4
+ 357  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO5_TEMP.sav'   in=BDEMO5
+ 358  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\BDEMO6_TEMP.sav'   in=BDEMO6
+ 359  0         /by STUDYID ASSESS_PT NOWEEKS.
+ 360  0  select if (ASSESS_PT = 1 or ASSESS_PT = 10 and ALLDATA = 1).
+ 361  0  save outfile = '\\Dccmaincsfs\Data1\MIND\SPSS\Baseline.sav'
+ 362  0         /drop = RECNUM DWHO DSTAMP DCCWHO DCCDATE DCCTIME DCCEDITS
+ 363  0         /keep = STUDYID ASSESS_PT NOWEEKS
+ 364  0                 BDEMO1 BDEMO2 BDEMO3 BDEMO4 BDEMO5 BDEMO6
+ 365  0                 ABUSE1 ACEQ APSSI ATTACH BECK BIS BOND BPRS BUSS
+ 366  0                CONS CTQ HAM HOPE FAWCETT GAS MSPSS BGOODWIN
+ 367  0                RAMSEY RFL RLC SANS SAPS SASSR SCID1 SCID2 SCIDON
+ 368  0                SIS SSI SUIC SCON YMS all.
+File #1
+     KEY: 17001                                  2        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #2
+     KEY: 4238                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #3
+     KEY: 4238                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #4
+     KEY: 4238                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #5
+     KEY: 4238                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #6
+     KEY: 4238                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+File #7
+     KEY: 4238                                   1        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+ 369  0  match files  file = '\\Dccmaincsfs\Data1\MIND\SPSS\All.sav'           in=ALLDATA
+ 370  0               file = '\\Dccmaincsfs\Data1\DCC\Delete\FDEMO_TEMP.sav'   in=FDEMO
+ 371  0         /by STUDYID ASSESS_PT NOWEEKS.
+ 372  0  select if (ASSESS_PT = 4 or ASSESS_PT = 14 and ALLDATA = 1).
+ 373  0  save outfile = '\\Dccmaincsfs\Data1\MIND\SPSS\Followup.sav'
+ 374  0         /drop = RECNUM DWHO DSTAMP DCCWHO DCCDATE DCCTIME DCCEDITS
+ 375  0         /keep = STUDYID ASSESS_PT NOWEEKS
+ 376  0                 FDEMO
+ 377  0                 ABUSE1 ACEQ APSSI ATTACH BECK BIS BOND BPRS BUSS CONS CTQ HAM HOPE FAWCETT
+ 378  0                 GAS MSPSS BGOODWIN RAMSEY RFL RLC SANS SAPS SASSR SCID1 SCID2
+ 379  0                 SCIDON SIS SSI SUIC SCON YMS all.
+ 380  0  
+File #1
+     KEY: 17001                                  2        0
+
+Warning # 5132
+Duplicate key in a file.  The BY variables do not uniquely identify each case
+on the indicated file.  Please check the results carefully.
+ 381  0  get file = '\\Dccmaincsfs\Data1\MIND\SPSS\ALL.sav'.
+
+Warning # 67 on line 381.  Command name: get file
+The document is already in use by another user or process.  If you make
+changes to the document they may overwrite changes made by others or your
+changes may be overwritten by others.
+File opened \\Dccmaincsfs\Data1\MIND\SPSS\ALL.sav
+ 382  0  sort cases by STUDYID ASSESS_PT NOWEEKS.
+ 383  0  select if (ASSESS_PT  0 and ASSESS_PT  10 and ASSESS_PT  4 and ASSESS_PT  14).
+ 384  0  save outfile = '\\Dccmaincsfs\Data1\MIND\SPSS\Other.sav'
+ 385  0         /drop = RECNUM DWHO DSTAMP DCCWHO DCCDATE DCCTIME DCCEDITS
+ 386  0         /keep = STUDYID ASSESS_PT NOWEEKS
+ 387  0                 ABUSE1 ACEQ APSSI ATTACH BECK BIS BOND BPRS BUSS CONS CTQ HAM HOPE FAWCETT
+ 388  0                 GAS MSPSS BGOODWIN RAMSEY RFL RLC SANS SAPS SASSR SCID1 SCID2
+ 389  0                 SCIDON SIS SSI SUIC SCON YMS all.
+ 390  0  
+ 391  0  
+ 392  0  
+ 393  0  
+ 394  0  
+ 395  0  
+ 396  0  
+ 397  0  
+ 398  0  * End of INSERT and INCLUDE nesting level 01.
+

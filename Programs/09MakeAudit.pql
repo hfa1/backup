@@ -12,6 +12,7 @@
 remark 'Start: Backup Routine -> MakeAudit.pql'
 program crwarn
 . integer * 1 NO YES OK# DB#
+. integer * 4 STAT#
 . string * 32 MASTER$ DBMASTER$ DB$ IP$ CONNECT$
 . string * 200 IN$ LINE$ KEYS$
 . date TODAY_ FILE_ ('MM-DD-YYYY')
@@ -44,9 +45,14 @@ program crwarn
 .    open (MOD$) dsnvar=MOD$ write lrecl=200
 .    close (MOD$)
 .    pql connect database DB$N(DB#)
-                  prefix  PREFIX$
+                 prefix  PREFIX$
+                 iostat   STAT#
+.    ifthen (STAT# < 0)
+.     remark 'Make Journal cannot connect to a database!'
+.    else
 .     execute dbms "call DCCPROCF.BACKUPS.MXAUDIT"
-.    pql disconnect database DB$N(DB#)
+.     pql disconnect database DB$N(DB#)
+.    endif
 .   endif
 .  endif
 . end for

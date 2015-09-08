@@ -1,0 +1,158 @@
+﻿
+INSERT
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss11020\MIND_SPSS_to_SAS650113123741331811.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  10  0  * Encoding: UTF-8.
+  11  0  _SET UNICODE=OFF.
+  12  0  
+  13  0  * Encoding: windows-1252.
+  14  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\ABUSE.sav".
+  15  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\ABUSE.sas7bdat"
+  16  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  17  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\ACEQ.sav".
+  18  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\ACEQ.sas7bdat"
+  19  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  20  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\ADD.sav".
+  21  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\ADD.sas7bdat"
+  22  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  23  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\All.sav".
+  24  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\All.sas7bdat"
+  25  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  26  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\APSSI.sav".
+  27  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\APSSI.sas7bdat"
+  28  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  29  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\ATTACH.sav".
+  30  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\ATTACH.sas7bdat"
+  31  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  32  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\Baseline.sav".
+  33  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\Baseline.sas7bdat"
+  34  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  35  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO1.sav".
+  36  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BDEMO1.sas7bdat"
+  37  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  38  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO2.sav".
+  39  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BDEMO2.sas7bdat"
+  40  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  41  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO3.sav".
+  42  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BDEMO3.sas7bdat"
+  43  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  44  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO4.sav".
+  45  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BDEMO4.sas7bdat"
+  46  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  47  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO5.sav".
+  48  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BDEMO5.sas7bdat"
+  49  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  50  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BDEMO6.sav".
+  51  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BDEMO6.sas7bdat"
+  52  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  53  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BECKANX.sav".
+  54  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BECKANX.sas7bdat"
+  55  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  56  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BECKDEP.sav".
+  57  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BECKDEP.sas7bdat"
+  58  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  59  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BIS.sav".
+  60  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BIS.sas7bdat"
+  61  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  62  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BOND.sav".
+  63  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BOND.sas7bdat"
+  64  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  65  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BPRS.sav".
+  66  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BPRS.sas7bdat"
+  67  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  68  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BUSDK.sav".
+  69  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BUSDK.sas7bdat"
+  70  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  71  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\CGI.sav".
+  72  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\CGI.sas7bdat"
+  73  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  74  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\CONSENSUS.sav".
+  75  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\CONSENSUS.sas7bdat"
+  76  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  77  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\DES.sav".
+  78  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\DES.sas7bdat"
+  79  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  80  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\FAWCETT.sav".
+  81  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\FAWCETT.sas7bdat"
+  82  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  83  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\FDEMO.sav".
+  84  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\FDEMO.sas7bdat"
+  85  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  86  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\FLU_AGG.sav".
+  87  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\FLU_AGG.sas7bdat"
+  88  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  89  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\Followup.sav".
+  90  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\Followup.sas7bdat"
+  91  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  92  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\GAS.sav".
+  93  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\GAS.sas7bdat"
+  94  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  95  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\HAM.sav".
+  96  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\HAM.sas7bdat"
+  97  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+  98  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\HOPE.sav".
+  99  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\HOPE.sas7bdat"
+ 100  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 101  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\MSPSS.sav".
+ 102  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\MSPSS.sas7bdat"
+ 103  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 104  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\BGOODWIN.sav".
+ 105  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\BGOODWIN.sas7bdat"
+ 106  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 107  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\Other.sav".
+ 108  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\Other.sas7bdat"
+ 109  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 110  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\RAMSEY.sav".
+ 111  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\RAMSEY.sas7bdat"
+ 112  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 113  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\RFL.sav".
+ 114  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\RFL.sas7bdat"
+ 115  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 116  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\RLC.sav".
+ 117  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\RLC.sas7bdat"
+ 118  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 119  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\RSUA.sav".
+ 120  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\RSUA.sas7bdat"
+ 121  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 122  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\SANS.sav".
+ 123  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\SANS.sas7bdat"
+ 124  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 125  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\SAPS.sav".
+ 126  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\SAPS.sas7bdat"
+ 127  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 128  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\SASSR.sav".
+ 129  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\SASSR.sas7bdat"
+ 130  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 131  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\SCID1.sav".
+ 132  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\SCID1.sas7bdat"
+ 133  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 134  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\SCID2.sav".
+ 135  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\SCID2.sas7bdat"
+ 136  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 137  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\SIBS.sav".
+ 138  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\SIBS.sas7bdat"
+ 139  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 140  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\SIS.sav".
+ 141  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\SIS.sas7bdat"
+ 142  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 143  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\SRRS.sav".
+ 144  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\SRRS.sas7bdat"
+ 145  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 146  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\SSI.sav".
+ 147  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\SSI.sas7bdat"
+ 148  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 149  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\SUICIDE.sav".
+ 150  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\SUICIDE.sas7bdat"
+ 151  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 152  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\SUIC_CON.sav".
+ 153  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\SUIC_CON.sas7bdat"
+ 154  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 155  0  get file="\\Dccmaincsfs\Data1\MIND\SPSS\YMS.sav".
+ 156  0  SAVE TRANSLATE OUTFILE="\\Dccmaincsfs\Data1\MIND\SAS\YMS.sas7bdat"
+ 157  0      /TYPE=SAS /VERSION=9 /PLATFORM=WINDOWS /REPLACE.
+ 158  0  
+ 159  0  
+ 160  0  
+ 161  0  * End of INSERT and INCLUDE nesting level 01.
+

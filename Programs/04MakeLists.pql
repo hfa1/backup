@@ -13,6 +13,7 @@
 
 remark 'Start: Backup Routine -> MakeLists.pql'
 program
+. integer * 4 STAT#
 . open (REPORT) write append lrecl = 100
 .  write (REPORT) '<tr>'
 .  write (REPORT) '    <td colspan="2" class="greenleft">04 Make Lists</td>'
@@ -21,16 +22,21 @@ program
 . close (REPORT)
 . pql connect database 'DCC'
       prefix '<GDATA1>DCC\Database\'
+      iostat STAT#
+. ifthen (STAT# < 0)
+.  remark 'Start report could not connect to the DCC database!'
+. else
 .  execute dbms 'call DCCPROCF.BACKUPS.MXDBSLIST'
 .  execute dbms 'call DCCPROCF.BACKUPS.MXMSTLIST'
 .  execute dbms 'call DCCPROCF.BACKUPS.MXCONLIST'
 .  execute dbms 'call DCCPROCF.BACKUPS.MXEMAIL'
 .  execute dbms 'call DCCPROCF.BACKUPS.MXPRODJOB'
 .  execute dbms 'call DCCPROCF.BACKUPS.MXRESTART'
-. pql disconnect database 'DCC'
-. execute dbms 'call DCCPROCF.BACKUPS.MXMEMLIST'
-. execute dbms 'call DCCPROCF.BACKUPS.MXOUTLIST'
-. execute dbms 'call DCCPROCF.BACKUPS.MXRECCOUNTS'
-. execute dbms 'call DCCPROCF.BACKUPS.MXUSAGE'
+.  execute dbms 'call DCCPROCF.BACKUPS.MXMEMLIST'
+.  execute dbms 'call DCCPROCF.BACKUPS.MXOUTLIST'
+.  execute dbms 'call DCCPROCF.BACKUPS.MXRECCOUNTS'
+.  execute dbms 'call DCCPROCF.BACKUPS.MXUSAGE'
+.  pql disconnect database 'DCC'
+. endif
 end program
 remark 'Finished: Backup Routine -> MakeLists.pql'

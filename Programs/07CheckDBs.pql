@@ -10,7 +10,8 @@ remark 'Start: Backup Routine -> CheckDBs.pql'
 
 program crwarn
 . integer * 1 YES NO DB# OK#
-. integer * 2 FILES# FILE# STAT#
+. integer * 2 FILES# FILE#
+. integer * 4 STAT#
 . string * 200 FILE$
 |INIT
 . set NO DB# STAT# (0) YES (1)

@@ -16,23 +16,23 @@ program crwarn
 . string * 200 IN$ LINE$
 . string * 32 TODAY$ 
 . TODAY$ = datec(today(0),'MM/DD/YYYY')
-. integer * 2  STAT  
+. integer * 4  STAT#  
 . string  * 100 NRECS$ MOD$ FILE$ FOLDER$ PREFIX$
 . PREFIX$ = '\\Dccmaincsfs\Data5\Clone\'
 . FOLDER$ = '<GDATA1>DCC\BackupRoutine\Journals\Modified\'
-. set NO DB# STAT OK# (0) YES (1)
+. set STAT# NO DB# OK# (0) YES (1)
 . PATTERN$ = '@' + datec(today(0),'MM DD YYYY') + '@'
 . FILES# = filecnt(FOLDER$ + '*.txt')
 . for FILE# = 1,FILES#
 .  FILE$ = filen(FOLDER$ + '*.txt',FILE#)
 .  ifthen (pattern(FILE$,PATTERN$) = YES)
-.   STAT = YES
+.   STAT# = YES
 .  else
 .   OK# = delfile(FOLDER$ + FILE$)
 .  endif
 . end for
 . MOD$ = FOLDER$ + 'Modified ' + datec(today(0),'MM DD YYYY') + '.txt'
-. ifthen (STAT = NO)
+. ifthen (STAT# = NO)
 .  open (MOD$) dsnvar=MOD$ write lrecl=200
 .  close (MOD$)
 . endif
@@ -48,12 +48,16 @@ program crwarn
 .   close (MOD$)
 .   pql connect database DB$N(DB#)
                 prefix   PREFIX$
-                iostat   STAT
+                iostat   STAT#
+.   ifthen (STAT# < 0)
+.    remark 'Make Journal cannot connect to a database!'
+.   else
 .    open (MOD$) dsnvar=MOD$ write append lrecl=200
 .     write (MOD$) DB$N(DB#)
 .    close (MOD$)
 .    execute dbms "call DCCPROCF.BACKUPS.CXJOURNALS"
-.   pql disconnect database DB$N(DB#)
+.    pql disconnect database DB$N(DB#)
+.   endif
 .  endif
 . end for
 end program

@@ -1,0 +1,1691 @@
+﻿
+INSERT
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss8488\PREDICT3_new_merge518490324883134844.sps'
+    SYNTAX=BATCH
+    ERROR=STOP.
+  10  0  * Encoding: UTF-8.
+  11  0  _SET UNICODE=OFF.
+  12  0  
+  13  0  * Encoding: windows-1252.
+  14  0  
+  15  0  **New merging program**.
+  16  0  **Based on new data elements introduced by Greg in October 2014*.
+  17  0  **records whether data from a predictors interval needs to be merged with whicap,
+  18  0  **and if so, which interval, and neuropsych summary date.
+  19  0  
+  20  0  *On 7/24/2015, calculated MMSE scores were added.
+  21  0  *On 8/23/2015, MCI code was added.
+  22  0  
+  23  0  *FORMDATE variable from various record types can over-write one another in the PRED3 MULTI file, so get the BP FORM date an
+            d make sure
+  24  0  *every interval has a FORMDATE.
+  25  0  *Rename the FORMDATE TO PRED3_DATE.
+  26  0  GET FILE= '\\Dccmaincsfs\Data1\PREDICT3\Database\SPSS\BP.sav'/keep= ID_NUM INTERVAL
+  27  0   FORMDATE/rename (interval formdate=PRED3_INT PRED3_DATE).
+  28  0  save outfile= '\\Dccmaincsfs\Data1\dcc\delete\BP_subset.sav'.
+  29  0  get file= '\\Dccmaincsfs\Data1\dcc\delete\BP_subset.sav'.
+  30  0  
+  31  0  *Get PRED3 MULTI file, merge with BP date info and make sure every interval has a PRED3_DATE, review BP indicators of wheth
+            er WHICAP data are needed*.
+  32  0  get file= '\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\MULTI.SAV' /rename int=PRED3_INT.
+  33  0  save outfile= '\\Dccmaincsfs\Data1\dcc\delete\multi_x.sav'.
+  34  0  get file=  '\\Dccmaincsfs\Data1\dcc\delete\multi_x.sav'.
+  35  0  match files file=*/in=multi/file= '\\Dccmaincsfs\Data1\dcc\delete\BP_subset.sav'/in=BP/by id_num pred3_int.
+  36  0  cross multi by bp.
+
+
+Crosstabs
+
+\\Dccmaincsfs\Data1\dcc\delete\multi_x.sav
+
+
+  37  0  title 'Missing BP form'.
+
+Missing BP form
+
+
+  38  0  temporary.
+  39  0  select if (bp=0).
+  40  0  list id_num pred3_int.
+  41  0  
+
+
+List
+
+
+
+Number of cases read:  0    Number of cases listed:  0
+
+
+  42  0  descriptives variables=pred3_date formdate.
+
+
+Descriptives
+Notes
+|-----------------------------------------------------|---------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:43:43                               |
+|-----------------------------------------------------|---------------------------------------------------|
+|Comments                                             |                                                   |
+|----------------------|------------------------------|---------------------------------------------------|
+|Input                 |File Label                    |:54'\\dccmaincsfs\data2\pred1\spss_pred3\MULTI.SAV'|
+|                      |------------------------------|---------------------------------------------------|
+|                      |Filter                        |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Weight                        |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Split File                    |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |N of Rows in Working Data File|497                                                |
+|----------------------|------------------------------|---------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User defined missing values are treated as missing.|
+|                      |------------------------------|---------------------------------------------------|
+|                      |Cases Used                    |All non-missing data are used.                     |
+|-----------------------------------------------------|---------------------------------------------------|
+|Syntax                                               |descriptives variables=pred3_date formdate.        |
+|----------------------|------------------------------|---------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.02                                        |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.02                                        |
+|---------------------------------------------------------------------------------------------------------|
+
+Descriptive Statistics
+|----------------------|---|-----------|-----------|-----------|----------------|
+|                      |N  |Minimum    |Maximum    |Mean       |Std. Deviation  |
+|----------------------|---|-----------|-----------|-----------|----------------|
+|Date BP form Completed|496|08-JUN-2011|10-AUG-2015|16-NOV-2013|402 20:48:46.931|
+|----------------------|---|-----------|-----------|-----------|----------------|
+|Date CC Form Completed|494|17-AUG-2011|10-AUG-2015|24-NOV-2013|394 07:09:19.907|
+|----------------------|---|-----------|-----------|-----------|----------------|
+|Valid N (listwise)    |493|           |           |           |                |
+|-------------------------------------------------------------------------------|
+
+
+  43  0  if (missing (pred3_date)) pred3_date=formdate.
+  44  0  descriptives variables=pred3_date.
+
+
+Descriptives
+Notes
+|-----------------------------------------------------|---------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:43:43                               |
+|-----------------------------------------------------|---------------------------------------------------|
+|Comments                                             |                                                   |
+|----------------------|------------------------------|---------------------------------------------------|
+|Input                 |File Label                    |:54'\\dccmaincsfs\data2\pred1\spss_pred3\MULTI.SAV'|
+|                      |------------------------------|---------------------------------------------------|
+|                      |Filter                        |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Weight                        |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Split File                    |<none>                                             |
+|                      |------------------------------|---------------------------------------------------|
+|                      |N of Rows in Working Data File|497                                                |
+|----------------------|------------------------------|---------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User defined missing values are treated as missing.|
+|                      |------------------------------|---------------------------------------------------|
+|                      |Cases Used                    |All non-missing data are used.                     |
+|-----------------------------------------------------|---------------------------------------------------|
+|Syntax                                               |descriptives variables=pred3_date.                 |
+|----------------------|------------------------------|---------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.03                                        |
+|                      |------------------------------|---------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.02                                        |
+|---------------------------------------------------------------------------------------------------------|
+
+Descriptive Statistics
+|----------------------|---|-----------|-----------|-----------|----------------|
+|                      |N  |Minimum    |Maximum    |Mean       |Std. Deviation  |
+|----------------------|---|-----------|-----------|-----------|----------------|
+|Date BP form Completed|497|08-JUN-2011|10-AUG-2015|17-NOV-2013|402 14:57:59.948|
+|----------------------|---|-----------|-----------|-----------|----------------|
+|Valid N (listwise)    |497|           |           |           |                |
+|-------------------------------------------------------------------------------|
+
+
+  45  0  title 'Intervals for which there is no BP form date'.
+
+Intervals for which there is no BP form date
+
+
+  46  0  subtitle 'or other available date'.
+
+Intervals for which there is no BP form date
+or other available date
+
+
+  47  0  temporary.
+  48  0  select if (missing(pred3_date)).
+  49  0  list id_num pred3_int pred3_date.
+  50  0  
+
+
+List
+Notes
+|-----------------------------|---------------------------------------------------|
+|Output Created               |08-SEP-2015 00:43:43                               |
+|-----------------------------|---------------------------------------------------|
+|Comments                     |                                                   |
+|--------------|--------------|---------------------------------------------------|
+|Input         |File Label    |:54'\\dccmaincsfs\data2\pred1\spss_pred3\MULTI.SAV'|
+|              |--------------|---------------------------------------------------|
+|              |Filter        |<none>                                             |
+|              |--------------|---------------------------------------------------|
+|              |Weight        |<none>                                             |
+|              |--------------|---------------------------------------------------|
+|              |Split File    |<none>                                             |
+|-----------------------------|---------------------------------------------------|
+|Syntax                       |list id_num pred3_int pred3_date.                  |
+|--------------|--------------|---------------------------------------------------|
+|Resources     |Processor Time|00:00:00.02                                        |
+|              |--------------|---------------------------------------------------|
+|              |Elapsed Time  |00:00:00.02                                        |
+|---------------------------------------------------------------------------------|
+
+
+
+
+Number of cases read:  0    Number of cases listed:  0
+
+
+  51  0  title 'Intervals for which must enter indicator of whether'.
+
+Intervals for which must enter indicator of whether
+
+
+  52  0  subtitle 'or not WHICAP interval is needed'.
+  53  0  
+
+Intervals for which must enter indicator of whether
+or not WHICAP interval is needed
+
+
+  54  0  freq whicap_get.
+  55  0  
+  56  0  *Identify records with no indicator of whether WHICAP data are needed.
+
+
+Frequencies
+Notes
+|-----------------------------------------------------|----------------------------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:43:43                                                                    |
+|-----------------------------------------------------|----------------------------------------------------------------------------------------|
+|Comments                                             |                                                                                        |
+|----------------------|------------------------------|----------------------------------------------------------------------------------------|
+|Input                 |File Label                    |:54'\\dccmaincsfs\data2\pred1\spss_pred3\MULTI.SAV'                                     |
+|                      |------------------------------|----------------------------------------------------------------------------------------|
+|                      |Filter                        |<none>                                                                                  |
+|                      |------------------------------|----------------------------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                                                  |
+|                      |------------------------------|----------------------------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                                                  |
+|                      |------------------------------|----------------------------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|497                                                                                     |
+|----------------------|------------------------------|----------------------------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                                     |
+|                      |------------------------------|----------------------------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics are based on all cases with valid data.                                      |
+|-----------------------------------------------------|----------------------------------------------------------------------------------------|
+|Syntax                                               |freq whicap_get.
+
+*Identify records with no indicator of whether WHICAP data are needed.|
+|----------------------|------------------------------|----------------------------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.05                                                                             |
+|                      |------------------------------|----------------------------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.03                                                                             |
+|----------------------------------------------------------------------------------------------------------------------------------------------|
+
+Statistics
+Include WHICAP visit data 
+|-|-------|---|
+|N|Valid  |496|
+| |-------|---|
+| |Missing|1  |
+|-------------|
+
+Include WHICAP visit data
+|--------------|---------|-------|-------------|------------------|
+|              |Frequency|Percent|Valid Percent|Cumulative Percent|
+|-------|------|---------|-------|-------------|------------------|
+|Valid  |No    |166      |33.4   |33.5         |33.5              |
+|       |------|---------|-------|-------------|------------------|
+|       |Yes   |330      |66.4   |66.5         |100.0             |
+|       |------|---------|-------|-------------|------------------|
+|       |Total |496      |99.8   |100.0        |                  |
+|-------|------|---------|-------|-------------|------------------|
+|Missing|System|1        |.2     |             |                  |
+|--------------|---------|-------|-------------|------------------|
+|Total         |497      |100.0  |             |                  |
+|-----------------------------------------------------------------|
+
+
+  57  0  title 'Missing indicator of whether WHICAP'
+
+Missing indicator of whether WHICAP
+
+
+  58  0  subtitle 'data needs to be merged'.
+
+Missing indicator of whether WHICAP
+data needs to be merged
+
+
+  59  0  temporary.
+  60  0  select if ( missing(WHICAP_GET)).
+  61  0  list id_num pred3_int.
+  62  0  *Save interim pred3 file*.
+
+
+List
+Notes
+|---------------------------------------------|---------------------------------------------------|
+|Output Created                               |08-SEP-2015 00:43:43                               |
+|---------------------------------------------|---------------------------------------------------|
+|Comments                                     |                                                   |
+|--------------|------------------------------|---------------------------------------------------|
+|Input         |File Label                    |:54'\\dccmaincsfs\data2\pred1\spss_pred3\MULTI.SAV'|
+|              |------------------------------|---------------------------------------------------|
+|              |Filter                        |<none>                                             |
+|              |------------------------------|---------------------------------------------------|
+|              |Weight                        |<none>                                             |
+|              |------------------------------|---------------------------------------------------|
+|              |Split File                    |<none>                                             |
+|              |------------------------------|---------------------------------------------------|
+|              |N of Rows in Working Data File|1                                                  |
+|---------------------------------------------|---------------------------------------------------|
+|Syntax                                       |list id_num pred3_int.
+*Save interim pred3 file*.  |
+|--------------|------------------------------|---------------------------------------------------|
+|Resources     |Processor Time                |00:00:00.05                                        |
+|              |------------------------------|---------------------------------------------------|
+|              |Elapsed Time                  |00:00:00.03                                        |
+|-------------------------------------------------------------------------------------------------|
+
+
+
+
+
+
+ID_NUM PRED3_INT
+
+W84017         0
+
+
+Number of cases read:  1    Number of cases listed:  1
+
+
+  63  0  save outfile= '\\Dccmaincsfs\Data1\dcc\delete\pred3_temp.sav'.
+  64  0  
+  65  0  *Write out data file with WHICAP_GET=0 or missing WHICAP_GET so that this can be added back in after merge with WHICAP data
+             is complete.
+  66  0  temporary.
+  67  0  select if (missing(whicap_get) or whicap_get=0).
+  68  0  save outfile= '\\Dccmaincsfs\Data1\dcc\delete\pred3_whicap_get_missing_or_zero.sav'.
+  69  0  get file=  '\\Dccmaincsfs\Data1\dcc\delete\pred3_whicap_get_missing_or_zero.sav'.
+  70  0  freq whicap_get.
+  71  0  
+  72  0  *Return to interim pred3 file (see above).
+
+
+Frequencies
+Notes
+|-----------------------------------------------------|-------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:43:44                                               |
+|-----------------------------------------------------|-------------------------------------------------------------------|
+|Comments                                             |                                                                   |
+|----------------------|------------------------------|-------------------------------------------------------------------|
+|Input                 |Data                          |\\Dccmaincsfs\Data1\dcc\delete\pred3_whicap_get_missing_or_zero.sav|
+|                      |------------------------------|-------------------------------------------------------------------|
+|                      |File Label                    |:54'\\dccmaincsfs\data2\pred1\spss_pred3\MULTI.SAV'                |
+|                      |------------------------------|-------------------------------------------------------------------|
+|                      |Filter                        |<none>                                                             |
+|                      |------------------------------|-------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                             |
+|                      |------------------------------|-------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                             |
+|                      |------------------------------|-------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|167                                                                |
+|----------------------|------------------------------|-------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                |
+|                      |------------------------------|-------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics are based on all cases with valid data.                 |
+|-----------------------------------------------------|-------------------------------------------------------------------|
+|Syntax                                               |freq whicap_get.
+
+*Return to interim pred3 file (see above).       |
+|----------------------|------------------------------|-------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.02                                                        |
+|                      |------------------------------|-------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.02                                                        |
+|-------------------------------------------------------------------------------------------------------------------------|
+
+
+\\Dccmaincsfs\Data1\dcc\delete\pred3_whicap_get_missing_or_zero.sav
+
+Statistics
+Include WHICAP visit data 
+|-|-------|---|
+|N|Valid  |166|
+| |-------|---|
+| |Missing|1  |
+|-------------|
+
+Include WHICAP visit data
+|--------------|---------|-------|-------------|------------------|
+|              |Frequency|Percent|Valid Percent|Cumulative Percent|
+|-------|------|---------|-------|-------------|------------------|
+|Valid  |No    |166      |99.4   |100.0        |100.0             |
+|-------|------|---------|-------|-------------|------------------|
+|Missing|System|1        |.6     |             |                  |
+|--------------|---------|-------|-------------|------------------|
+|Total         |167      |100.0  |             |                  |
+|-----------------------------------------------------------------|
+
+
+  73  0  get file= '\\Dccmaincsfs\Data1\dcc\delete\pred3_temp.sav'.
+  74  0  *Select records with indicator of whicap data being needed.
+  75  0  select if (whicap_get ge 1).
+  76  0  
+  77  0  *Identify and eliminate records with GET indicator but missing whicap date*.
+  78  0  title 'Missing whicap_date'.
+
+Missing whicap_date
+
+
+  79  0  temporary.
+  80  0  select if (missing(whicap_date)).
+  81  0  list id_num whicap_get pred3_int whicap_date.
+  82  0  
+
+
+List
+Notes
+|---------------------------------------------|---------------------------------------------------|
+|Output Created                               |08-SEP-2015 00:43:44                               |
+|---------------------------------------------|---------------------------------------------------|
+|Comments                                     |                                                   |
+|--------------|------------------------------|---------------------------------------------------|
+|Input         |Data                          |\\Dccmaincsfs\Data1\dcc\delete\pred3_temp.sav      |
+|              |------------------------------|---------------------------------------------------|
+|              |File Label                    |:54'\\dccmaincsfs\data2\pred1\spss_pred3\MULTI.SAV'|
+|              |------------------------------|---------------------------------------------------|
+|              |Filter                        |<none>                                             |
+|              |------------------------------|---------------------------------------------------|
+|              |Weight                        |<none>                                             |
+|              |------------------------------|---------------------------------------------------|
+|              |Split File                    |<none>                                             |
+|              |------------------------------|---------------------------------------------------|
+|              |N of Rows in Working Data File|3                                                  |
+|---------------------------------------------|---------------------------------------------------|
+|Syntax                                       |list id_num whicap_get pred3_int whicap_date.      |
+|--------------|------------------------------|---------------------------------------------------|
+|Resources     |Processor Time                |00:00:00.02                                        |
+|              |------------------------------|---------------------------------------------------|
+|              |Elapsed Time                  |00:00:00.01                                        |
+|-------------------------------------------------------------------------------------------------|
+
+
+\\Dccmaincsfs\Data1\dcc\delete\pred3_temp.sav
+
+
+
+
+
+
+ID_NUM WHICAP_GET PRED3_INT WHICAP_DATE
+
+W57940         1          0           .
+W70431         1          0           .
+W80260         1          0           .
+
+
+Number of cases read:  3    Number of cases listed:  3
+
+
+  83  0  select if (whicap_date ge 0).
+  84  0  sort cases by id_num pred3_int whicap_date.
+  85  0  
+  86  0  *Identify duplicates*.
+  87  0  compute dup=0.
+  88  0  if (id_num=lag(id_num) and whicap_date=lag(whicap_date)) dup=1.
+  89  0  temporary.
+  90  0  select if (dup=1).
+  91  0  list id_num whicap_date.
+
+
+List
+Notes
+|---------------------------------------------|---------------------------------------------------|
+|Output Created                               |08-SEP-2015 00:43:44                               |
+|---------------------------------------------|---------------------------------------------------|
+|Comments                                     |                                                   |
+|--------------|------------------------------|---------------------------------------------------|
+|Input         |Data                          |\\Dccmaincsfs\Data1\dcc\delete\pred3_temp.sav      |
+|              |------------------------------|---------------------------------------------------|
+|              |File Label                    |:54'\\dccmaincsfs\data2\pred1\spss_pred3\MULTI.SAV'|
+|              |------------------------------|---------------------------------------------------|
+|              |Filter                        |<none>                                             |
+|              |------------------------------|---------------------------------------------------|
+|              |Weight                        |<none>                                             |
+|              |------------------------------|---------------------------------------------------|
+|              |Split File                    |<none>                                             |
+|              |------------------------------|---------------------------------------------------|
+|              |N of Rows in Working Data File|1                                                  |
+|---------------------------------------------|---------------------------------------------------|
+|Syntax                                       |list id_num whicap_date.                           |
+|--------------|------------------------------|---------------------------------------------------|
+|Resources     |Processor Time                |00:00:00.02                                        |
+|              |------------------------------|---------------------------------------------------|
+|              |Elapsed Time                  |00:00:00.02                                        |
+|-------------------------------------------------------------------------------------------------|
+
+
+
+
+
+
+ID_NUM WHICAP_DATE
+
+W37206 03-SEP-2013
+
+
+Number of cases read:  1    Number of cases listed:  1
+
+
+  92  0  select if (dup=0).
+  93  0  
+  94  0  save outfile= '\\Dccmaincsfs\Data1\PREDICT3\Merging WHICAP data\PRED_MULTI_2.sav'.
+  95  0  get file= '\\Dccmaincsfs\Data1\PREDICT3\Merging WHICAP data\PRED_MULTI_2.sav'.
+  96  0  
+  97  0  **Get WHICAP data*.
+  98  0  *STEP 4: Keep variables from forms specified by Oksana*.
+  99  0  *23 Aug 2015: Add C1 and C01 for use in MCI code (see below).
+ 100  0  get file=  '\\Dccmaincsfs\DATA2\whicap1\mult.sav'/rename (int w2_int neurodat=W_int W_w2_int whicap_date)
+ 101  0    /keep=id_num whicap_date W_int W_w2_int  DEM01 DEM03 DEM05 DEM06 CCD01 CCD02 CCD03 CCD04  c1 c01 age_eval
+ 102  0      CCD02R CCD02A CCD02B CCD02C CCD02D CCD02E CCD02F CCD02G CCD02H CCD02I CCD02J CCD02K CCD02L CCD02M
+ 103  0      CCD02N CCD02O CCD02P CCD02Q CCD05 CCD03A CCD03B CCD03C CCD03D CCD03E CCD03F CCD03G CCD03H CCD03I
+ 104  0      CCD03J CCD03K CCD03L CCD03M CCD03N CCD03O CCD03P CCD03Q CCD06
+ 105  0      B15 B16 B17 B18 B19 B20 B21 B22 B22_1 B22_2 B22_3 B22_4 B22_5 B22_6 B22_9 B23 B24 B25 B26 B27 B28
+ 106  0      B29 B30 B31 B32 B33
+ 107  0       K01 K02 K03 K04 K05 K06 K07 K08 K09 K10 K11 K12 K13 K14 K15 K16
+ 108  0      W02 W01 W03 W04 W05 W06 W07 W08 W09 W10 W12 W13 W21 W22 W23 W24 W26 W25 W27 W28 W29 W30 W31 W32
+ 109  0      W33 W33A W34A W34_FT W34_IN W35 W35A
+ 110  0        CE01 CE02 CE02A CE02B CE02CECT CE02CMED CE02CPSY CE02COTH CE02CUNK CE03 CE04 CE05 CE06 CE07 CE08
+ 111  0      CE09 CDR_RP
+ 112  0        D01 D02 D03 D04 D05 D06 D07 D08 D09 D10 D11 D12 D13 D14 D15 D16 D17 D18 D19 D20 D21 D22 D23 D24
+ 113  0      D25 D26 D27 D28 D29 D30 D31 D32 D33 D34 D35
+ 114  0       MH02 MH02B MH03 MH03B MH04 MH04B MH05 MH05B MH06 MH06B MH07 MH07B MH08 MH08B MH09 MH09B MH10 MH10B
+ 115  0      MH11 MH11B MH12 MH12B MH13 MH13B MH14 MH14B MH15 MH15B MH16 MH16B MH17 MH17B MH18 MH18B MH19 MH19B
+ 116  0      MH20 MH20B MH21 MH21B MH22 MH22B MH23 MH23B MH24 MH24B MH25 MH25B MH26 MH26B MH27 MH27B MH28 MH29
+ 117  0      MH29B MH30 MH31 MH32 MH33 MH34 MH35 MH36 MH37 MH38 MH39 MH40 MH41 MH42 MH43 MH44 MH45 MH45A MH45B
+ 118  0      MH45C MH46 MH47 MH48 MH49 MH50 MH51 MH52 MH53 MH54 MH55 MH56 MH57 MH58 MH59 MH60 MH60A MH60B MH60C
+ 119  0      MH60D MH61 MH62 MH62A MH63 MH64 MH65 MH66 MH66A MH66B MH67 MH68 MH69 MH70 MH71 MH72 MH73 MH74 MH75
+ 120  0      MH76
+ 121  0      rater07 HAND LANGUAGE MEM01 MEM02 MEM03 MEM04 MEM05 MEM06 MEM07 MEM08 MEM09 MEM10 MEM11 ORIENT ABS01 ABS02
+ 122  0      ABS03 ABS04 ABS05 ABS06 LAN01 LAN02 LAN03 LAN04 MEM12 LAN06 LAN07 LAN08 LAN09 LAN10 LAN11 LAN12
+ 123  0      LAN13 CON01 CON02 CON03 ATT01 ATT02 ATT03 ATT04 ATT05 ATT06 ATT07 ATT08 ATT09 ATT10 ATT11 ATT12
+ 124  0      ATT13 ATT14 ATT15 ATT16 ATT17 ATT18 ATT19 ATT20 ATT21 ATT22 SIGHT AVAIL AUDITORY AID
+ 125  0      NS01 NS02 NS03 NS04 NS05 NS06 NS07 NS08 NS09 NS10 NS11 NS12 NS13 NS14 NS15 NS16 NS17 NS18 NS19
+ 126  0      NS20 NS21 NS22 NS23 NS24 NS25 NS26 NS27 NS28 NS29 NS30 NS31 NS32 NS33 NS34 NS35 NS36 NS37 NS38 NS39
+ 127  0      NS40 NS41 NS42 NS43 NS44 NS45 NS46 NS47 NS48 NS49 NS50 NS51 NS52 NS53 NS54 NS55 NS56 NS57 NS58 NS59
+ 128  0      NS60 NS61 NS62 NS63 NS64 NS65 NS66 NS67 NS68 NS69 NS70 NS71 NS72 NS73 NS74 NS75 NS76 NS77 LONG COLOR1T
+ 129  0      COLOR1P COLOR1R COLOR2T COLOR2P COLOR2R
+ 130  0        s115 s132 s177 s178 s179 s180 s181 s187a s187b s187c s189 s19 s190 s190a s201 s214a s214b s214c
+ 131  0      s214d s214e s214f s214g s214h s215 s216 s217 s218 s219 s220 s221 s250 s251 s252 s253 s254 s255a
+ 132  0      s255b s256 s26 s263 s264 s265 s266 s27 s270 s271 s276 s282a s282b s282c s282d s282e s282f s282g
+ 133  0      s282h s282i s282j s282k s282l s282m s296 s344 s346 s364 s373 s374a s374b s374c s374d s374e s374f
+ 134  0      s374g s374h s374i s374j s374k s374l s374m s374n s374o s374p s374q s374r s374s s374t s374u s375 s376
+ 135  0      s395 s79 s80 s81 s82 s83 s92 s93a s93b s93c s94 s95a s95b s95c s95d s96
+ 136  0      s395 s79 s80 s81 s82 s83 s92 s93a s93b s93c s94 s95a s95b s95c s95d s96
+ 137  0        SNEW1 SNEW2 SNEW3 SNEW4 SNEW5 SNEW6 SNEW7 SNEW8 SNEW9 SNEW10.
+ 138  0  
+ 139  0  *select only WHICAP records that have a neurodat (whicap_date).
+ 140  0  select if (whicap_date ge 0).
+ 141  0  sort cases by id_num whicap_date.
+ 142  0  
+ 143  0  *Identify duplicates*.
+ 144  0  compute dup=0.
+ 145  0  if (id_num=lag(id_num) and whicap_date=lag(whicap_date)) dup=1.
+ 146  0  temporary.
+ 147  0  select if (dup=1).
+ 148  0  list id_num whicap_date.
+
+
+List
+Notes
+|---------------------------------------------|------------------------|
+|Output Created                               |08-SEP-2015 00:43:46    |
+|---------------------------------------------|------------------------|
+|Comments                                     |                        |
+|--------------|------------------------------|------------------------|
+|Input         |Filter                        |<none>                  |
+|              |------------------------------|------------------------|
+|              |Weight                        |<none>                  |
+|              |------------------------------|------------------------|
+|              |Split File                    |<none>                  |
+|              |------------------------------|------------------------|
+|              |N of Rows in Working Data File|1                       |
+|---------------------------------------------|------------------------|
+|Syntax                                       |list id_num whicap_date.|
+|--------------|------------------------------|------------------------|
+|Resources     |Processor Time                |00:00:00.19             |
+|              |------------------------------|------------------------|
+|              |Elapsed Time                  |00:00:00.19             |
+|----------------------------------------------------------------------|
+
+
+
+
+
+
+id_num whicap_date
+
+W32836 18-SEP-2002
+
+
+Number of cases read:  1    Number of cases listed:  1
+
+
+ 149  0  select if (dup=0).
+ 150  0  save outfile=  '\\Dccmaincsfs\Data1\PREDICT3\Merging WHICAP data\whicmult.sav.sav'.
+ 151  0  
+ 152  0  *Merge WHICAP and PRED3 data*.
+ 153  0  update file=  '\\Dccmaincsfs\Data1\PREDICT3\Merging WHICAP data\whicmult.sav.sav'/in=whicap
+ 154  0                  /file= '\\Dccmaincsfs\Data1\PREDICT3\Merging WHICAP data\PRED_MULTI_2.sav'/in=pred
+ 155  0                   /by id_num whicap_date.
+ 156  0  cross whicap by pred.
+
+
+Crosstabs
+Notes
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:43:46                                                                                                           |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Comments                                             |                                                                                                                               |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Input                 |Filter                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|17439                                                                                                                          |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                                                                            |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics for each table are based on all the cases with valid data in the specified range(s) for all variables in each table.|
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Syntax                                               |cross whicap by pred.                                                                                                          |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.56                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.56                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Dimensions Requested          |2                                                                                                                              |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cells Available               |524245                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+Case Processing Summary
+|-------------|-------------------------------------------|
+|             |Cases                                      |
+|             |-------------|---------------|-------------|
+|             |Valid        |Missing        |Total        |
+|             |-----|-------|-------|-------|-----|-------|
+|             |N    |Percent|N      |Percent|N    |Percent|
+|-------------|-----|-------|-------|-------|-----|-------|
+|whicap * pred|17439|100.0% |0      |0.0%   |17439|100.0% |
+|---------------------------------------------------------|
+
+whicap * pred Crosstabulation
+Count 
+|--------|---------|-----|
+|        |pred     |Total|
+|        |-----|---|     |
+|        |0    |1  |     |
+|------|-|-----|---|-----|
+|whicap|0|0    |26 |26   |
+|      |-|-----|---|-----|
+|      |1|17113|300|17413|
+|--------|-----|---|-----|
+|Total   |17113|326|17439|
+|------------------------|
+
+
+ 157  0  select if (pred=1).
+ 158  0  
+ 159  0  *Identify PRED3 cases with no matching WHICAP data*.
+ 160  0  temporary.
+ 161  0  select if (whicap=0 and pred=1).
+ 162  0  list id_num pred3_int whicap_int whicap_date.
+
+
+List
+Notes
+|---------------------------------------------|---------------------------------------------|
+|Output Created                               |08-SEP-2015 00:43:47                         |
+|---------------------------------------------|---------------------------------------------|
+|Comments                                     |                                             |
+|--------------|------------------------------|---------------------------------------------|
+|Input         |Filter                        |<none>                                       |
+|              |------------------------------|---------------------------------------------|
+|              |Weight                        |<none>                                       |
+|              |------------------------------|---------------------------------------------|
+|              |Split File                    |<none>                                       |
+|              |------------------------------|---------------------------------------------|
+|              |N of Rows in Working Data File|26                                           |
+|---------------------------------------------|---------------------------------------------|
+|Syntax                                       |list id_num pred3_int whicap_int whicap_date.|
+|--------------|------------------------------|---------------------------------------------|
+|Resources     |Processor Time                |00:00:00.55                                  |
+|              |------------------------------|---------------------------------------------|
+|              |Elapsed Time                  |00:00:00.55                                  |
+|-------------------------------------------------------------------------------------------|
+
+
+
+
+
+
+id_num PRED3_INT WHICAP_INT whicap_date
+
+W06125         3        10  17-APR-2015
+W07249         3         6  21-APR-2015
+W16788         0         8  04-MAY-2015
+W18006         0         9  21-JAN-2014
+W32709         1         6  06-MAY-2015
+W32871         2         5  22-OCT-2013
+W33680         1         6  24-MAR-2015
+W34528         3         6  22-APR-2015
+W36878         1         6  06-MAY-2015
+W37698         1         2  11-DEC-2014
+W51567         0         1  20-AUG-2014
+W52593         0         2  14-JAN-2015
+W52699         0         1  29-JUL-2015
+W55905         1         2  28-OCT-2014
+W58533         0         2  13-OCT-2014
+W62232         0         2  26-NOV-2014
+W65651         0         1  07-JUN-2013
+W67160         1         2  29-DEC-2014
+W67964         0         2  25-FEB-2015
+W69931         0         2  03-JUN-2015
+W76238         0         2  24-NOV-2014
+W80864         1         2  20-NOV-2014
+W83903         1         2  05-NOV-2014
+W84940         2         2  18-FEB-2015
+W85584         0         1  23-AUG-2012
+X19668         0         0  08-DEC-2014
+
+
+Number of cases read:  26    Number of cases listed:  26
+
+
+ 163  0  select if (pred=1).
+ 164  0  save outfile=  '\\Dccmaincsfs\Data1\PREDICT3\Merging WHICAP data\PRED3_WHICAP.sav'.
+ 165  0  get file=  '\\Dccmaincsfs\Data1\PREDICT3\Merging WHICAP data\PRED3_WHICAP.sav'.
+ 166  0  
+ 167  0  *Merge (ADD) with PRED3 MULTI records that did not require a WHICAP merge (WHICAP_GET=0).
+ 168  0  *Save file in DATA2 directory.
+ 169  0  add files file= */in=get1/file= '\\Dccmaincsfs\Data1\dcc\delete\pred3_whicap_get_missing_or_zero.sav'/in=get0.
+ 170  0  cross get1 by get0.
+
+
+Crosstabs
+Notes
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:43:48                                                                                                           |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Comments                                             |                                                                                                                               |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Input                 |Filter                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|493                                                                                                                            |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                                                                            |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics for each table are based on all the cases with valid data in the specified range(s) for all variables in each table.|
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Syntax                                               |cross get1 by get0.                                                                                                            |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.05                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.03                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Dimensions Requested          |2                                                                                                                              |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cells Available               |524245                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+
+\\Dccmaincsfs\Data1\PREDICT3\Merging WHICAP data\PRED3_WHICAP.sav
+
+Case Processing Summary
+|-----------|-------------------------------------------|
+|           |Cases                                      |
+|           |-------------|---------------|-------------|
+|           |Valid        |Missing        |Total        |
+|           |-----|-------|-------|-------|-----|-------|
+|           |N    |Percent|N      |Percent|N    |Percent|
+|-----------|-----|-------|-------|-------|-----|-------|
+|get1 * get0|493  |100.0% |0      |0.0%   |493  |100.0% |
+|-------------------------------------------------------|
+
+get1 * get0 Crosstabulation
+Count 
+|-------|--------|-----|
+|       |get0    |Total|
+|       |----|---|     |
+|       |0   |1  |     |
+|-----|-|----|---|-----|
+|get1 |0|0   |167|167  |
+|     |-|----|---|-----|
+|     |1|326 |0  |326  |
+|-------|----|---|-----|
+|Total  |326 |167|493  |
+|----------------------|
+
+
+ 171  0  sort cases by id_num pred3_int.
+ 172  0  
+ 173  0  *Add code to create total MMSE score*.
+ 174  0  compute MMSESCORE57 = SUM ( SP01A, SP02A, SP03A, SP04A, SP05A, SP06A, SP07A, SP08A, SP09A, SP10A,
+ 175  0                        SP11A, SP14A, SP15A, SP16A, SP17A, SP18A, SP19GA,
+ 176  0                        SP21A, SP22A, SP23A, SP24A, SP25A, SP26A, SP27A, SP28A, SP29A, SP30A,
+ 177  0                        SP31A, SP32A, SP33A, SP34A, SP35A, SP37A, SP38A, SP39A, SP40A).
+ 178  0  
+ 179  0  compute MMSESCORE30 = SUM ( SP01B, SP02B, SP03B, SP04B, SP05B, SP06B, SP07B, SP08B, SP09B, SP10B,
+ 180  0                        SP11B, SP16B, SP18B, SP19LB, SP20B, SP31B, SP33B, SP34B, SP35B, SP36B, SP38B,SP41B).
+ 181  0  var labels mmsescore57 'Calculated MMSE score, 57 items'.
+ 182  0  var labels mmsescore30 'Calculated MMSE score, 30 items'.
+ 183  0  
+ 184  0  *************************************************************************************************************************.
+ 185  0  *23 August 2015: WHICAP MCI code (from J Manly) added in.
+ 186  0  
+ 187  0  **BEGIN JENNIFERS MCI CODE***.
+ 188  0  **NOTE: The sections DEFINE MCI GROUPS and PETERSON CRITERIA
+ 189  0  **      were updated in January 2008 based on new code developed
+ 190  0  **      by Jennifer Manly and Ming Tang*.
+ 191  0  
+ 192  0  *** Compute BLACK HISP ***************************************.
+ 193  0  
+ 194  0  if dem05 = 2 black = 1.
+ 195  0  if dem05 = 2 hisp = 0.
+ 196  0  if dem05 = 3 hisp = 1.
+ 197  0  if dem05 = 3 black = 0.
+ 198  0  if dem05 = 1 hisp = 0.
+ 199  0  if dem05= 1 black = 0.
+ 200  0  format black hisp (f1.0).
+ 201  0  
+ 202  0  var labels hisp 'Hispanic indicator, derived from DEM05'.
+ 203  0  var labels black 'Black indicator, derived from DEM05 (note: Hispanics are coded black=1 only if they stated race when aske
+            d)'.
+ 204  0  *freq black hisp.
+ 205  0  *cross black by hisp.
+ 206  0  
+ 207  0  *Note: The following are calculated only for non-demented subjects*.
+ 208  0  
+ 209  0  *** Functional Impairment Scale ***********************.
+ 210  0  
+ 211  0  
+ 212  0  **NOTE: Begin DO IF loop that applies all MCI processing only to non-demented subjects**.
+ 213  0  * This DO IF loop is repeated in each section*.
+ 214  0  
+ 215  0  *freq ccd01.
+ 216  0  
+ 217  0  DO IF ccd01 = 0.
+ 218  0  
+ 219  1  recode s26 s79 s81 s82 s250 s251 s252 s132
+ 220  1          (0=0)(1,2,3=1)(7777,8888,9999,-9999=sysmis)
+ 221  1    into cs26 cs79 cs81 cs82 cs250 cs251 cs252 cs132.
+ 222  1  
+ 223  1  recode s80 s83 (0,1=0) (2,3=1) (7777,8888,9999,-9999=sysmis) into cs80 cs83.
+ 224  1  
+ 225  1  if cs79 = 1 and cs80 = 1 cs79c = 1.
+ 226  1  if cs79 = 1 and cs80 = 0 cs79c = 0.
+ 227  1  if cs79 = 0 cs79c = 0.
+ 228  1  
+ 229  1  if cs82 = 1 and cs83 = 1 cs82c = 1.
+ 230  1  if cs82 = 1 and cs83 = 0 cs82c = 0.
+ 231  1  if cs82 = 0 cs82c = 0.
+ 232  1  
+ 233  1  if cs251 = 0 and cs252 = 0 cs251c = 0.
+ 234  1  if cs251 = 0 and cs252 = 1 cs251c = 1.
+ 235  1  if cs251 = 1 cs251c = 1.
+ 236  1  
+ 237  1  variable labels cs26 'use phone' cs79c 'cooking' cs81 'shopping 1' cs82c 'shopping 2' cs250 'money/business' cs251c 'bills/
+            cash' cs132 'medications'.
+ 238  1  value labels cs26 cs79c cs81 cs82c cs250 cs251c cs132 0 'no problems' 1 'problems'.
+ 239  1  
+ 240  1  compute @func_sum = sum(cs26, cs79c, cs82c, cs250, cs251c, cs132).
+ 241  1  recode @func_sum (0,1,2 = 0) (-1=-1) (-2=-2) (3 thru hi=1) into @func_d.
+ 242  1  value labels @func_d 0 'zero(0), 1 or 2 problems' 1 '3+ problems'.
+ 243  1  var label @func_d 'Functional Impairment 3-point Scale for non-demented subjects (Manly)'.
+ 244  1  var label @func_sum  'Functional Impairment continuouse Scale for non-demented subjects (Manly)'.
+ 245  1  end if.
+ 246  1  
+ 247  1  ************ Memory Complaint Scale***************.
+ 248  1  
+ 249  0  do if (ccd01=0).
+ 250  0  
+ 251  1  recode s96 s92 s93a s93b s93c
+ 252  1          (0=0)(1=1)(7777,8888,9999,-9999=sysmis) into cs96 cs92 cs93a cs93b cs93c.
+ 253  1  
+ 254  1  variable labels cs96 'any memory difficulties'
+ 255  1                      /cs92 'any memory problem past month'
+ 256  1                      /cs93a 'memory for things read or heard'
+ 257  1                      /cs93b 'memory for names'
+ 258  1                     /cs93c 'remembering right word'.
+ 259  1  value labels cs96 cs92 cs93a cs93b cs93c 0 'no problems' 1 'problems'.
+ 260  1  
+ 261  1  recode d03 d05 d06 d07 (0=0) (5=1) (10= 1) into cd03 cd05 cd06 cd07.
+ 262  1  recode c1 c01 (0=0) (1=1) into cc1 cc01.
+ 263  1  compute memtsum = sum(cd03, cd05, cd06, cd07, cc1, cc01).
+ 264  1  
+ 265  1  compute mem_sum = sum(cs96, cs92, cs93a, cs93b, cs93c).
+ 266  1  
+ 267  1  compute mem_new = sum.1(mem_sum, memtsum).
+ 268  1  
+ 269  1  recode mem_new (0=0) (-1=-1) (-2=-2) (else = 1) into @mem_com.
+ 270  1  
+ 271  1  value labels @mem_com 0 'no complaints' 1 'any complaints'.
+ 272  1  VARIABLE LABELS @mem_com 'Memory Complaint Scale for non-demented subjects (Manly)'.
+ 273  1  
+ 274  1  end if.
+ 275  1  *freq @mem_com.
+ 276  1  
+ 277  1  
+ 278  1  ********CALCULATE T-SCORES****************************.
+ 279  1  
+ 280  0  do if (ccd01=0).
+ 281  0  
+ 282  0  *NOTE: The INTO code was added to the RECODE statement on Jan 2008 so that the original neuropsych
+ 283  0  *      variables would not be modified--the following compute variables are modified accordingly*.
+ 284  1  recode mem01 mem03 mem11 lan08 lan09 abs01 abs06 lan01 lan12 lan13 con01 con03  (-1, -3 = sysmis) (-2 = 0)(else=copy)
+ 285  1       into mem01x mem03x mem11x lan08x lan09x abs01x abs06x lan01x lan12x lan13x con01x con03x.
+ 286  1  
+ 287  1  compute newmem = mean(mem01x, mem03x, mem11x).
+ 288  1  compute newabs = mean(lan08x, lan09x, abs01x, abs06x).
+ 289  1  compute newlan = mean(lan01x, lan12x, lan13x).
+ 290  1  compute newcon = mean(con01x, con03x).
+ 291  1  
+ 292  1  compute mem_p = (25.956 + (dem03 * 1.224) + (age_eval*-.146) + (dem06*.288) + (black*-1.406) + (hisp*-1.018)).
+ 293  1  compute mem_t = 50 + 10*((newmem - mem_p)/3.31428).
+ 294  1  
+ 295  1  compute abs_p = (15.950 + (age_eval*-.085) + (dem06*.418) + (black * -1.69) + (hisp*-1.562)).
+ 296  1  compute abs_t = 50 + 10*((newabs - abs_p)/2.43881).
+ 297  1  
+ 298  1  compute lan_p = (9.31 + (age_eval*-.011) + (dem06*.053) + (hisp*-.169)).
+ 299  1  compute lan_t = 50 + 10*((newlan - lan_p)/.65203).
+ 300  1  
+ 301  1  compute con_p = (6.948 + (dem03 * -.120) + (age_eval*-.024) + (dem06*.085) + (black*-.288) + (hisp*-.389)).
+ 302  1  compute con_t = 50 + 10*((newcon - con_p)/.82496).
+ 303  1  
+ 304  1  recode mem_t abs_t  lan_t  con_t (lowest through 34.9999 = 1) (35 through highest = 0) into memo_i abs_i  lan_i con_i.
+ 305  1  
+ 306  1  compute nmem_s = sum(abs_i, lan_i,  con_i).
+ 307  1  
+ 308  1  **NOTE: In Jan 2008 Manly code, labels are added to the following and
+ 309  1  **      these will be retained in the MULT files*.
+ 310  1  
+ 311  1  recode memo_i abs_i  lan_i con_i nmem_s (0=0) (1 through hi = 1) (sysmis= sysmis) into @mem_i @exec_i @lang_i @vspa_i nmem_
+            i.
+ 312  1  
+ 313  1  variable labels @mem_i 'Memory composite from MCI criteria status (Manly)'
+ 314  1          @exec_i 'Executive function composite from MCI criteria status(Manly)'
+ 315  1          @lang_i 'Language function composite from MCI criteria status(Manly)'
+ 316  1          @vspa_i 'Visuospatial function composite from MCI criteria status(Manly)'.
+ 317  1  value labels @mem_i @exec_i @lang_i @vspa_i  0 'normal' 1 'impaired'.
+ 318  1  
+ 319  1  end if.
+ 320  1  *freq @mem_i @exec_i @lang_i @vspa_i .
+ 321  1  
+ 322  1  **********define MCI groups********************************.
+ 323  1  **New code from Jennifer, January 2008*.
+ 324  1  
+ 325  1  *** Neuropsych only ********************************************************.
+ 326  0  do if ccd01=0.
+ 327  1  if sum.4(@mem_i, @exec_i, @lang_i, @vspa_i)=0 @mcinp=0.
+ 328  1  if any(1, @mem_i, @exec_i, @lang_i, @vspa_i)  @mcinp=1.
+ 329  1  
+ 330  1  if sum.4(@mem_i, @exec_i, @lang_i, @vspa_i)=0 @memgpnp=0.
+ 331  1  if any(1, @exec_i, @lang_i, @vspa_i)         @memgpnp=2.
+ 332  1  if @mem_i=1                                @memgpnp=1.
+ 333  1  
+ 334  1  compute nmsum = sum(@exec_i, @lang_i, @vspa_i).
+ 335  1  if sum.4(@mem_i, @exec_i, @lang_i, @vspa_i)=0 @mci_gpnp=0.
+ 336  1  if @mem_i=1                                @mci_gpnp=1.
+ 337  1  if @exec_i=1                               @mci_gpnp=2.
+ 338  1  if @lang_i=1                               @mci_gpnp=3.
+ 339  1  if @vspa_i=1                               @mci_gpnp=4.
+ 340  1  if @mem_i=1 & nmsum>=1                     @mci_gpnp=5.
+ 341  1  if @mem_i=0 & nmsum>1                      @mci_gpnp=6.
+ 342  1  end if.
+ 343  1  
+ 344  0  var label @memgpnp  'Memory impairment subgroup using only MCI neuropsychological criteria (Manly)'
+ 345  0            @mcinp    'Meets neuropsychological criteria for MCI (Manly)'
+ 346  0            @mci_gpnp 'Cognitive impairment subgroups using only MCI neuropsychological criteria (Manly)'.
+ 347  0  
+ 348  0  value label
+ 349  0      @memgpnp  0 'Does not meet criteria'
+ 350  0          1 'Has memory impairment using only neuropsychological criteria'
+ 351  0          2 'Has impairment in one or more non-memory domains using only neuropsychological criteria'
+ 352  0     /@mcinp    0 'No' 1 'yes'
+ 353  0     /@mci_gpnp 0 'Does not meet criteria'
+ 354  0          1 'Has isolated memory impairment using only MCI neuropsychological criteria'
+ 355  0          2 'Has isolated executive impairment using only MCI neuropsychological criteria'
+ 356  0          3 'Has isolated language impairment using only MCI neuropsychological criteria'
+ 357  0          4 'Has isolated visuospatial impairment using only MCI neuropsychological criteria'
+ 358  0          5 'Has multi-domain impairment including memory using only MCI neuropsychological criteria'
+ 359  0          6 'Has non-memory multi-domain impairment using only MCI neuropsychological criteria'.
+ 360  0  
+ 361  0  *freq @memgpnp @mcinp @mci_gpnp.
+ 362  0  
+ 363  0  ************Petersen criteria  -  MCI subgroups***
+ 364  0  *New code from Jennifer, January 2008*.
+ 365  0  
+ 366  0  do if (ccd01=0).
+ 367  0  
+ 368  1  do if (~missing(@mem_com) & ~missing(@func_d) & ~missing(@mcinp)).
+ 369  2  compute @mci=0.
+ 370  2  compute @mcimemgp=0.
+ 371  2  compute @mci_gp=0.
+ 372  2  do if (@mem_com=1 & @func_d = 0 & @mcinp=1).
+ 373  3  compute @mci= @mcinp.
+ 374  3  compute @mcimemgp= @memgpnp.
+ 375  3  compute @mci_gp= @mci_gpnp.
+ 376  3  end if.
+ 377  2  end if.
+ 378  1  variable labels @mcimemgp 'MCI /Mem Imp (Petersen Criteria-Manly)'
+ 379  1            @mci      'MCI (Petersen Criteria-Manly)'
+ 380  1            @mci_gp   'MCI Subgroups (Petersen Criteria-Manly)'.
+ 381  1  value labels @mcimemgp 0 'No MCI' 1 'MCI /Mem Imp' 2 'MCI /No Mem Imp'
+ 382  1             /@mci      0 'No MCI' 1 'MCI'
+ 383  1             /@mci_gp   0 'No MCI' 1 'amnestic' 2 'exec' 3 'lang' 4 'visuosp'
+ 384  1                       5 'mcd with mem' 6 'mcd no mem'.
+ 385  1  end if.
+ 386  1  
+ 387  1  *freq @mci @mcimemgp @mci_gp.
+ 388  1  
+ 389  1  *******Mutually exclusive diagnostic groups - Petersen criteria *********************.
+ 390  1  
+ 391  1  *NOTE: Code received from JM in Jan 2008 initalized the following variables to 12 (not classified).
+ 392  1  *This has been replaces with minus 2 and 3 codes indicating that the subject was either not
+ 393  1  *evaluated or that the subject was evaluated but there was insufficient info to classify*.
+ 394  1  
+ 395  0  recode @memgpnp @mcimemgp (0=0) (1=10) (2=9) into @ndiagnos @diagnos.
+ 396  0  if ccd01 = 1 @ndiagnos = 11.
+ 397  0  if ccd01 = 1 @diagnos = 11.
+ 398  0  variable labels @ndiagnos 'MCI Diagnostic Groups (Neuropsych Only-Manly)'
+ 399  0            @diagnos  'MCI Diagnostic Groups (Petersen Criteria-Manly)'.
+ 400  0  value labels @ndiagnos @diagnos
+ 401  0      0 'Normal' 9 'MCI /non-memory' 10 'MCI /memory' 11 'Demented' 12 'Not Classified'.
+ 402  0  
+ 403  0  
+ 404  0  *****Attach user-defined missing values for derived measures*****.
+ 405  0  formats @func_d @func_sum @mem_com @mci @mci_gp @mcimemgp @ndiagnos @diagnos @mem_i @exec_i @lang_i @vspa_i
+ 406  0         @memgpnp @mcinp @mci_gpnp  (f4.0).
+ 407  0  
+ 408  0  *freq @func_d @mem_com @mci @mci_gp @mcimemgp @ndiagnos @diagnos @mem_i @exec_i @lang_i @vspa_i
+ 409  0        @memgpnp @mcinp @mci_gpnp .
+ 410  0  
+ 411  0  do repeat x= @func_d @func_sum @mem_com @mci @mci_gp @mcimemgp @mem_i @exec_i @lang_i @vspa_i
+ 412  0        @memgpnp @mcinp @mci_gpnp.
+ 413  0  do if (ccd01=1).
+ 414  0  compute x= -1.
+ 415  0  end if.
+ 416  0  end repeat.
+ 417  0  
+ 418  0  do repeat y= @diagnos @ndiagnos.
+ 419  0  do if (missing(y)).
+ 420  0  compute y =-2.
+ 421  0  end if.
+ 422  0  end repeat.
+ 423  0  
+ 424  0  do repeat z= @func_d @func_sum @mem_com @mci @mci_gp @mcimemgp @mem_i @exec_i @lang_i @vspa_i
+ 425  0        @memgpnp @mcinp @mci_gpnp.
+ 426  0  if (sysmiss(z)) z= -2.
+ 427  0  end repeat.
+ 428  0  
+ 429  0  missing values  @func_d @func_sum @mem_com @mci @mci_gp @mcimemgp @mem_i @exec_i @lang_i @vspa_i
+ 430  0        @memgpnp @mcinp @mci_gpnp(-1,-2,-3) .
+ 431  0  missing values @diagnos @ndiagnos (-2,-3).
+ 432  0  add value labels @func_d @func_sum @mem_com @mci @mci_gp @mcimemgp @mem_i @exec_i @lang_i @vspa_i
+ 433  0        @memgpnp @mcinp @mci_gpnp -1  'Demented' -2 'insufficient info to score'.
+ 434  0  add value labels @diagnos @ndiagnos  -2 'insufficient info to score'.
+ 435  0  
+ 436  0  title 'NEW MCI Code (Jan 2008)-Frequencies'.
+ 437  0  *freq @func_d @mem_com @mci @mci_gp @mcimemgp @ndiagnos @diagnos @mem_i @exec_i @lang_i @vspa_i
+ 438  0        @memgpnp @mcinp @mci_gpnp .
+ 439  0  
+ 440  0  **END of Jennifer's MCI CODE**.
+ 441  0  ****************************************************************************************************************.
+
+NEW MCI Code (Jan 2008)-Frequencies
+
+
+ 442  0  save outfile=  '\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\MULTI_WHICMERGE.SAV'
+ 443  0    /keep=  id_num PRED3_INT pred3_date  WHICAP_GET whicap_date
+ 444  0      CCD01 CCD02 CCD03 CCD04 CCD02R CCD02A CCD02B CCD02C CCD02D CCD02E CCD02F CCD02G CCD02H CCD02I
+ 445  0      CCD02J CCD02K CCD02L CCD02M CCD02N CCD02O CCD02P CCD02Q CCD05 CCD03A CCD03B CCD03C CCD03D CCD03E
+ 446  0      CCD03F CCD03G CCD03H CCD03I CCD03J CCD03K CCD03L CCD03M CCD03N CCD03O CCD03P CCD03Q CCD06
+ 447  0      @func_d @mem_com @mci @mci_gp @mcimemgp @ndiagnos @diagnos @mem_i @exec_i @lang_i @vspa_i
+ 448  0        @memgpnp @mcinp @mci_gpnp
+ 449  0       DEM01 DEM03 DEM05 DEM06 CCD01 CCD02 CCD03 CCD04  c1 c01 age_eval
+ 450  0      B15 B16
+ 451  0      B17 B18 B19 B20 B21 B22 B22_1 B22_2 B22_3 B22_4 B22_5 B22_6 B22_9 B23 B24 B25 B26 B27 B28 B29 B30
+ 452  0       B31 B32 B33 K01 K02 K03 K04 K05 K06 K07 K08 K09 K10 K11 K12 K13 K14 K15 K16
+ 453  0       W02 W01 W03 W04 W05 W06
+ 454  0      W07 W08 W09 W10 W12 W13 W21 W22 W23 W24 W26 W25 W27 W28 W29 W30 W31 W32 W33 W33A W34A W34_FT W34_IN
+ 455  0      W35 W35A
+ 456  0      CE01 CE02 CE02A CE02B CE02CECT CE02CMED CE02CPSY CE02COTH CE02CUNK CE03 CE04 CE05 CE06
+ 457  0      CE07 CE08 CE09 CDR_RP
+ 458  0      D01 D02 D03 D04 D05 D06 D07 D08 D09 D10 D11 D12 D13 D14 D15 D16 D17 D18 D19
+ 459  0      D20 D21 D22 D23 D24 D25 D26 D27 D28 D29 D30 D31 D32 D33 D34 D35
+ 460  0      MH02 MH02B MH03 MH03B MH04 MH04B
+ 461  0      MH05 MH05B MH06 MH06B MH07 MH07B MH08 MH08B MH09 MH09B MH10 MH10B MH11 MH11B MH12 MH12B MH13 MH13B
+ 462  0      MH14 MH14B MH15 MH15B MH16 MH16B MH17 MH17B MH18 MH18B MH19 MH19B MH20 MH20B MH21 MH21B MH22 MH22B
+ 463  0      MH23 MH23B MH24 MH24B MH25 MH25B MH26 MH26B MH27 MH27B MH28 MH29 MH29B MH30 MH31 MH32 MH33 MH34
+ 464  0      MH35 MH36 MH37 MH38 MH39 MH40 MH41 MH42 MH43 MH44 MH45 MH45A MH45B MH45C MH46 MH47 MH48 MH49 MH50
+ 465  0      MH51 MH52 MH53 MH54 MH55 MH56 MH57 MH58 MH59 MH60 MH60A MH60B MH60C MH60D MH61 MH62 MH62A MH63 MH64
+ 466  0      MH65 MH66 MH66A MH66B MH67 MH68 MH69 MH70 MH71 MH72 MH73 MH74 MH75 MH76
+ 467  0       RATER07 HAND LANGUAGE MEM01 MEM02 MEM03 MEM04 MEM05 MEM06 MEM07 MEM08 MEM09 MEM10 MEM11 ORIENT
+ 468  0      ABS01 ABS02 ABS03 ABS04 ABS05 ABS06 LAN01 LAN02 LAN03 LAN04 MEM12 LAN06 LAN07 LAN08 LAN09 LAN10
+ 469  0      LAN11 LAN12 LAN13 CON01 CON02 CON03 ATT01 ATT02 ATT03 ATT04 ATT05 ATT06 ATT07 ATT08 ATT09 ATT10
+ 470  0      ATT11 ATT12 ATT13 ATT14 ATT15 ATT16 ATT17 ATT18 ATT19 ATT20 ATT21 ATT22 SIGHT AVAIL AUDITORY
+ 471  0      NS01 NS02 NS03 NS04 NS05
+ 472  0      NS06 NS07 NS08 NS09 NS10 NS11 NS12 NS13 NS14 NS15 NS16 NS17 NS18 NS19 NS20 NS21 NS22 NS23 NS24 NS25
+ 473  0      NS26 NS27 NS28 NS29 NS30 NS31 NS32 NS33 NS34 NS35 NS36 NS37 NS38 NS39 NS40 NS41 NS42 NS43 NS44 NS45
+ 474  0      NS46 NS47 NS48 NS49 NS50 NS51 NS52 NS53 NS54 NS55 NS56 NS57 NS58 NS59 NS60 NS61 NS62 NS63 NS64 NS65
+ 475  0      NS66 NS67 NS68 NS69 NS70 NS71 NS72 NS73 NS74 NS75 NS76 NS77
+ 476  0      LONG COLOR1T COLOR1P COLOR1R COLOR2T
+ 477  0      COLOR2P COLOR2R
+ 478  0      s115 s132 s177 s178 s179 s180 s181 s187a s187b s187c s189 s19 s190 s190a s201 s214a
+ 479  0      s214b s214c s214d s214e s214f s214g s214h s215 s216 s217 s218 s219 s220 s221 s250 s251 s252 s253
+ 480  0      s254 s255a s255b s256 s26 s263 s264 s265 s266 s27 s270 s271 s276 s282a s282b s282c s282d s282e
+ 481  0      s282f s282g s282h s282i s282j s282k s282l s282m s296 s344 s346 s364 s373 s374a s374b s374c s374d
+ 482  0      s374e s374f s374g s374h s374i s374j s374k s374l s374m s374n s374o s374p s374q s374r s374s s374t
+ 483  0      s374u s375 s376 s395 s79 s80 s81 s82 s83 s92 s93a s93b s93c s94 s95a s95b s95c s95d s96 SNEW1 SNEW2
+ 484  0      SNEW3 SNEW4 SNEW5 SNEW6 SNEW7 SNEW8 SNEW9 SNEW10
+ 485  0      PI1 PI2A PI2B PI3A PI3B PI4A PI4B PI5A PI5B PI6A PI6B PI7A PI7B PI8A PI8B PI9A PI9B PI10A PI10B
+ 486  0      PI11A PI11B PI12A PI12B PI13A PI13B
+ 487  0       BP01
+ 488  0       INFID BBINFIN BB01 BB02 BB03 BB04 BB05 BB06 BB07 BB08 BB09 BB10 BB11 BB12 BB13 BB14
+ 489  0       CC11 CC12 CC13 CC14 CI01 CI01A CI02 CI04 CI04A CI04B1 CI04B2 CI04B3 CI05 CI06 CI07 CI07A CI07B
+ 490  0      CI07C CI07D1 CI07D2 CI07D3 CI08 CI08A CI08B CI08C CI08D1 CI08D2 CI08D3 CI09A1 CI09A1_2 CI09A2
+ 491  0      CI09A2_2 CI09A3 CI09A3_2 CI09B1 CI09B1_2 CI09B2 CI09B2_2 CI09B3 CI09B3_2 CI09C1 CI09C1_2 CI09C2
+ 492  0      CI09C2_2 CI09C3 CI09C3_2 CI15 CI15A CI16 CI16A CI17 CI18 CI19
+ 493  0       CI_AGE CI_REL CI_DESCRIBE FORMCOMPLETE CIHS01 CIHS02 CIHS301 CIHS302 CIHS303 CIHS304 CIHS305
+ 494  0      CIHS306 CIHS307 CIHS308 CIHS309 CIHS310 CIHS311 CIHS312 CIHS313 CIHS314 CIROW CIAD01 CIAD02 CITP01
+ 495  0      CITP02 EE01 EE02 EE03 EE04 EE05 EE06 EE07 EE08 EE09 EE10 EE11 EE12 EE13 EE14 EE15 EE16 EE17 EE18
+ 496  0      PP01 PP02 PP03 PP04 PP05 PP06 PP07 PP08 PP09 PP10 PP11 PP12 PP54 PP55 PP13 PP14 PP15 PP16 PP17 PP18
+ 497  0      PP19 PP20 PP21 PP22 PP23 PP24 PP25 PP26 PP27 PP28 PP29 PP30 PP31 PP32 PP33 PP56 PP57 PP34 PP35 PP36
+ 498  0      PP37 PP38 PP39 PP40 PP41 PP58 PP59 PP42 PP60 PP61 PP43 PP44 PP45 PP46 PP47 PP62 PP63 PP48 PP49 PP50
+ 499  0      PP51 PP52 PP53 PP64 PP65
+ 500  0      RR01 RR02 RR03 RR04 RR05 RR06 RR07 RR08 RR09 RR10 RR11 RR12 RR13 RR14 RR15
+ 501  0      SP01A SP01B SP02A SP02B SP03A SP03B SP04A SP04B SP05A SP05B SP06A SP06B SP07A SP07B SP08A SP08B
+ 502  0      SP09A SP09B SP10A SP10B SP11A SP11B SP12A SP13A SP14A SP15A SP16A SP16B SP17A SP18A SP18B SP19GA
+ 503  0      SP19LB SP20B SP21A SP22A SP23A SP24A SP25A SP26A SP27A SP28A SP29A SP30A SP31A SP31B SP32A SP33A
+ 504  0      SP33B SP34A SP34B SP35A SP35B SP36B SP37A SP38A SP38B SP39A SP40A SP41B TOTAL57 mmsescore57  TOTAL30  mmsescore30
+ 505  0      UU01 UU02
+ 506  0      UU03 UU04 UU05 UU06 UU07 UU08 UU09 UU10 UU11 UU12 UU13 UU14 UU15 UU16 UU17 UU18 UU19 UU20 UU21 UU22
+ 507  0      UU23 UU24 UU25
+ 508  0      WW01 WW02 WW03 WW04 WW05 WW06
+ 509  0      ZP01B ZP01A ZP01C ZP02B ZP02A ZP02C ZP03B ZP03A ZP03C
+ 510  0      ZP04B ZP04A ZP04C ZP05B ZP05A ZP05C ZP06B ZP06A ZP06C ZP07B ZP07A ZP07C ZP08B ZP08A ZP08C ZP09B
+ 511  0      ZP09A ZP09C ZP10B ZP10A ZP10C ZP11B ZP11A ZP11C ZP12B ZP12A ZP12C ZP13B ZP13A ZP13C ZP14B ZP14A
+ 512  0      ZP14C ZP15B ZP15A ZP15C ZP17 ZP18 ZP19 ZP20 ZP21 ZP22 ZP23 ZP24 ZP25 ZP26
+ 513  0       OO01 VV01 VV02 VV03 VV04
+ 514  0      VV05A VV05B VV05C VV05D VV05E VV05F VV05G VV06A VV06B VV06C VV06D VV06E VV06F VV06G VV06H VV06I
+ 515  0      VV06J VV07 VV07A VV08 VV09 VV10A VV10B VV10C VV10D VV10E VV10F VV10G VV11A VV11B VV11C VV11D VV11E
+ 516  0      VV11F VV11G VV11H VV11I VV11J VV12 VV12A VV13 VV14 VV15A VV15B VV15C VV15D VV15E VV15F VV15G VV16A
+ 517  0      VV16B VV16C VV16D VV16E VV16F VV16G VV16H VV16I VV16J VV17 VV17A VV18 VV19 VV20A VV20B VV20C VV20D
+ 518  0      VV20E VV20F VV20G VV21A VV21B VV21C VV21D VV21E VV21F VV21G VV21H VV21I VV21J VV22 VV22A VV23 VV24
+ 519  0      VV25A VV25B VV25C VV25D VV25E VV25F VV25G VV26A VV26B VV26C VV26D VV26E VV26F VV26G VV26H VV26I
+ 520  0      VV26J
+ 521  0      ZC01B ZC01A ZC01C ZC02B ZC02A ZC02C ZC03B ZC03A ZC03C ZC04B ZC04A ZC04C ZC05B ZC05A ZC05C
+ 522  0      ZC06B ZC06A ZC06C ZC07B ZC07A ZC07C ZC08B ZC08A ZC08C ZC09B ZC09A ZC09C ZC10B ZC10A ZC10C ZC11B
+ 523  0      ZC11A ZC11C ZC12B ZC12A ZC12C ZC13B ZC13A ZC13C ZC14B ZC14A ZC14C ZC15B ZC15A ZC15C ZC17 ZC18 ZC19
+ 524  0      ZC20 ZC21 ZC22 ZC23 ZC24 ZC25 ZC26
+ 525  0      HS1 HS2 HS3 HS4 HS5 HS6 HS7 HS8 SCORE VERSION
+ 526  0      DL01 DL02 DL02A
+ 527  0      DL02B DL02C DL02D DL02E DL02AA DL02BB DL02CC DL02DD DL03 DL04 DL04A DL04B DL04C DL05 DL05A DL06
+ 528  0      DL06A DL07 DL07A DL07B DL08 DL08A DL08B DL09 DL10
+ 529  0      K17 K18
+ 530  0       MH14AA MH14AB MH28B MH23SPEC MH40B
+ 531  0       HAND LANGUAGE MEM01 MEM02 MEM03 MEM04 MEM05 MEM06 MEM07 MEM08 MEM09 MEM10 MEM11 ORIENT ABS01 ABS02
+ 532  0      ABS03 ABS04 ABS05 ABS06 LAN01 LAN02 LAN03 LAN04 MEM12 LAN06 LAN07 LAN08 LAN09 LAN10 LAN11 LAN12
+ 533  0      LAN13 CON01 CON02 CON03 ATT01 ATT02 ATT03 ATT04 ATT05 ATT06 ATT07 ATT08 ATT09 ATT10 ATT11 ATT12
+ 534  0      ATT13 ATT14 ATT15 ATT16 ATT17 ATT18 ATT19 ATT20 ATT21 ATT22 SIGHT AVAIL AUDITORY AID get1 get0.
+ 535  0  
+ 536  0  *******************************************************************************************************************.
+ 537  0  *******************************************************************************************************************.
+ 538  0  *END OF MULT MERGE.
+ 539  0  *BEGIN MERGE OF ONE-TIME VARIABLES*.
+ 540  0  *get WHICAP basic demographic variables.
+ 541  0  GET FILE= '\\Dccmaincsfs\DATA2\whicap1\one.sav'/keep=id_num  DEM01 DEM03 DEM05 B04 B05  DEM06  B05A1 B05A2 B05A3 B05A4 B05A
+            5 B05A5B B05A6 B07 B08
+ 542  0    BNEWA09 B10A B11 B12 B12A B13 BNEWB09 B14 BNEWC09 BNEWD09 B06 BNEWE09M BNEWE09D BNEWE09H BNEWF09 BNEWG09
+ 543  0      B09 B10.
+ 544  0  save outfile= '\\Dccmaincsfs\Data1\dcc\delete\whic_one.sav'.
+ 545  0  get file=  '\\Dccmaincsfs\Data1\dcc\delete\whic_one.sav'.
+ 546  0  
+ 547  0  *get PRED3 equivalent of the ONE file*.
+ 548  0  GET FILE='\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\SPREDIC3.SAV'.
+ 549  0  update file=  '\\Dccmaincsfs\Data1\dcc\delete\whic_one.sav'/in=whicone/file= */in=predone/by id_num.
+ 550  0  cross whicone by predone.
+
+
+Crosstabs
+Notes
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:43:49                                                                                                           |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Comments                                             |                                                                                                                               |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Input                 |File Label                    |:17'\\dccmaincsfs\data2\pred1\spss_pred3\SPREDIC3.SAV'                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Filter                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Weight                        |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Split File                    |<none>                                                                                                                         |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |N of Rows in Working Data File|6599                                                                                                                           |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.                                                                            |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cases Used                    |Statistics for each table are based on all the cases with valid data in the specified range(s) for all variables in each table.|
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Syntax                                               |cross whicone by predone.                                                                                                      |
+|----------------------|------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.08                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.08                                                                                                                    |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Dimensions Requested          |2                                                                                                                              |
+|                      |------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+|                      |Cells Available               |524245                                                                                                                         |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+
+\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\SPREDIC3.SAV
+
+Case Processing Summary
+|-----------------|-------------------------------------------|
+|                 |Cases                                      |
+|                 |-------------|---------------|-------------|
+|                 |Valid        |Missing        |Total        |
+|                 |-----|-------|-------|-------|-----|-------|
+|                 |N    |Percent|N      |Percent|N    |Percent|
+|-----------------|-----|-------|-------|-------|-----|-------|
+|whicone * predone|6599 |100.0% |0      |0.0%   |6599 |100.0% |
+|-------------------------------------------------------------|
+
+whicone * predone Crosstabulation
+Count 
+|---------|-----------|-----|
+|         |predone    |Total|
+|         |-------|---|     |
+|         |0      |1  |     |
+|-------|-|-------|---|-----|
+|whicone|1|6327   |272|6599 |
+|---------|-------|---|-----|
+|Total    |6327   |272|6599 |
+|---------------------------|
+
+
+ 551  0  select if (predone=1).
+ 552  0  save outfile=  '\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\SINGLE_WHICMERGE.SAV'.
+ 553  0  get file=  '\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\SINGLE_WHICMERGE.SAV'.
+ 554  0  
+ 555  0  *******************************************************************************************************************.
+ 556  0  *END OF MERGE.
+ 557  0  *******************************************************************************************************************.
+ 558  0  *Records with missing CCD*.
+ 559  0  get file=  '\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\MULTI_WHICMERGE.SAV'.
+ 560  0  title 'Missing CCD in merged file'.
+
+Missing CCD in merged file
+
+
+ 561  0  subtitle 'Records with a WHICAP merged record'.
+
+Missing CCD in merged file
+Records with a WHICAP merged record
+
+
+ 562  0  temporary.
+ 563  0  select if (missing(ccd01) and get1=1).
+ 564  0  freq ccd01.
+
+
+Frequencies
+Notes
+|-----------------------------------------------------|--------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:43:50                                    |
+|-----------------------------------------------------|--------------------------------------------------------|
+|Comments                                             |                                                        |
+|----------------------|------------------------------|--------------------------------------------------------|
+|Input                 |Data                          |\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\MULTI_WHICMERGE.SAV|
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Filter                        |<none>                                                  |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Weight                        |<none>                                                  |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Split File                    |<none>                                                  |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |N of Rows in Working Data File|13                                                      |
+|----------------------|------------------------------|--------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.     |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Cases Used                    |Statistics are based on all cases with valid data.      |
+|-----------------------------------------------------|--------------------------------------------------------|
+|Syntax                                               |freq ccd01.                                             |
+|----------------------|------------------------------|--------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.02                                             |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.02                                             |
+|--------------------------------------------------------------------------------------------------------------|
+
+
+\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\MULTI_WHICMERGE.SAV
+
+Statistics
+A. Subject Demented 
+|-|-------|--|
+|N|Valid  |0 |
+| |-------|--|
+| |Missing|13|
+|------------|
+
+A. Subject Demented
+|--------------|---------|-------|
+|              |Frequency|Percent|
+|-------|------|---------|-------|
+|Missing|System|13       |100.0  |
+|--------------------------------|
+
+
+ 565  0  temporary.
+ 566  0  select if (missing(ccd01) and get1=1).
+ 567  0  list id_num pred3_int whicap_date ccd01.
+ 568  0  
+
+
+List
+Notes
+|---------------------------------------------|--------------------------------------------------------|
+|Output Created                               |08-SEP-2015 00:43:50                                    |
+|---------------------------------------------|--------------------------------------------------------|
+|Comments                                     |                                                        |
+|--------------|------------------------------|--------------------------------------------------------|
+|Input         |Data                          |\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\MULTI_WHICMERGE.SAV|
+|              |------------------------------|--------------------------------------------------------|
+|              |Filter                        |<none>                                                  |
+|              |------------------------------|--------------------------------------------------------|
+|              |Weight                        |<none>                                                  |
+|              |------------------------------|--------------------------------------------------------|
+|              |Split File                    |<none>                                                  |
+|              |------------------------------|--------------------------------------------------------|
+|              |N of Rows in Working Data File|13                                                      |
+|---------------------------------------------|--------------------------------------------------------|
+|Syntax                                       |list id_num pred3_int whicap_date ccd01.                |
+|--------------|------------------------------|--------------------------------------------------------|
+|Resources     |Processor Time                |00:00:00.02                                             |
+|              |------------------------------|--------------------------------------------------------|
+|              |Elapsed Time                  |00:00:00.02                                             |
+|------------------------------------------------------------------------------------------------------|
+
+
+
+
+
+
+id_num PRED3_INT whicap_date    CCD01
+
+W16788         0 04-MAY-2015        .
+W18006         0 21-JAN-2014        .
+W51567         0 20-AUG-2014        .
+W52593         0 14-JAN-2015        .
+W52699         0 29-JUL-2015        .
+W58533         0 13-OCT-2014        .
+W62232         0 26-NOV-2014        .
+W65651         0 07-JUN-2013        .
+W67964         0 25-FEB-2015        .
+W69931         0 03-JUN-2015        .
+W76238         0 24-NOV-2014        .
+W85584         0 23-AUG-2012        .
+X19668         0 08-DEC-2014        .
+
+
+Number of cases read:  13    Number of cases listed:  13
+
+
+ 569  0  title 'Missing NEUROSUM in merged file'.
+
+Missing NEUROSUM in merged file
+
+
+ 570  0  subtitle 'Records with a WHICAP merged record'.
+
+Missing NEUROSUM in merged file
+Records with a WHICAP merged record
+
+
+ 571  0  get file=  '\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\MULTI_WHICMERGE.SAV'.
+ 572  0  temporary.
+ 573  0  select if (missing(mem01) and get1=1).
+ 574  0  freq mem01.
+
+
+Frequencies
+Notes
+|-----------------------------------------------------|--------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:43:50                                    |
+|-----------------------------------------------------|--------------------------------------------------------|
+|Comments                                             |                                                        |
+|----------------------|------------------------------|--------------------------------------------------------|
+|Input                 |Data                          |\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\MULTI_WHICMERGE.SAV|
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Filter                        |<none>                                                  |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Weight                        |<none>                                                  |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Split File                    |<none>                                                  |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |N of Rows in Working Data File|30                                                      |
+|----------------------|------------------------------|--------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.     |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Cases Used                    |Statistics are based on all cases with valid data.      |
+|-----------------------------------------------------|--------------------------------------------------------|
+|Syntax                                               |freq mem01.                                             |
+|----------------------|------------------------------|--------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.02                                             |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.02                                             |
+|--------------------------------------------------------------------------------------------------------------|
+
+Statistics
+Total Recall 
+|-|-------|--|
+|N|Valid  |0 |
+| |-------|--|
+| |Missing|30|
+|------------|
+
+Total Recall
+|---------------------|---------|-------|
+|                     |Frequency|Percent|
+|-------|-------------|---------|-------|
+|Missing|Refused to do|8        |26.7   |
+|       |-------------|---------|-------|
+|       |Unable to do |18       |60.0   |
+|       |-------------|---------|-------|
+|       |System       |4        |13.3   |
+|       |-------------|---------|-------|
+|       |Total        |30       |100.0  |
+|---------------------------------------|
+
+
+ 575  0  temporary.
+ 576  0  select if (missing(mem01) and get1=1).
+ 577  0  list id_num pred3_int whicap_date mem01.
+ 578  0  
+
+
+List
+Notes
+|---------------------------------------------|--------------------------------------------------------|
+|Output Created                               |08-SEP-2015 00:43:50                                    |
+|---------------------------------------------|--------------------------------------------------------|
+|Comments                                     |                                                        |
+|--------------|------------------------------|--------------------------------------------------------|
+|Input         |Data                          |\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\MULTI_WHICMERGE.SAV|
+|              |------------------------------|--------------------------------------------------------|
+|              |Filter                        |<none>                                                  |
+|              |------------------------------|--------------------------------------------------------|
+|              |Weight                        |<none>                                                  |
+|              |------------------------------|--------------------------------------------------------|
+|              |Split File                    |<none>                                                  |
+|              |------------------------------|--------------------------------------------------------|
+|              |N of Rows in Working Data File|30                                                      |
+|---------------------------------------------|--------------------------------------------------------|
+|Syntax                                       |list id_num pred3_int whicap_date mem01.                |
+|--------------|------------------------------|--------------------------------------------------------|
+|Resources     |Processor Time                |00:00:00.05                                             |
+|              |------------------------------|--------------------------------------------------------|
+|              |Elapsed Time                  |00:00:00.03                                             |
+|------------------------------------------------------------------------------------------------------|
+
+
+
+
+
+
+id_num PRED3_INT whicap_date    MEM01
+
+W05122         0 25-JUL-2011       -3
+W06060         0 09-APR-2012       -2
+W06125         3 17-APR-2015       -2
+W06543         0 25-JAN-2012       -2
+W07249         3 21-APR-2015       -2
+W07572         0 08-MAR-2012       -3
+W07658         0 08-FEB-2012       -2
+W07945         0 27-FEB-2012       -2
+W13305         2 29-OCT-2013       -3
+W16788         0 04-MAY-2015       -2
+W31282         0 23-AUG-2011       -2
+W31282         2 15-OCT-2013       -2
+W32871         2 22-OCT-2013       -2
+W34009         0 17-MAY-2013       -3
+W34528         2 11-MAR-2014       -2
+W34528         3 22-APR-2015       -2
+W34641         0 28-NOV-2011       -3
+W35530         0 24-MAY-2012       -2
+W35693         2 15-OCT-2013       -2
+W37414         0 23-FEB-2012       -2
+W37798         0 19-DEC-2011       -2
+W38189         2 06-JUN-2013       -2
+W39814         1 12-JUN-2013       -3
+W45093         0 02-JUL-2013       -2
+W58533         0 13-OCT-2014        .
+W59417         0 07-JAN-2013       -3
+W62232         0 26-NOV-2014        .
+W67964         0 25-FEB-2015        .
+W69931         0 03-JUN-2015       -3
+W76238         0 24-NOV-2014        .
+
+
+Number of cases read:  30    Number of cases listed:  30
+
+
+ 579  0  title 'Missing CCD in merged file'.
+
+Missing CCD in merged file
+
+
+ 580  0  subtitle 'Records with NO WHICAP merged record'.
+
+Missing CCD in merged file
+Records with NO WHICAP merged record
+
+
+ 581  0  temporary.
+ 582  0  select if (missing(ccd01) and get0=1).
+ 583  0  freq ccd01.
+
+
+Frequencies
+Notes
+|-----------------------------------------------------|--------------------------------------------------------|
+|Output Created                                       |08-SEP-2015 00:43:50                                    |
+|-----------------------------------------------------|--------------------------------------------------------|
+|Comments                                             |                                                        |
+|----------------------|------------------------------|--------------------------------------------------------|
+|Input                 |Data                          |\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\MULTI_WHICMERGE.SAV|
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Filter                        |<none>                                                  |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Weight                        |<none>                                                  |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Split File                    |<none>                                                  |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |N of Rows in Working Data File|43                                                      |
+|----------------------|------------------------------|--------------------------------------------------------|
+|Missing Value Handling|Definition of Missing         |User-defined missing values are treated as missing.     |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Cases Used                    |Statistics are based on all cases with valid data.      |
+|-----------------------------------------------------|--------------------------------------------------------|
+|Syntax                                               |freq ccd01.                                             |
+|----------------------|------------------------------|--------------------------------------------------------|
+|Resources             |Processor Time                |00:00:00.03                                             |
+|                      |------------------------------|--------------------------------------------------------|
+|                      |Elapsed Time                  |00:00:00.02                                             |
+|--------------------------------------------------------------------------------------------------------------|
+
+Statistics
+A. Subject Demented 
+|-|-------|--|
+|N|Valid  |0 |
+| |-------|--|
+| |Missing|43|
+|------------|
+
+A. Subject Demented
+|--------------|---------|-------|
+|              |Frequency|Percent|
+|-------|------|---------|-------|
+|Missing|System|43       |100.0  |
+|--------------------------------|
+
+
+ 584  0  temporary.
+ 585  0  select if (missing(ccd01) and get0=1).
+ 586  0  list id_num pred3_int whicap_date ccd01.
+ 587  0  
+ 588  0  *title 'Correlation between hand-calculated and '.
+ 589  0  *subtitle 'algorithm calculated mmse scores'.
+ 590  0  *correlation variables= mmsescore30 total30 mmsescore57 total57.
+ 591  0  
+ 592  0  
+ 593  0  *Additional variables requested 2/19/2015.
+ 594  0  *b1 b2 b3 b4 b5 (DEMO variables are provided instead) BNEW1 (?) b7 BNEWA09 b8 b10 b11 b12 BNEW2 b13 BNEWB09 b14 BNEW3 BNEWC
+            09
+ 595  0       BNEWD09 BNEWE09 BNEWF09 BNEWG09
+ 596  0        EDU3 ENEWA09 EDU4 EDU5 EDU6 EDU7 EDU8A EDU8B EDU8C EDU8D EDU9A EDU9B EDU9C EDU9D
+ 597  0        EDU10 EDU11A EDU11B EDU12 EDU13 EDU14 EDU15 EDU16A EDU16B EDU16C EDU16D EDU17A
+ 598  0        EDU17B EDU17C EDU17D EDUNEW1 EDU18 EDU19A,EDU19B EDU19C EDU19D EDU19E EDU19F
+ 599  0        EDU19G,EDU20 EDU21A EDU21B EDU21C EDU21D EDU22A EDU22B EDU22C EDU22D EDU1.
+ 600  0  
+ 601  0  
+ 602  0  
+ 603  0  
+ 604  0  
+ 605  0  
+ 606  0  
+ 607  0  * End of INSERT and INCLUDE nesting level 01.
+
+
+List
+Notes
+|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Output Created                               |08-SEP-2015 00:43:50                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Comments                                     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|--------------|------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Input         |Data                          |\\Dccmaincsfs\DATA2\PRED1\SPSS_PRED3\MULTI_WHICMERGE.SAV                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|              |------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|              |Filter                        |<none>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|              |------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|              |Weight                        |<none>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|              |------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|              |Split File                    |<none>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|              |------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|              |N of Rows in Working Data File|43                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Syntax                                       |list id_num pred3_int whicap_date ccd01.
+
+*title 'Correlation between hand-calculated and '.
+*subtitle 'algorithm calculated mmse scores'.
+*correlation variables= mmsescore30 total30 mmsescore57 total57.
+
+
+*Additional variables requested 2/19/2015.
+*b1 b2 b3 b4 b5 (DEMO variables are provided instead) BNEW1 (?) b7 BNEWA09 b8 b10 b11 b12 BNEW2 b13 BNEWB09 b14 BNEW3 BNEWC09
+     BNEWD09 BNEWE09 BNEWF09 BNEWG09
+      EDU3 ENEWA09 EDU4 EDU5 EDU6 EDU7 EDU8A EDU8B EDU8C EDU8D EDU9A EDU9B EDU9C EDU9D
+      EDU10 EDU11A EDU11B EDU12 EDU13 EDU14 EDU15 EDU16A EDU16B EDU16C EDU16D EDU17A
+      EDU17B EDU17C EDU17D EDUNEW1 EDU18 EDU19A,EDU19B EDU19C EDU19D EDU19E EDU19F
+      EDU19G,EDU20 EDU21A EDU21B EDU21C EDU21D EDU22A EDU22B EDU22C EDU22D EDU1.
+
+
+
+
+
+
+
+* End of INSERT and INCLUDE nesting level 01.|
+|--------------|------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Resources     |Processor Time                |00:00:00.02                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|              |------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|              |Elapsed Time                  |00:00:00.02                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+
+
+
+
+
+id_num PRED3_INT whicap_date    CCD01
+
+W05110         2           .        .
+W05523         2           .        .
+W05523         3           .        .
+W05749         2           .        .
+W06060         2           .        .
+W06543         1           .        .
+W07658         2           .        .
+W07922         3           .        .
+W07945         2           .        .
+W08640         2           .        .
+W10282         1           .        .
+W32052         1           .        .
+W32062         1           .        .
+W32123         1           .        .
+W32865         1           .        .
+W32871         3           .        .
+W33347         1           .        .
+W33726         1           .        .
+W33956         1           .        .
+W34262         1           .        .
+W34641         1           .        .
+W35225         1           .        .
+W35414         3           .        .
+W35530         1           .        .
+W36180         1           .        .
+W36772         1           .        .
+W37059         1           .        .
+W37075         2           .        .
+W37414         1           .        .
+W38178         1           .        .
+W40515         1           .        .
+W40761         2           .        .
+W50017         1           .        .
+W52275         1           .        .
+W57828         1           .        .
+W68180         1           .        .
+W74456         1           .        .
+W79472         1           .        .
+W79472         2           .        .
+W82769         1           .        .
+W84017         0           .        .
+W84940         1           .        .
+W88577         1           .        .
+
+
+Number of cases read:  43    Number of cases listed:  43
+

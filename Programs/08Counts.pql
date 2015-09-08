@@ -32,7 +32,6 @@ write 'CHECKING COUNTS ' CLONE$
 . execute subprocedure MAKEHEADER
 . include file DBSLIST
 . for DB# = 1,DB#C
-.  write'1. Connecting ' DB$N(DB#) DB#
 .  ifthen (STA$(DB#) = 'Live' or STA$(DB#) = 'Not active')
 .   pql connect database DB$N(DB#)
                 prefix   CLONE$
