@@ -1,0 +1,51 @@
+| Path:      <GDATA1>\DCC\Programs
+| File name: SetAttributes.pql
+| Creator:   David Merle
+| Created:   01/01/2008
+| Retired:
+| Called by: <GDATA1>\DCC\01StartXS.pql, SYSPROC
+| Calls:
+| Reason:    Sets attributes used by the nightly backup routine
+| Output:
+| Attributes:
+| Modified:  Greg Neils 10/14/2008.  Added program to set default text editor to Text Pad
+global GDATA1   = '\\192.168.53.246\Data1'
+global GDATA2   = '\\192.168.53.246\Data2'     
+global GBACKUPS = '\\192.168.53.246\Backups'
+
+program
+. execute dbms ["attribute DCCPROCF filename='<GDATA1>\DCC\SIRXS\DCC.sr4'"]
+. execute dbms ["attribute DVPROCF  filename='" + appdir(0) + "DV\DVPROCF.srp'"]
+. execute dbms ["attribute PFRMPRC  filename='" + appdir(0) + "DV\DVPAINT\PFRMPRC.sr4'"]
+. execute dbms ["attribute MAKELIST filename='<GDATA1>\DCC\02MakeLists.pql'"]
+. execute dbms ["attribute COPYFILE filename='<GDATA1>\DCC\03CopyFiles.pql'"]
+. execute dbms ["attribute CXSUMS   filename='<GDATA1>\DCC\04CheckSums.pql'"]
+. execute dbms ["attribute COUNTS   filename='<GDATA1>\DCC\05Counts.pql'"]
+. execute dbms ["attribute PROGLIST filename='<GDATA1>\DCC\06ProgramsList.pql'"]
+. execute dbms ["attribute RUNPROGS filename='<GDATA1>\DCC\07RunPrograms.pql'"]
+. execute dbms ["attribute CXOUTPUT filename='<GDATA1>\DCC\08CheckOutput.pql'"]
+. execute dbms ["attribute CXDBS    filename='<GDATA1>\DCC\09CheckDBs.pql'"]
+. execute dbms ["attribute EMAIL    filename='<GDATA1>\DCC\10SendEmail.pql'"]
+. execute dbms ["attribute DXMASTER filename='<GDATA1>\DCC\Programs\DisconnectMaster.pql'"]
+. execute dbms ["attribute MAKESPSS filename='<GDATA1>\DCC\Programs\SPSProgs.spj'"]
+. execute dbms ["attribute REPORT   filename='<GDATA1>\DCC\Logs\" + datec(today(0),"YYYY_MM_DD") + ".htm'"]
+. execute dbms ["attribute OLDLIST  filename='<GDATA1>\DCC\Output\Old\OldFiles.txt'"]
+. execute dbms ["attribute MNYR     filename='<GDATA1>\DCC\MNYR\" + datec(today(0),"YYYY_MM_DD") + ".log'"]
+. execute dbms ["attribute DBSLIST  filename='<GDATA1>\DCC\SIRXS\Lists\DBSList.txt'"]
+. execute dbms ["attribute MEMLIST  filename='<GDATA1>\DCC\SIRXS\Lists\MEMList.txt'"]
+. execute dbms ["attribute OUTLIST  filename='<GDATA1>\DCC\SIRXS\Lists\OUTList.txt'"]
+. execute dbms ["attribute MSTLIST  filename='<GDATA1>\DCC\SIRXS\Lists\MSTList.txt'"]
+. execute dbms ["attribute CONLIST  filename='<GDATA1>\DCC\SIRXS\Lists\CONList.htm'"]
+. execute dbms ["attribute ELIST    filename='<GDATA1>\DCC\SIRXS\Lists\EMail.txt'"]
+. execute dbms ["attribute DATEF    filename='<GDATA1>\DCC\Output\Dates\Dates.log'"]
+. execute dbms ["attribute RECINF   filename='<GDATA1>\DCC\Output\DB Information\RecordTypeInfo.txt'"]
+. execute dbms ["attribute MEMINF   filename='<GDATA1>\DCC\Output\DB Information\FamiliesMembersInfo.txt'"]
+end program
+
+| set TextPad as the Default editor
+program
+. string * 250 TEXTPAD  | set the word editor to TextPad if textpad is there
+. compute TEXTPAD = '\\192.168.53.240\TexPad 5\TextPad.exe'
+. if (fileis(TEXTPAD) eq 1) DUMMY = upset('SIR.TXTED',TEXTPAD)
+. dummy = UPSET('sir.title','Data Coordinating Center: ') 
+end program

@@ -1,0 +1,31 @@
+| File name: 09CheckDBs.pql
+| Path:      <GDCC>BackUps\
+| Creator:   David Merle
+| Created:   01/01/2008
+| Retired:
+| Called by:
+| Calls:
+| Reason:    Checks each database for blank records
+| Output:    LOG
+| Attributes:
+| Modified:
+|
+program
+. integer * 1 YES NO DB#
+. integer * 2 STAT# FILE# FILE#C
+. real * 8 array CXSUM (200)
+. string * 100 RECINF BUPATH FILE$P FILE$D FILE$N
+|INIT
+. set NO DB# STAT# (0) YES (1)
+. BUPATH = '<GBACKUP>' + datec(today(0),'YYYY_MM_DD') + '_SIRXS\'
+|
+. include file DBSLIST
+. for DB# = 1,DB#C
+.   pql connect database DB$N(DB#)
+                prefix   BUPATH
+                security 'riptide','',''
+                iostat   STAT#
+.     execute dbms 'call DCCPROCF.BACKUPS.CXIDENTIFIERS'
+.   pql disconnect database DB$N(DB#)
+. end for
+end program

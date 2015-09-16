@@ -1,6 +1,6 @@
 ﻿
 INSERT
-    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss3980\HWAC2_SPSS_to_SAS2567064682198367768.sps'
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss6840\HWAC2_SPSS_to_SAS4111005989765707760.sps'
     SYNTAX=BATCH
     ERROR=STOP.
   10  0  * Encoding: UTF-8.

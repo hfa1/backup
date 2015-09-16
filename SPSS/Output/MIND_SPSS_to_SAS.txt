@@ -1,6 +1,6 @@
 ﻿
 INSERT
-    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss11020\MIND_SPSS_to_SAS650113123741331811.sps'
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss9040\MIND_SPSS_to_SAS4029557428280483090.sps'
     SYNTAX=BATCH
     ERROR=STOP.
   10  0  * Encoding: UTF-8.

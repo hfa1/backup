@@ -1,0 +1,169 @@
+call DCCPROCF.SYSTEM.ALLRECS
+retrieval noautocase crwarn
+. window clear
+. integer * 1 YES NO NEW# JTYPE# OK#
+. integer * 2 REC# USER# NEWRECS# UPDRECS# DELRECS# NEWCASE# DELCASE#
+              VAR# VARS# FILE# FILES#
+. string * 32 JUSER$ DB$ JTYPE$ PREV$ VAR$ CASE$
+. string * 100 JOUT$ VARL$ VARV$ FILE$
+. string * 32 array USER@ (1000)
+. string * 200 array BEFORE$ (1000)
+. date JSTARTDT JENDDT DATE# ('MM/DD/YYYY')
+. time JSTARTTM JENDTM START# END# ('HH:MM:SS')
+. set NO NEW# USER# NEWRECS# UPDRECS# DELRECS# NEWCASE# DELCASE# (0) YES (1) PREV$ ('')
+. DB$ = trim(dbname(0))
+. CASE$ = trim(varname(0,1))
+. for FILE# = 1,filecnt('\\192.168.53.246\Data1\DCC\BackupRoutine\Journals\*.log')
+.  FILE$ = filen('\\192.168.53.246\Data1\DCC\BackupRoutine\Journals\*.log',FILE#)
+c write [sbst(reverse(FILE$),5,abs(srst(reverse(FILE$),' ')))]
+.  ifthen (sbst(reverse(FILE$),5,abs(srst(reverse(FILE$),' ')) - 5) = reverse(DB$))
+.   DATE# = cdate(sbst(FILE$,6,2) + '/' + sbst(FILE$,9,2) + '/' + sbst(FILE$,1,4),'MM/DD/YYYY')
+|REMEMBER TO COMMENT THIS BACK IN!!!
+c.   if (DATE# = today(0)) exit retrieval
+.   JOUT$ = '<GDCC>BackupRoutine\Journals\' + FILE$
+.   open (JOUT$) dsnvar=JOUT$ write append lrecl=200
+.   exit for
+.  endif
+. end for
+. value labels JTYPE# ( 1)'New record'
+                      ( 2)'Updated record'
+                      ( 3)'After update'
+                      ( 4)'Deleted record'
+                      (-1)'Data header'
+                      (-2)'Modified schema'
+                      (-3)'Unloaded data'
+                      (-4)'Journal schema'
+                      (-5)'User header'
+c . write ['Checking journal ' + DB$] JOUT$
+.  for UPDATE# = 0,CURLEV
+
+. process journal date = JSTARTDT enddate = JENDDT
+                  time = JSTARTTM endtime = JENDTM
+                 level = JLEVEL#
+                record = REC#
+                  type = JTYPE#
+                  user = JUSER$
+                master = JMASTER$
+c. if (JTYPE# = -2 or JTYPE# = -4) write 'XXXXXXXXXXXXXXXXXXXXXUnload Schema' JTYPE#
+. if (upper(sbst(JUSER$,1,5)) = 'ADMIN') next journal 
+. JTYPE$ = trim(vallab(JTYPE#))
+execute subprocedure WRITEJOURNAL
+c. ifthen (REC# >= 0)
+c.  execute subroutine DCCPROCF.UTIL.SETGLOBAL (format(REC#))
+c. endif
+c. if (JTYPE# = -1) write ''
+c. if (JTYPE# = -3) write 'Unload Data'
+c. ifthen (REC# = 0)
+.  journal record is 0
+.   ifthen (JTYPE$ = 'New record')
+.    NEWCASE# = NEWCASE# + 1
+.    USER# = USER# + 1
+.    USER@(USER#) = JUSER$
+.    execute subprocedure WRITEJOURNAL
+.   elseif (JTYPE$ = 'Deleted record')
+.    DELCASE# = DELCASE# + 1
+.    USER# = USER# + 1
+.    USER@(USER#) = JUSER$
+.    NEWCASE# = NEWCASE# + 1
+.    execute subprocedure WRITEJOURNAL
+.   endif          
+.  end journal record
+|
+.  do repeat RECX = <GREC1>
+                    <GREC2>
+                    <GREC3>
+                    <GREC4>
+c ifthen (JTYPE$ = 'Data header')
+c write JUSER$ [pad(varget(varname(0,1)),' ',15,15)][vallab(JTYPE#)]  
+c else
+c write '   ' JUSER$ [pad(varget(varname(0,1)),' ',15,15)][vallab(JTYPE#)]
+c endif
+.   ifthen (REC# = RECX)
+.    journal record is RECX
+.     VARS# = nvars(REC#)
+.     ifthen (JTYPE$ = 'New record')
+.      NEWRECS# = NEWRECS# + 1
+.      USER# = USER# + 1
+.      USER@(USER#) = JUSER$
+.      NEW# = YES
+.      execute subprocedure WRITEJOURNAL
+.     elseif (JTYPE$ = 'Updated record' and NEW# = NO)
+.      UPDRECS# = UPDRECS# + 1
+.      USER# = USER# + 1
+.      USER@(USER#) = JUSER$
+.      execute subprocedure WRITEJOURNAL
+.      for VAR# = 1,VARS#
+.       BEFORE$(VAR#) = trimlr(varget(varname(REC#,VAR#)))
+.      end for             
+.     elseif (JTYPE$ = 'After update')
+c write 'DO WE GET HERE? '
+.      for VAR# = 1,VARS#
+.       VAR$ = trim(varname(REC#,VAR#))
+.       VARL$ = trim(varlabsc(REC#,VAR$))
+.       VARV$ = trimlr(varget(VAR$))
+.       if (VAR$ = 'DWHO' or 'DCCWHO' or 'DSTAMP' or 'DCCDATE' or 'DCCEDITS' or 'DCCTIME') next for
+c write VAR$ BEFORE$(VAR#) ' versus ' VARV$
+.       ifthen ((BEFORE$(VAR#) <> VARV$) or (exists(BEFORE$(VAR#)) = YES and exists(VARV$) = NO) or (exists(BEFORE$(VAR#)) = NO and exists(VARV$) = YES))
+.        if (exists(VARV$) = NO) VARV$ = ' '
+c.        write [pad(varget(varname(0,1)),' ',15,15)] JUSER$          [pad(recname(REC#),' ',10,10)] '     Before ' VAR$ '=' BEFORE$(VAR#) 'After=' VARV$ 
+.       endif
+.      end for             
+.      NEW# = NO         
+.     elseif (JTYPE$ = 'Deleted record')
+.      DELRECS# = DELRECS# + 1
+.      USER# = USER# + 1
+.      USER@(USER#) = JUSER$
+.      execute subprocedure WRITEJOURNAL
+.     endif
+.    end journal record
+.   endif
+.  end repeat
+cif eq 1,2
+.  else
+c.  write 'This is not a data header! '
+         [pad('?',' ',2,2)]
+         JSTARTDT JSTARTTM
+         [pad(JUSER$,' ',15,15)]
+         [pad(vallab(JTYPE#),' ',14,14)]
+         [pad(format(REC#),' ',3,3)]
+         ['          ']
+         ['      ']
+.  endif
+cif end
+. end process journal
+end for
+c . redefine array 'USER@' (USER#)
+c . sort USER@
+. for x = 1,USER#
+.  ifthen (USER@(x) <> PREV$)
+c.   write x USER@(x)
+.   PREV$ = USER@(x)
+.  endif
+. end for
+. close (JOUT$)
+. OK# = rnmfile(JOUT$,'<GDCC>BackupRoutine\Journals\' + datec(today(0),'YYYY MM DD ') + DB$ + '.log')
+. write 'New cases=' NEWCASE#
+. write 'Deleted cases=' DELCASE#
+. write 'New records=' NEWRECS#
+. write 'Updated records=' UPDRECS#
+. write 'Deleted records=' DELRECS#
+|
+. subprocedure WRITEJOURNAL
+.  write JSTARTDT JSTARTTM
+         [pad(JUSER$,' ',15,15)]
+         [pad(vallab(JTYPE#),' ',15,15)]
+         ['(' + pad(format(REC#),' ',3,3) + ')']
+|         [pad(recname(REC#),' ',10,10)]
+|         [pad(CASE$,' ',10,10)]
+|         [pad(varget(varname(0,1)),' ',15,15)]
+|         [fst(pad(keyname(REC#,2),' ',10,10),'')]
+|         [fst(pad(varget(keyname(REC#,2)),' ',15,15),'')]
+|         [fst(pad(keyname(REC#,3),' ',10,10),'')]
+|         [fst(pad(varget(keyname(REC#,3)),' ',15,15),'')]
+|         [fst(pad(keyname(REC#,4),' ',10,10),'')]
+|         [fst(pad(varget(keyname(REC#,4)),' ',15,15),'')]
+|         [fst(pad(keyname(REC#,5),' ',10,10),'')]
+|         [fst(pad(varget(keyname(REC#,5)),' ',15,15),'')]
+. end subprocedure WRITEJOURNAL
+|
+end retrieval

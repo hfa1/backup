@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job xmlns="http://xml.spss.com/spss/production" print="false" syntaxErrorHandling="continue" syntaxFormat="batch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.spss.com/spss/production http://xml.spss.com/spss/production/production-1.0.xsd">
+<output imageFormat="jpg" imageSize="100" outputFormat="text-utf8" outputPath="\\192.168.53.246\Data1\DCC\SIR2002\Output\spssout.lis" tableColumnAutofit="true" tableColumnBorder="|" tableColumnSeparator="space" tableRowBorder="-"/>
+<syntax syntaxPath="\\192.168.53.246\data1\CEH\DAILY\PAHCODE.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\data1\CEH\DAILY\VXREC.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\data1\COREPD\Daily\COREPD_MERGE_1.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\Data1\DEP\Daily\SUI_SUM.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\Data1\DEP\Daily\PARSEY1A.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\Data1\DEP\Daily\BASELINE.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\data1\EOA\DAILY\SIBLING_AGGREGATE.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\Data1\NACC\DAILY\NACC.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\Data1\NACCUDS\DAILY\NACC_UDS_1.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\Data1\PREDICT\DAILY\MING1.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\Data1\PREDICT\DAILY\EXCEL1.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\Data1\PREDICT\DAILY\EXCEL2.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\Data1\PREDICT2\DAILY\MING2.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\Data1\PULSE\Daily\Merge Pending and Missing.sps"/>
+<syntax syntaxPath="\\192.168.53.246\data1\RRS\DAILY\RECODES.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\data1\SURVEY\DAILY\MULTALL.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\data1\SURVEY\DAILY\ONEALL.SPS"/>
+<syntax syntaxPath="\\192.168.53.246\data1\WTC\DAILY\BASELINE recode missings.SPS"/>
+</job>

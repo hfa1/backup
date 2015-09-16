@@ -1,6 +1,6 @@
 ﻿
 INSERT
-    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss5128\RAINE_RAINE_SAS7393657689346424728.sps'
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss5512\RAINE_RAINE_SAS2228731435410057028.sps'
     SYNTAX=BATCH
     ERROR=STOP.
   10  0  * Encoding: UTF-8.

@@ -1,6 +1,6 @@
 ﻿
 INSERT
-    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss6216\CEHMRI_SRS_Recode785990832864346652.sps'
+    FILE='C:\Users\administrator.DCCNY\AppData\Local\Temp\spss5704\CEHMRI_SRS_Recode2287917431125205727.sps'
     SYNTAX=BATCH
     ERROR=STOP.
   10  0  * Encoding: UTF-8.

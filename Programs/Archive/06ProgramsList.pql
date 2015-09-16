@@ -1,0 +1,147 @@
+| File name: 06ProgramList.pql
+| Path:
+| Creator:   Ming Feng, Greg Neils, David Merle
+| Created:   01/01/2008
+| Retired:
+| Called by: 01StartBackup.pql
+| Calls:
+| Reason:    Creates the list of PROGRAMS to run nightly
+| Output:
+| Attributes:
+| Modified:
+|
+program
+. open (REPORT) write append lrecl = 100
+.   write (REPORT) '<tr>'
+.   write (REPORT) '    <td bgcolor="#CCFF99" colspan="2">06ProgramsList</td>'
+.   write (REPORT) '    <td bgcolor="#FFFFFF" align="center">' [timec(now(0),'hh:mm:ss')] '</td>'
+.   write (REPORT) '</tr>'
+. close (REPORT)
+. pql connect database 'DCC'
+      prefix '<GDATA1>DCC\SIRXS\'
+end program
+|
+retrieval
+. integer * 1 NO YES PROGRAM MEMBER SPSS LIVE232 LIVE240 ADMIN
+. set NO (0) YES PROGRAM ADMIN (1) MEMBER (2) SPSS LIVE232 (3) LIVE240 (4)
+. string * 32 DBN_ AUD_ 
+. string * 78 BUP_
+. string * 100  FOLDER$ PREFIX$
+. t = delfile(dsn('ALLCALL'))
+|Programs header
+. open  (RUNPROGS) write lrecl = 250
+. write (RUNPROGS) '| File name: 07RunPrograms.pql'
+. write (RUNPROGS) '| Path:      <GDCC>'
+. write (RUNPROGS) '| Creator:   David Merle'
+. write (RUNPROGS) '| Created:   08/01/2008'
+. write (RUNPROGS) '| Retired:'
+. write (RUNPROGS) '| Called by: 01RunPrograms.pql'
+. write (RUNPROGS) '| Calls:'
+. write (RUNPROGS) '| Reason:    Runs all user programs (except SPSS code) that are updated nightly'
+. write (RUNPROGS) '| Output:    A lot, see below'
+. write (RUNPROGS) '| Modified:'
+. write (RUNPROGS) "program"
+. write (RUNPROGS) ". open (REPORT) write append lrecl = 100"
+. write (RUNPROGS) ".   write (REPORT) '<tr>'"
+. write (RUNPROGS) [".   write (REPORT) '    <td bgcolor=" + '"' + "#CCFF99" + '"' + " colspan=" + '"' + "2" + '"' + ">07RunPrograms</td>'"]
+. write (RUNPROGS) [".   write (REPORT) '    <td bgcolor=" + '"' + "#FFFFFF" + '"' + " align=" + '"' + "center" + '"' + ">' [timec(now(0)," + '"' + "HH:MM:SS" + '"' + ")] '</td>'"]|' [timec(now(0),'hh:mm:ss')] '
+. write (RUNPROGS) ".   write (REPORT) '</tr>'"
+. write (RUNPROGS) ". close (REPORT)"
+. write (RUNPROGS) "end program"
+. write (RUNPROGS)  ' '
+|SPSS header
+. open  (PRODJOB) dsn='<GDCC>BackupRoutine\Programs\SPSPROGS.spj' write lrecl = 508
+. write (PRODJOB) '<?xml version="1.0" encoding="UTF-8"?>'
+. write (PRODJOB) ['<job xmlns="http://xml.spss.com/spss/production"' +
+                          ' print="false"' +
+                          ' syntaxErrorHandling="continue"' +
+                          ' syntaxFormat="batch"' +
+                          ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
+                          ' xsi:schemaLocation="http://xml.spss.com/spss/production' +
+                          ' http://xml.spss.com/spss/production/production-1.0.xsd">']
+. write (PRODJOB) ['<output imageFormat="jpg"' +
+                          ' imageSize="100"' +
+                          ' outputFormat="text-utf8"' +
+                          ' outputPath="\\192.168.53.246\Data1\DCC\SIR2002\Output\spssout.lis"' +
+                          ' tableColumnAutofit="true"' +
+                          ' tableColumnBorder="|"' +
+                          ' tableColumnSeparator="space"' +
+                          ' tableRowBorder="-"/>']
+. process cases
+.   process rec ADMIN
+.     ifnot (STAGE = LIVE232 or STAGE = LIVE240) next case
+.     ifthen (exists(FOLDER) = YES and len(FOLDER) > 0)
+.       PREFIX$ = FOLDER
+.     endif
+.     DBN_ = trim(DCC_DB)
+.     AUD_ = 'AUD' + DBN_
+.     BUP_ = '"<GBACKUP>' + datec(today(0) - 1,"YYYY_MM_DD") + '_SIRXS\"'
+.     write (RUNPROGS)  'program'
+.     write (RUNPROGS)  '. integer * 1 NO YES SR#'
+.     write (RUNPROGS)  '. integer * 4 STAT#'
+.     write (RUNPROGS)  '. set STAT# (-1) NO (0) YES (1)'
+.     write (RUNPROGS)  ". time ONEAM FIVEAM TIMENOW ('HH:MM')"
+.     write (RUNPROGS)  ". ONEAM   = (ctime('1:00','HH:MM'))"
+.     write (RUNPROGS)  ". FIVEAM  = (ctime('5:00','HH:MM'))"
+.     write (RUNPROGS)  ". TIMENOW = now(0)"
+.     ifthen (exists(MASTER) = YES and len(MASTER) = 4)
+.       write (RUNPROGS)  '. ifthen (TIMENOW > ONEAM and TIMENOW < FIVEAM)'
+.       write (RUNPROGS) [".   execute dbms 'include file DXMASTER (" + MASTER + ")'"]
+.       write (RUNPROGS) [".   execute dbms 'include file REMASTER (" + MASTER + ")'"]
+.       write (RUNPROGS)  '. endif'
+.     endif
+.     write (RUNPROGS) [". pql connect database '" + DBN_ + "'"]
+.     write (RUNPROGS) ["              prefix '"   + PREFIX$ + "'"]
+.     write (RUNPROGS)  "              security 'riptide','',''"
+.     write (RUNPROGS)  "              iostat STAT#"
+.     write (RUNPROGS)  ".   ifthen (STAT# < 0)"
+.     write (RUNPROGS) [".     write '07RunPrograms cannot connect to " + DBN_ + "'"]
+.     write (RUNPROGS)  ".   else"
+.     write (RUNPROGS) '.     write ["ALLCALL for " + dbname(0)]'
+.     write (RUNPROGS) ['.     execute dbms "attribute PREFIX filename=' + "'" + pack(PREFIX$) + "'" + '"']
+.     write (RUNPROGS) ['.     execute dbms "condense"']
+c.     write (RUNPROGS)  '.   ifthen (jouflag(0) = 0)'
+c.     write (RUNPROGS) [".     write (LOG)'   Journaling turned off for " + pad(trim(DBN_),' ',9,9) + "'"]
+c.     write (RUNPROGS) ['.   endif']
+.     write (RUNPROGS) ['.     execute dbms "set output ' + "'" + dsn('ALLCALL') + "'" + ' append"']
+.     write (RUNPROGS)  '.     ifthen(trim(dbname(0)) <> "DCC")'
+.     ifthen (DBN_ = 'CEH')
+.       write (RUNPROGS) ['.       execute dbms "call DCCPROCF.BACKUPS.MXCODEBOOK (' + FOLDER + ')"']
+.     else
+.       write (RUNPROGS) ['.       execute dbms "call DCCPROCF.BACKUPS.MXCODEBOOK (' + sbst(FOLDER,1,len(FOLDER) - 9) + ')"']
+.     endif
+.     write (RUNPROGS) ".       ifthen (exists(meminfo('DAILY.MAKESPSS',1)) = 1)"
+.     write (RUNPROGS) ['.         execute dbms "call DAILY.MAKESPSS"']
+.     write (RUNPROGS) ".       else"
+.     write (RUNPROGS) ['.         execute dbms "call DCCPROCF.BACKUPS.MXSPSS"']
+.     write (RUNPROGS) ".       endif"
+.     write (RUNPROGS)  '.     endif'
+.     process rec PROGRAMS
+.       FOLDER$ = trim(FOLDER) + trim(FILENAME)
+.       ifnot (ACTIVE = YES) next rec
+.       write (PRODJOB) ['<syntax syntaxPath="' + FOLDER$ + '"/>']
+.     end rec
+.     write (RUNPROGS) ".     ifthen (exists(meminfo('SYSTEM.ALLCALL',1)) = 1)"
+.     write (RUNPROGS) ".       execute dbms 'call SYSTEM.ALLCALL'"
+.     write (RUNPROGS) ".     endif"
+.     write (RUNPROGS) ".     ifthen (exists(meminfo('DAILY.ALLCALL',1)) = 1)"
+.     write (RUNPROGS) ".       execute dbms 'call DAILY.ALLCALL'"
+.     write (RUNPROGS) ".     endif"
+.     write (RUNPROGS)['.     execute dbms "set output ' + "'" + dsn('SIROUT') + "' append" + '"']
+.     write (RUNPROGS)[".     pql disconnect database '" + pack(DBN_) + "'"]
+.     write (RUNPROGS) ".   endif"
+.     write (RUNPROGS)['. execute dbms "include file ' + "'" + '\\192.168.53.246\Data1\DCC\BackupRoutine\Programs\99SetAttributes.pql' + "'" + '"']
+.     write (RUNPROGS) 'end program'
+.     write (RUNPROGS) ''
+.   end rec
+. end cases
+|SPSS body
+. write (PRODJOB)'</job>'
+. close (PRODJOB)
+. close (RUNPROGS)
+end retrieval
+|
+program
+. pql disconnect database 'DCC'
+end program
+
