@@ -25,8 +25,8 @@ program
 .   write (REPORT) '    <td colspan="2" class="greenleft">03 Server Speed</td>'
 .   write (REPORT) '    <td colspan="2" class="greybutton"><a href="file://///Dccmaincsfs/Data1/DCC/BackupRoutine/Benchmark/Server Speed/Speed.csv" class="button">' [format(END# - START#)] '</a></td>'
 .   write (REPORT) '    <td></td>'
-.   write (REPORT) '    <td class="greencenter">404</td>'
-.   write (REPORT) '    <td class="greencenter">441</td>'
+.   write (REPORT) '    <td class="greencenter">400</td>'
+.   write (REPORT) '    <td class="greencenter">450</td>'
 .   write (REPORT) '    <td class="greencenter">540</td>'
 .   write (REPORT) '    <td colspan="2" class="orangecenter">In seconds</td>'
 .   open (SPEED) dsnvar=SPEED write append lrecl=200
