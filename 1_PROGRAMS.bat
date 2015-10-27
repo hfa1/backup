@@ -96,8 +96,8 @@ if /I %dd% LSS 10 set dd=0%dd%
 echo Date %dayCnt% day(s) before %CurDate% is %mm%/%dd%/%yyyy%
 move "\\Dccmaincsfs\DATA1\DCC\BackupRoutine\Daily Report\%yyyy%_%mm%_%dd%.htm" "\\Dccmaincsfs\DATA1\DCC\BackupRoutine\Daily Report\Archive\%yyyy%\%yyyy%_%mm%_%dd%.htm"
 
-move \\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Output\1_PROGRAMS.txt \\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Output\SIR\1_Programs_%yyyy%_%mm%_%dd%.txt
+move \\Dccmaincsfs\Data1\DCC\BackupRoutine\Output\1_PROGRAMS.txt \\Dccmaincsfs\Data1\DCC\BackupRoutine\Output\SIR\SIR 2015\1_Programs_%yyyy%_%mm%_%dd%.txt
 :rename \\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Output\sirout.lis %yyyy%_%mm%_%dd%.lis 
 
 set sir=236
-\\192.168.53.%sir%\SIRXS\SIRbatch.exe in=\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\1_PROGRAMS.pql out=\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Output\1_PROGRAMS.txt
+\\192.168.53.%sir%\SIRXS\SIRbatch.exe in=\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\1_PROGRAMS.pql out=\\Dccmaincsfs\Data1\DCC\BackupRoutine\Output\1_PROGRAMS.txt

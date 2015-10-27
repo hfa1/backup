@@ -93,8 +93,8 @@ goto CHKDAY
 if /I %mm% LSS 10 set mm=0%mm%
 if /I %dd% LSS 10 set dd=0%dd%
 
-move \\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Output\3_BACKUP.txt \\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Output\SIR\3_BACKUP_%yyyy%_%mm%_%dd%.txt
+move \\Dccmaincsfs\Data1\DCC\BackupRoutine\Output\3_BACKUP.txt \\Dccmaincsfs\Data1\DCC\BackupRoutine\Output\SIR\SIR 2015\3_BACKUP_%yyyy%_%mm%_%dd%.txt
 
 :CHANGE THE IP ADDRESS OF THE SIRXS SOFTWARE HERE
 set sir=236
-\\192.168.53.%sir%\SIRXS\SIRbatch.exe in=\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\3_BACKUP.pql out=\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Output\3_BACKUP.txt
+\\192.168.53.%sir%\SIRXS\SIRbatch.exe in=\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\3_BACKUP.pql out=\\Dccmaincsfs\Data1\DCC\BackupRoutine\Output\3_BACKUP.txt

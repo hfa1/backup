@@ -27,7 +27,7 @@ program
 .  PATH$ = sbst(DIR$(DB#),1,srst(DIR$(DB#),DB$N(DB#)) + len(DB$N(DB#)))
 .  SPSS$ = PATH$ + '\Database\SPSS\'
 .  ifthen (STAT# < 0)
-.   write '09RunPrograms cannot connect to '  DB$N(DB#)
+.   write 'RunPrograms cannot connect to '  DB$N(DB#)
 .  else
 .   execute dbms "call DCCPROCF.SYSTEM.ALLRECS"
 .   write ["ALLCALL for " + DB$N(DB#)]
