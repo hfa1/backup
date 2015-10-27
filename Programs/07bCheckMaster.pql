@@ -1,0 +1,200 @@
+| Check master every 5 minutes and send an e-mail alert if down
+| Limit e-mails to only new alerts.  Don't send multiple emails if unneccessary
+| Make sure no databases are attached. Avoid corruptions and breaking master
+| Check to see if the master list is a file and is readable
+| Read the list of masters to check
+| Cycle through master connecting and checking the connection
+| Store the list of broken masters
+| Send the list of broken masters to the DCC staff
+
+| clear any master if it was already attached. 
+include file '\\Dccmaincsfs\data4\DCC\SRM\SetGlobals.pql'
+
+CALL DCCPROCF.BASE.MSTCLEAR
+
+program
+. string  * 32 DB_NAME$              | database name if connected
+. while (system(40) gt 0)
+.   DB_NAME$ = pack( DBNAME( 0 ) )
+.   pql disconnect database DB_NAME$
+. end while
+end program
+
+program CRWARN
+. string  *  32   DB_NAME$            | database name if connected
+. string  *  32   MASTER_IP           | ip for master
+. string  * 300   FILE_LINE$          | Line in master list file
+. integer *   4   CONSTAT             | Results to open file
+. integer *   4   MASTER_PORT         | Port Number that master is using
+. integer *   1   NEXT_SPOT           | Find the next free array spot in MST# array
+. integer *   1   ADD_MASTER_TO_LIST  | Master numbers repeat in the file.  Is this port unique?
+. integer *   2   TOTAL_MASTERS       | Total number of masters to check
+. integer *   2   EACH_MASTER 
+. integer *   2   EACH_DB
+. integer *   2   EACH_CLIENT  
+. integer *   4   CLIENT_START
+. integer *   4   CLIENT_LAST_MESSAGE
+. string  *  32   CLIENT_IP
+
+. integer *   1   TEST_MST_RESULT     | REUTRNS (0) "MST NOT OK"   (1) "MST OK"
+. string  * 300   OUTPUT_INFO         | Interactive output
+. string  * 500   EMAIL_TO
+. string  * 3000  EMAIL_BODY          | message text for email
+. integer *   1   SEND_EMAIL          | 1=Send email.  0=do NOT send email
+. string  * 200   EMAIL_APP           | Full Path to email application
+
+. string  * 1000  EXECUTE_STRING      | execute dbms string
+
+. integer *  4 array ALL_PORTS (1)   | Used for checking masters only once,  size starts at 1 and increases as needed
+. string  * 32 array ALL_DBS  (1)    | Master:DB = 1:1 (simplified) Usually 1 master per DB.
+. integer *  1  INTERACTIVE_MODE     | Running interactive will not send out the email
+. integer *  1  TESTING_MODE         | Creates a bad master
+
+. set NEXT_SPOT (1)
+
+. set INTERACTIVE_MODE (0)  | 1=interactive, reading results, no email.  0=email goes out
+
+. set TESTING_MODE (1)      | 0=Normal mode,  1=Testing mode
+
+. SEND_EMAIL = 0 | only send an email if a master is down
+. MASTER_IP = sglobal('APPLSERVER')
+. EMAIL_APP = '\\' + sglobal('APPLSERVER') + '\SIRXS\Email\blat'
+. EMAIL_BODY = ''
+. EMAIL_TO = 'milagros.ventura@nyspi.columbia.edu,david.merle@nyspi.columbia.edu,'
+          + 'ming.feng@nyspi.columbia.edu,lori.hoepner@nyspi.columbia.edu,andrews@nyspi.columbia.edu,'
+          + 'ths2105@columbia.edu,gn2003@columbia.edu'
+
+
+execute subprocedure CHECK_MASTER_LIST
+
+execute subprocedure GET_MASTERS_FROM_FILE
+
+execute subprocedure CHECK_EACH_MASTER
+
+execute subprocedure SEND_EMAIL
+
+
+subprocedure CHECK_MASTER_LIST
+| reasons to fail before the test can begin
+. ifthen ( exists( dsn( 'mstlist' ) ) eq 0 ) 
+|   master list is not defined.  Can not continue
+.   write 'Error: mstlist is not defined.'
+.   exit program
+. elseif ( fileis( dsn( 'mstlist' ) )  <> 1 ) 
+|   master list was not found
+.   write 'Error: dsn for mstlist has no value.'
+.   exit program
+. elseif ( exists( MASTER_IP) eq 0 )
+.   write 'Error: Master IP is not defined.'
+.   exit program
+. else 
+|   Open the file 
+.   open (MSTLIST ) read iostat=CONSTAT
+.   ifthen ( CONSTAT <> 0 ) 
+.     write 'Error: file could not be read.'
+.     exit program
+.   else
+.     write 'All System Go' 
+.   endif
+. endif
+end subprocedure
+
+subprocedure GET_MASTERS_FROM_FILE
+. write 'Reading Master File'
+. loop
+.   read (MSTLIST, end=done ) FILE_LINE$ (A100 )                | 1. Cycle through the list of authorized users...
+.   ifthen ( sbst(FILE_LINE$, 1, 1 ) NE '|' )                   | 1b. Ignore comments lines
+.     ifthen (pack(sbst(FILE_LINE$, 36, 4 ) ) ne '' )           | 2. Check the list for DB names that match this DB...
+.       MASTER_PORT = numbr( sbst( FILE_LINE$, 36, 4 ) )
+.       ADD_MASTER_TO_LIST = 1
+.       for EACH_MASTER = 1, ARRDIMSZ( 'ALL_PORTS', 1 )                       |3. set array values for checking master only 1 time
+.         ifthen ( ALL_PORTS( EACH_MASTER ) = MASTER_PORT ) 
+|           already included in master array.
+.           compute ADD_MASTER_TO_LIST = 0
+.          endif
+.       end for
+.       ifthen ( ADD_MASTER_TO_LIST = 1 )
+.         ALL_DBS( NEXT_SPOT ) = pack(sbst(FILE_LINE$, 1, 34 ) )
+.         ALL_PORTS( NEXT_SPOT ) =  MASTER_PORT
+.         NEXT_SPOT = NEXT_SPOT + 1
+.         redefine array 'ALL_PORTS' ( NEXT_SPOT )
+.         redefine array 'ALL_DBS' ( NEXT_SPOT )
+.       endif
+.     endif
+.   endif
+. end loop
+. done:
+. close (MSTLIST )
+. ifthen (TESTING_MODE eq 1)
+|   SIMULATE A BAD MASTER CONNECTION
+.   ALL_DBS( 1 ) = 'TESTING'
+.   ALL_PORTS( 1 ) =  1111
+. endif
+. TOTAL_MASTERS = arrdimsz( 'ALL_PORTS', 1 )
+. write TOTAL_MASTERS ' TOTAL MASTERS TO CHECK '
+end subprocedure
+
+
+subprocedure CHECK_EACH_MASTER
+. write 'Checking each master'
+. for EACH_MASTER = 1,  1 |TOTAL_MASTERS | Cycle through masters
+.   OUTPUT_INFO = 'Checking: ' + format( EACH_MASTER )  +  
+                  '/' + format(TOTAL_MASTERS) + 
+                  ' Port: ' + format( ALL_PORTS( EACH_MASTER ) )
+.   WRITE OUTPUT_INFO
+.   execute dbms "call dccprocf.base.mstclear"          |Clear master before trying to connect to another one
+.   EXECUTE_STRING = 'SET MASTER '  +  MASTER_IP + 
+                     ':' + format( ALL_PORTS( EACH_MASTER ) )
+.   execute dbms EXECUTE_STRING
+wait 90 | YOU NEED THIS BECAUSE IT ALL HAPPENS SO SLOW
+.   ifthen ( system( 38 ) EQ 1 )
+.     OUTPUT_INFO = format( ALL_PORTS( EACH_MASTER ) )  +  ' is OK. ' + 
+                    ' Users: '  +  format( SYSTEM( 68 )-1 )
+.     write OUTPUT_INFO
+|     ATTACHED DATABASES
+.     for EACH_DB = 1, system( 69 ) |number of Databases
+.       OUTPUT_INFO = format( EACH_DB ) + ':  ' +  getmdbn( EACH_DB )  |Returns the name for Qth database from Master
+.       write OUTPUT_INFO
+.     end for
+|     ATTACHED CLIENTS
+.     for EACH_CLIENT = 1, system( 68 )
+.       CLIENT_IP = getmcadd( getmclid( EACH_CLIENT ) )
+.       CLIENT_START = getmcon( getmclid( EACH_CLIENT ) )
+.       CLIENT_LAST_MESSAGE = getmclst( getmclid( EACH_CLIENT ) )
+.       OUTPUT_INFO = "  Connected: " + timec( CLIENT_START, "hh:mm pp" ) + 
+                      " / Last: " + timec( CLIENT_LAST_MESSAGE, "hh:mm pp" )
+.       ifthen ( CLIENT_IP EQ DSN( 'CLIENT' ) )
+.         OUTPUT_INFO = OUTPUT_INFO + "  You: "
+.       else
+.         OUTPUT_INFO = OUTPUT_INFO + "       "
+.       endif
+.       OUTPUT_INFO = OUTPUT_INFO + CLIENT_IP 
+.       WRITE OUTPUT_INFO
+.     end for
+
+.     execute dbms "call dccprocf.base.mstclear"
+
+.   else
+|     MASTER FAILED TO CONNECT
+.     SEND_EMAIL = 1
+.     OUTPUT_INFO = '-- NO SIGNAL: ' + format(ALL_PORTS( EACH_MASTER ) )
+.     write OUTPUT_INFO 
+.     EMAIL_BODY = EMAIL_BODY + 'Unable to connect to Master ' +
+                   MASTER_IP + ':' + format(ALL_PORTS( EACH_MASTER ) )
+.   endif
+. end for
+. write 'finished checking masters'
+end subprocedure
+
+subprocedure SEND_EMAIL
+. if ( INTERACTIVE_MODE EQ 1) exit subprocedure | Interactive Mode!  Do NOT send emails
+. ifthen (SEND_EMAIL eq 1)
+.   write 'SENDING EMAIL' / EMAIL_APP / EMAIL_BODY / EMAIL_TO
+.   EXECUTE_STRING = EMAIL_APP + ' -body "' + EMAIL_BODY + '" -to ' + EMAIL_TO + ' -subject "Error: Master down."'
+WRITE EXECUTE_STRING
+C .   pql escape EXEC$
+. endif
+c add email code here
+end subprocedure
+
+end program
