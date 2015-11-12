@@ -7,7 +7,12 @@
 | Store the list of broken masters
 | Send the list of broken masters to the DCC staff
 
-| clear any master if it was already attached. 
+| clear any master if it was already attached.
+
+| issues: 
+  | 1) where will the log file be kept?
+  | 2) How will we reduce the number of notifications we could get over a 3 day weekend?
+
 include file '\\Dccmaincsfs\data4\DCC\SRM\SetGlobals.pql'
 
 CALL DCCPROCF.BASE.MSTCLEAR
@@ -54,16 +59,16 @@ program CRWARN
 
 . set INTERACTIVE_MODE (0)  | 1=interactive, reading results, no email.  0=email goes out
 
-. set TESTING_MODE (1)      | 0=Normal mode,  1=Testing mode
+. set TESTING_MODE (0)      | 0=Normal mode,  1=Testing mode
 
 . SEND_EMAIL = 0 | only send an email if a master is down
+
 . MASTER_IP = sglobal('APPLSERVER')
 . EMAIL_APP = '\\' + sglobal('APPLSERVER') + '\SIRXS\Email\blat'
 . EMAIL_BODY = ''
 . EMAIL_TO = 'milagros.ventura@nyspi.columbia.edu,david.merle@nyspi.columbia.edu,'
           + 'ming.feng@nyspi.columbia.edu,lori.hoepner@nyspi.columbia.edu,andrews@nyspi.columbia.edu,'
           + 'ths2105@columbia.edu,gn2003@columbia.edu'
-
 
 execute subprocedure CHECK_MASTER_LIST
 
@@ -72,6 +77,8 @@ execute subprocedure GET_MASTERS_FROM_FILE
 execute subprocedure CHECK_EACH_MASTER
 
 execute subprocedure SEND_EMAIL
+
+execute dbms "call dccprocf.base.mstclear"  |Clear master at end of program
 
 
 subprocedure CHECK_MASTER_LIST
@@ -127,6 +134,7 @@ subprocedure GET_MASTERS_FROM_FILE
 . close (MSTLIST )
 . ifthen (TESTING_MODE eq 1)
 |   SIMULATE A BAD MASTER CONNECTION
+.   write 'in testing mode.  Simulate bad master'
 .   ALL_DBS( 1 ) = 'TESTING'
 .   ALL_PORTS( 1 ) =  1111
 . endif
@@ -137,7 +145,7 @@ end subprocedure
 
 subprocedure CHECK_EACH_MASTER
 . write 'Checking each master'
-. for EACH_MASTER = 1,  1 |TOTAL_MASTERS | Cycle through masters
+. for EACH_MASTER = 1,  TOTAL_MASTERS | Cycle through masters
 .   OUTPUT_INFO = 'Checking: ' + format( EACH_MASTER )  +  
                   '/' + format(TOTAL_MASTERS) + 
                   ' Port: ' + format( ALL_PORTS( EACH_MASTER ) )
@@ -192,9 +200,15 @@ subprocedure SEND_EMAIL
 .   write 'SENDING EMAIL' / EMAIL_APP / EMAIL_BODY / EMAIL_TO
 .   EXECUTE_STRING = EMAIL_APP + ' -body "' + EMAIL_BODY + '" -to ' + EMAIL_TO + ' -subject "Error: Master down."'
 WRITE EXECUTE_STRING
-C .   pql escape EXEC$
+C .   pql escape EXECUTE_STRING
+. else
+.   write 'All masters connected OK.'
 . endif
 c add email code here
 end subprocedure
 
+end program
+
+program
+pql exit dbms
 end program
