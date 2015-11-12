@@ -6,7 +6,7 @@
 | Cycle through master connecting and checking the connection
 | Store the list of broken masters
 | Send the list of broken masters to the DCC staff
-
+|*****************I just changed this!!!!! David Merle was here
 | clear any master if it was already attached.
 
 | issues: 
