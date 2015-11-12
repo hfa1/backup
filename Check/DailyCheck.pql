@@ -3,9 +3,12 @@ program
 . integer * 1 YES NO DB# OK# USERS# ALLOK#
 . integer * 2 FILES# FILE#
 . integer * 4 STAT#
-. string * 200 OUT$ EXEC$
+. string * 200 OUT$ EXEC$ HOUR$
 . OUT$ = '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Check\Logs\' + datec(today(0),'YYYY_MM_DD ') + timec(now(0),'HH.MM.SS') + '.txt'
+. HOUR$ = '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Check\Hourly\' + timec(now(0),'HH') + '.txt'
 . set NO DB# STAT# (0) YES (1)
+. open (HOUR$) dsnvar=HOUR$ write lrecl=300
+. close (HOUR$)
 . include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Check\DBSLIST.txt'
 . open (OUT$) dsnvar=OUT$ write lrecl=300
 .  write (OUT$) [datec(today(0),'MM/DD/YYYY')] 12t [timec(now(0),'HH:MM:SS')]
