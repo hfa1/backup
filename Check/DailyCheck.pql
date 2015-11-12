@@ -1,14 +1,21 @@
 program
+. string * 2 HOUR$
 . string * 100 EMAIL$ CC$ SERVER$ REPORT$
-. integer * 1 YES NO DB# OK# USERS# ALLOK#
+. integer * 1 YES NO DB# OK# USERS#
 . integer * 2 FILES# FILE#
 . integer * 4 STAT#
-. string * 200 OUT$ EXEC$ HOUR$
+. string * 200 OUT$ EXEC$ HOURLY$
+. HOUR$ = timec(now(0),'HH')
 . OUT$ = '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Check\Logs\' + datec(today(0),'YYYY_MM_DD ') + timec(now(0),'HH.MM.SS') + '.txt'
-. HOUR$ = '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Check\Hourly\' + timec(now(0),'HH') + '.txt'
+. HOURLY$ = '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Check\Hourly\'
+. ifthen (HOUR$ = '06')
+.  FILES# = filecnt(HOURLY$ + '*.txt')
+.  for FILE# = 1,FILES#
+.   FILE$ = filen(HOURLY$ + '*.txt',FILE#)
+.   t = delfile(HOURLY$ + FILE$)
+.  end for
+. endif
 . set NO DB# STAT# (0) YES (1)
-. open (HOUR$) dsnvar=HOUR$ write lrecl=300
-. close (HOUR$)
 . include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Check\DBSLIST.txt'
 . open (OUT$) dsnvar=OUT$ write lrecl=300
 .  write (OUT$) [datec(today(0),'MM/DD/YYYY')] 12t [timec(now(0),'HH:MM:SS')]
@@ -43,9 +50,19 @@ program
 .   else
 .    write (OUT$) DB$N(DB#) 10t 'No master assigned'
 .   endif
+|
 .   pql disconnect database DB$N(DB#)
 .   EXEC$ = 'clear master ' + MST$(DB#)
 .   execute dbms [EXEC$]
 .  end for
 . close (OUT$)
+. ifthen (fileis(HOURLY$ + HOUR$ + '.txt') = NO)
+.  EXEC$ = '\\192.168.53.236\SIRXS\Email\blat -to merleda@nyspi.columbia.edu' +
+           ' -subject "All Is Well"' +
+           ' -body "' + HOUR$ + ':00 and all is well."'
+.  pql escape EXEC$
+. endif
+. HOURLY$ = HOURLY$ + HOUR$ + '.txt'
+. open (HOURLY$) dsnvar=HOURLY$ write lrecl=300
+. close (HOURLY$)
 end program
