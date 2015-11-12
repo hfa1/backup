@@ -1,0 +1,48 @@
+program
+. string * 100 EMAIL$ CC$ SERVER$ REPORT$
+. integer * 1 YES NO DB# OK# USERS# ALLOK#
+. integer * 2 FILES# FILE#
+. integer * 4 STAT#
+. string * 200 OUT$ EXEC$
+. OUT$ = '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Check\Logs\' + datec(today(0),'YYYY_MM_DD ') + timec(now(0),'HH.MM.SS') + '.txt'
+. set NO DB# STAT# (0) YES (1)
+. include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Check\DBSLIST.txt'
+. open (OUT$) dsnvar=OUT$ write lrecl=300
+.  write (OUT$) [datec(today(0),'MM/DD/YYYY')] 12t [timec(now(0),'HH:MM:SS')]
+.  for DB# = 1,DB#C
+.   if (STA$(DB#) <> 'Live') next for
+.   EXEC$ = 'set master ' + MST$(DB#)
+.   execute dbms [EXEC$]
+.   pql connect database DB$N(DB#)
+                prefix   DIR$(DB#)
+                iostat   STAT#
+.   ifthen (STAT# < 0)
+.    write (OUT$) DB$N(DB#) 10t ['****Cannot connect to ' + DB$N(DB#) + ' !!!!']
+.    EXEC$ = '\\192.168.53.236\SIRXS\Email\blat -to merleda@nyspi.columbia.edu' +
+             ' -subject "Connection Error"' +
+             ' -body "' + DB$N(DB#) + ' did not connect."'
+.    pql escape EXEC$
+.   elseif (exists(MST$(DB#)) = YES)
+.    USERS# = system(68) - 1
+.    ifthen (USERS# = 1)
+.     write (OUT$) DB$N(DB#) 10t USERS# 'current user'
+.    elseif (USERS# > 1)
+.     write (OUT$) DB$N(DB#) 10t USERS# 'current users'
+.    elseif (USERS# = 0)
+.     write (OUT$) DB$N(DB#)
+.    elseif (USERS# < 0)
+.     write (OUT$) DB$N(DB#) 10t ['****Cannot connect to ' + MST$(DB#) + ' !!!!']
+.     EXEC$ = '\\192.168.53.236\SIRXS\Email\blat -to merleda@nyspi.columbia.edu' +
+              ' -subject "Connection Error"' +
+              ' -body "' + MST$(DB#) + ' did not connect."'
+.     pql escape EXEC$
+.    endif
+.   else
+.    write (OUT$) DB$N(DB#) 10t 'No master assigned'
+.   endif
+.   pql disconnect database DB$N(DB#)
+.   EXEC$ = 'clear master ' + MST$(DB#)
+.   execute dbms [EXEC$]
+.  end for
+. close (OUT$)
+end program
