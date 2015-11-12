@@ -1,0 +1,37 @@
+11/12/2015 09:53:25
+AAA
+ADRC     ****Cannot connect to 192.168.53.235:3080 !!!!
+ARREST   No master assigned
+BE
+BETRNET
+CEH
+CEHMRI
+COREPD   No master assigned
+COSMOS
+CROHNS
+CTI_TS
+DCC      ****Cannot connect to 192.168.53.235:3118 !!!!
+DEMO3
+DEPCI
+HWAC2    ****Cannot connect to 192.168.53.235:3120 !!!!
+KOLLER
+LITHIUM  ****Cannot connect to 192.168.53.235:3160 !!!!
+MAY
+MIND
+NACCUDS  ****Cannot connect to 192.168.53.235:3080 !!!!
+NALOXONE ****Cannot connect to 192.168.53.235:3146 !!!!
+NEUSTART
+NICU
+NICU_NWK
+NICU_PST
+OLFACTN
+OLF_NIA  ****Cannot connect to 192.168.53.235:3168 !!!!
+ORIGINS
+PARTLIST ****Cannot connect to 192.168.53.235:3140 !!!!
+PREDICT2
+PREDICT3
+QD2      No master assigned
+RAINE
+SCHIZGEN
+SURVEY
+TAPAS    No master assigned
