@@ -7,7 +7,7 @@
 | Store the list of broken masters
 | Send the list of broken masters to the DCC staff
 
-| clear any master if it was already attached.
+| clear any master if it was aldddddready attached.
 
 | issues: 
   | 1) where will the log file be kept?
