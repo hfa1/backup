@@ -1,3 +1,0 @@
-include file '\\192.168.53.246\Data1\DCC\BackupRoutine\01SetAttributes.pql'
-call SIR014.DRUG.MOVEDRUGS
-call SIR014.DRUG.IMPORTALL

@@ -11,8 +11,8 @@
 | Modified:
 |
 SET MASTER <1>
-|
 COPY DIFFERENCE FILE
+|
 |
 program
 . integer * 1 YES NO

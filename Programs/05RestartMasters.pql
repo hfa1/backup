@@ -23,6 +23,8 @@ program
 .  execute dbms 'include file "\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\RestartMaster.pql"    (192.168.53.236:3114)'
 .  execute dbms 'include file "\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\DisconnectMaster.pql" (192.168.53.236:3116)'
 .  execute dbms 'include file "\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\RestartMaster.pql"    (192.168.53.236:3116)'
+.  execute dbms 'include file "\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\DisconnectMaster.pql" (192.168.53.236:3118)'
+.  execute dbms 'include file "\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\RestartMaster.pql"    (192.168.53.236:3118)'
 .  execute dbms 'include file "\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\DisconnectMaster.pql" (192.168.53.236:3120)'
 .  execute dbms 'include file "\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\RestartMaster.pql"    (192.168.53.236:3120)'
 .  execute dbms 'include file "\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\DisconnectMaster.pql" (192.168.53.236:3122)'

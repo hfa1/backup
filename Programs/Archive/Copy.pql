@@ -1,8 +1,0 @@
-program
-. write 'Start C    ' [timec(now(0),'HH:MM:SS')]
-. pql escape ['cmd /c xcopy "\\192.168.53.246\Backups\2010_05_18_SIRXS\*" "\\192.168.53.224\C$\Backups\2010_05_18_SIRXS\*" /E /I']
-. write 'End   C    ' [timec(now(0),'HH:MM:SS')]
-. write 'Start Tera ' [timec(now(0),'HH:MM:SS')]
-. pql escape ['cmd /c xcopy "\\192.168.53.246\Backups\2010_05_18_SIRXS\*" "\\192.168.53.233\Backups\2010_05_18_SIRXS\*" /E /I']
-. write 'End   Tera ' [timec(now(0),'HH:MM:SS')]
-end program

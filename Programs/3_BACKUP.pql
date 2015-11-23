@@ -15,14 +15,62 @@
 PAGESIZE 4000, 3000  NOEJECT
 
 include file '\\Dccmaincsfs\data4\DCC\SRM\SetGlobals.pql'
+program
+write 'debugging - after set globals'
+end program
+
 include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\02StartReport.pql'
+program
+write 'debugging - after 02 Start Report'
+end program
+
 include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\03ServerSpeed.pql'
+program
+write 'debugging - after 03 Server Speed'
+end program
+
 include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\04MakeLists.pql'
+program
+write 'debugging - after 04 make lists'
+end program
+
 include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\06CopyFiles.pql'
+program
+write 'debugging - after 06 copy files'
+end program
+
+
 include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\06MakeExports.pql'
+program
+write 'debugging - after 06 make exports'
+end program
+
 include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\07CheckDBs.pql'
+program
+write 'debugging - after 07 Check DBS'
+end program
+
 include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\08Counts.pql'
+program
+write 'debugging - after 08 Counts'
+end program
+
 include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\08MakeJournal.pql'
+program
+write 'debugging - after 08 make journal'
+end program
+
 include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\09MakeAudit.pql'
+program
+write 'debugging - after 09 make audit'
+end program
+
 include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\11CheckOutput.pql'
+program
+write 'debugging - after 11 check output'
+end program
+
 include file '\\Dccmaincsfs\Data1\DCC\BackupRoutine\Batch\Programs\12SendEmail.pql'
+program
+write 'debugging - after 12 send email'
+end program

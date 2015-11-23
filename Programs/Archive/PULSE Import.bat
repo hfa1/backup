@@ -1,1 +1,0 @@
-\\192.168.53.240\SIRXS\SIRbatch.exe db=PULSE p="\\192.168.53.246\Data2\PULSE1\Drug Select\" in=\\192.168.53.246\Data1\DCC\BackupRoutine\Programs\PULSE_Import.pql

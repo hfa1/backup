@@ -55,6 +55,7 @@ c.    execute subprocedure VERIFY
 . end for
 . execute subprocedure MAKEHEADER
 . execute subprocedure MAKESWIM
+. execute subprocedure MAKEREDCAP
 |
 . subprocedure MAKESWIM
 .  open (REPORT) write append lrecl = 250
@@ -90,12 +91,45 @@ c.    execute subprocedure VERIFY
 .    end loop
 .    DONE0:
 .   close (IN$)
-.   write (REPORT) '<tr>'
-.   write (REPORT) '     <td colspan="2" class="orangecenter">SWIM Project</td>'
-.   write (REPORT) '     <td class="orangecenter">IRB Expires</td>'
-.   write (REPORT) '</tr>'
 .  close (REPORT)
 . end subprocedure MAKESWIM
+|
+. subprocedure MAKEREDCAP
+.  open (REPORT) write append lrecl = 250
+.   write (REPORT) '<tr>'
+.   write (REPORT) '     <td colspan="2" class="orangecenter">REDCap Project</td>'
+.   write (REPORT) '     <td class="orangecenter">IRB Expires</td>'
+.   write (REPORT) '</tr>'
+.   IN$ = '<GDATA1>DCC\Documents\IRB\Current IRB Information.txt'
+.   open (IN$) dsnvar=IN$ read lrecl=200
+.    loop
+.     read (IN$,end=DONE1) LINE$ (A200)
+.     DB$ = trim(sbst(LINE$,1,10))
+.     MONTHS$ = trim(sbst(LINE$,22,7))
+.     INST$ = trim(sbst(LINE$,54,10))
+.     ifthen (trim(sbst(LINE$,34,4)) = 'REDC')
+.      write (REPORT) '<tr>'
+.      ifthen (INST$ = 'Covered')
+.       LINK$ = trim(sbst(LINE$,11,11))
+.      elseif (INST$ = 'NA')
+.       LINK$ = 'TEST'
+.       MONTHS$ = 'NA'
+.      else
+.       LINK$ = DB$
+.      endif
+.      write (REPORT) ['<td colspan="2" class="db">' + DB$ + '</td>']
+.      ifthen (trim(sbst(LINE$,29,3)) = 'Yes')
+.       write (REPORT) ['<td class="whitecenter"><a href="file://///<DATASERVER>/Data1/DCC/Documents/IRB/IRB Current/' + LINK$ + '.pdf">' + MONTHS$ + '&#x2713;</a></td>']
+.      else
+.       write (REPORT) ['<td class="whitecenter"><a href="file://///<DATASERVER>/Data1/DCC/Documents/IRB/IRB Current/' + LINK$ + '.pdf">' + MONTHS$ + '</a></td>']
+.      endif
+.      write (REPORT) '</tr>'
+.     endif
+.    end loop
+.    DONE1:
+.   close (IN$)
+.  close (REPORT)
+. end subprocedure MAKEREDCAP
 |
 . subprocedure MAKEHEADER
 .  open (REPORT) write append lrecl = 250
